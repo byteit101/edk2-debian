@@ -54,18 +54,20 @@ debian/setup-build-stamp:
 	make -C BaseTools ARCH=$(EDK2_BUILD_ARCH)
 	touch $@
 
+OVMF_INSTALL_DIR = debian/ovmf-install
 OVMF_BUILD_DIR = Build/OvmfX64/RELEASE_$(EDK2_TOOLCHAIN)
 OVMF3264_BUILD_DIR = Build/Ovmf3264/RELEASE_$(EDK2_TOOLCHAIN)
 OVMF_ENROLL = $(OVMF3264_BUILD_DIR)/X64/EnrollDefaultKeys.efi
 OVMF_SHELL =  $(OVMF3264_BUILD_DIR)/X64/Shell.efi
 OVMF_BINARIES = $(OVMF_ENROLL) $(OVMF_SHELL)
-OVMF_IMAGES := $(addprefix debian/ovmf-install/,OVMF_CODE.fd OVMF_CODE_4M.fd OVMF_CODE.secboot.fd OVMF_CODE_4M.secboot.fd OVMF_VARS.fd OVMF_VARS_4M.fd)
-OVMF_PREENROLLED_VARS := $(addprefix debian/ovmf-install/,OVMF_VARS.ms.fd OVMF_VARS_4M.ms.fd OVMF_VARS_4M.snakeoil.fd)
+OVMF_IMAGES := $(addprefix $(OVMF_INSTALL_DIR)/,OVMF_CODE.fd OVMF_CODE_4M.fd OVMF_CODE.secboot.fd OVMF_CODE_4M.secboot.fd OVMF_VARS.fd OVMF_VARS_4M.fd)
+OVMF_PREENROLLED_VARS := $(addprefix $(OVMF_INSTALL_DIR)/,OVMF_VARS.ms.fd OVMF_VARS_4M.ms.fd OVMF_VARS_4M.snakeoil.fd)
 
+OVMF32_INSTALL_DIR = debian/ovmf32-install
 OVMF32_BUILD_DIR = Build/OvmfIa32/RELEASE_$(EDK2_TOOLCHAIN)
 OVMF32_SHELL = $(OVMF32_BUILD_DIR)/IA32/Shell.efi
 OVMF32_BINARIES = $(OVMF32_SHELL)
-OVMF32_IMAGES  := $(addprefix debian/ovmf32-install/,OVMF32_CODE_4M.secboot.fd OVMF_VARS_4M.fd)
+OVMF32_IMAGES  := $(addprefix $(OVMF32_INSTALL_DIR)/,OVMF32_CODE_4M.secboot.fd OVMF_VARS_4M.fd)
 
 QEMU_EFI_BUILD_DIR = Build/ArmVirtQemu-$(EDK2_HOST_ARCH)/RELEASE_$(EDK2_TOOLCHAIN)
 AAVMF_BUILD_DIR = Build/ArmVirtQemu-AARCH64/RELEASE_$(EDK2_TOOLCHAIN)
@@ -82,30 +84,30 @@ AAVMF32_IMAGES    = $(AAVMF32_BUILD_DIR)/FV/,AAVMF32_CODE.fd AAVMF32_VARS.fd)
 
 build-ovmf32: $(OVMF32_BINARIES) $(OVMF32_IMAGES)
 $(OVMF32_BINARIES) $(OVMF32_IMAGES): debian/setup-build-stamp
-	rm -rf debian/ovmf32-install
-	mkdir debian/ovmf32-install
+	rm -rf $(OVMF32_INSTALL_DIR)
+	mkdir $(OVMF32_INSTALL_DIR)
 	set -e; . ./edksetup.sh; \
 		build -a IA32 \
 			-t $(EDK2_TOOLCHAIN) \
 			-p OvmfPkg/OvmfPkgIa32.dsc \
 			$(OVMF32_4M_SMM_FLAGS) -b RELEASE
 	cp $(OVMF32_BUILD_DIR)/FV/OVMF_CODE.fd \
-		debian/ovmf32-install/OVMF32_CODE_4M.secboot.fd
+		$(OVMF32_INSTALL_DIR)/OVMF32_CODE_4M.secboot.fd
 	cp $(OVMF32_BUILD_DIR)/FV/OVMF_VARS.fd \
-		debian/ovmf32-install/OVMF32_VARS_4M.fd
+		$(OVMF32_INSTALL_DIR)/OVMF32_VARS_4M.fd
 
 build-ovmf: $(OVMF_BINARIES) $(OVMF_IMAGES) $(OVMF_PREENROLLED_VARS)
 $(OVMF_BINARIES) $(OVMF_IMAGES): debian/setup-build-stamp
-	rm -rf debian/ovmf-install
-	mkdir debian/ovmf-install
+	rm -rf $(OVMF_INSTALL_DIR)
+	mkdir $(OVMF_INSTALL_DIR)
 	set -e; . ./edksetup.sh; \
 		build -a X64 \
 			-t $(EDK2_TOOLCHAIN) \
 			-p OvmfPkg/OvmfPkgX64.dsc \
 			$(OVMF_2M_FLAGS) -b RELEASE
 	cp $(OVMF_BUILD_DIR)/FV/OVMF_CODE.fd \
-		$(OVMF_BUILD_DIR)/FV/OVMF.fd debian/ovmf-install/
-	cp $(OVMF_BUILD_DIR)/FV/OVMF_VARS.fd debian/ovmf-install/
+		$(OVMF_BUILD_DIR)/FV/OVMF.fd $(OVMF_INSTALL_DIR)/
+	cp $(OVMF_BUILD_DIR)/FV/OVMF_VARS.fd $(OVMF_INSTALL_DIR)/
 	rm -rf Build/OvmfX64
 	set -e; . ./edksetup.sh; \
 		build -a IA32 -a X64 \
@@ -113,9 +115,9 @@ $(OVMF_BINARIES) $(OVMF_IMAGES): debian/setup-build-stamp
 			-p OvmfPkg/OvmfPkgIa32X64.dsc \
 			$(OVMF_4M_FLAGS) -b RELEASE
 	cp $(OVMF3264_BUILD_DIR)/FV/OVMF_CODE.fd \
-		debian/ovmf-install/OVMF_CODE_4M.fd
+		$(OVMF_INSTALL_DIR)/OVMF_CODE_4M.fd
 	cp $(OVMF3264_BUILD_DIR)/FV/OVMF_VARS.fd \
-		debian/ovmf-install/OVMF_VARS_4M.fd
+		$(OVMF_INSTALL_DIR)/OVMF_VARS_4M.fd
 	rm -rf Build/OvmfX64
 	set -e; . ./edksetup.sh; \
 		build -a X64 \
@@ -123,7 +125,7 @@ $(OVMF_BINARIES) $(OVMF_IMAGES): debian/setup-build-stamp
 			-p OvmfPkg/OvmfPkgX64.dsc \
 			$(OVMF_2M_SMM_FLAGS) -b RELEASE
 	cp $(OVMF_BUILD_DIR)/FV/OVMF_CODE.fd \
-		debian/ovmf-install/OVMF_CODE.secboot.fd
+		$(OVMF_INSTALL_DIR)/OVMF_CODE.secboot.fd
 	rm -rf Build/OvmfX64
 	set -e; . ./edksetup.sh; \
 		build -a IA32 -a X64 \
@@ -131,7 +133,7 @@ $(OVMF_BINARIES) $(OVMF_IMAGES): debian/setup-build-stamp
 			-p OvmfPkg/OvmfPkgIa32X64.dsc \
 			$(OVMF_4M_SMM_FLAGS) -b RELEASE
 	cp $(OVMF3264_BUILD_DIR)/FV/OVMF_CODE.fd \
-		debian/ovmf-install/OVMF_CODE_4M.secboot.fd
+		$(OVMF_INSTALL_DIR)/OVMF_CODE_4M.secboot.fd
 
 ifeq ($(call dpkg_vendor_derives_from_v1,ubuntu),yes)
 debian/PkKek-1-vendor.pem: debian/PkKek-1-Ubuntu.pem
@@ -163,24 +165,24 @@ debian/oem-string-%: debian/PkKek-1-%.pem
 	PYTHONPATH=$(CURDIR)/debian/python \
 	./debian/edk2-vars-generator.py \
 		-f OVMF -e $(OVMF_ENROLL) -s $(OVMF_SHELL) \
-		-c debian/ovmf-install/OVMF_CODE.fd \
-		-V debian/ovmf-install/OVMF_VARS.fd \
+		-c $(OVMF_INSTALL_DIR)/OVMF_CODE.fd \
+		-V $(OVMF_INSTALL_DIR)/OVMF_VARS.fd \
 		-C `< debian/oem-string-vendor` -o $@
 
 %/OVMF_VARS_4M.ms.fd: %/OVMF_CODE_4M.fd %/OVMF_VARS_4M.fd debian/oem-string-vendor $(OVMF_ENROLL) $(OVMF_SHELL)
 	PYTHONPATH=$(CURDIR)/debian/python \
 	./debian/edk2-vars-generator.py \
 		-f OVMF_4M -e $(OVMF_ENROLL) -s $(OVMF_SHELL) \
-		-c debian/ovmf-install/OVMF_CODE_4M.fd \
-		-V debian/ovmf-install/OVMF_VARS_4M.fd \
+		-c $(OVMF_INSTALL_DIR)/OVMF_CODE_4M.fd \
+		-V $(OVMF_INSTALL_DIR)/OVMF_VARS_4M.fd \
 		-C `< debian/oem-string-vendor` -o $@
 
 %/OVMF_VARS_4M.snakeoil.fd: %/OVMF_CODE_4M.fd %/OVMF_VARS_4M.fd debian/oem-string-snakeoil $(OVMF_ENROLL) $(OVMF_SHELL)
 	PYTHONPATH=$(CURDIR)/debian/python \
 	./debian/edk2-vars-generator.py \
 		-f OVMF_4M -e $(OVMF_ENROLL) -s $(OVMF_SHELL) \
-		-c debian/ovmf-install/OVMF_CODE_4M.fd \
-		-V debian/ovmf-install/OVMF_VARS_4M.fd \
+		-c $(OVMF_INSTALL_DIR)/OVMF_CODE_4M.fd \
+		-V $(OVMF_INSTALL_DIR)/OVMF_VARS_4M.fd \
 		--no-default \
 		-C `< debian/oem-string-snakeoil` -o $@
 
