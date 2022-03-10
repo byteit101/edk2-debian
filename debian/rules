@@ -149,14 +149,14 @@ debian/oem-string-%: debian/PkKek-1-%.pem
 
 %/AAVMF_VARS.ms.fd: %/AAVMF_CODE.fd %/AAVMF_VARS.fd debian/oem-string-vendor $(AAVMF_ENROLL) $(AAVMF_SHELL)
 	PYTHONPATH=$(CURDIR)/debian/python \
-	./debian/edk2-vars-generator.py \
+	python3 ./debian/edk2-vars-generator.py \
 		-f AAVMF -e $(AAVMF_ENROLL) -s $(AAVMF_SHELL) \
 		-c $(AAVMF_CODE) -V $(AAVMF_VARS) \
 		-C `< debian/oem-string-vendor` -o $@
 
 %/AAVMF_VARS.snakeoil.fd: %/AAVMF_CODE.fd %/AAVMF_VARS.fd debian/oem-string-snakeoil $(AAVMF_ENROLL) $(AAVMF_SHELL)
 	PYTHONPATH=$(CURDIR)/debian/python \
-	./debian/edk2-vars-generator.py \
+	python3 ./debian/edk2-vars-generator.py \
 		-f AAVMF -e $(AAVMF_ENROLL) -s $(AAVMF_SHELL) \
 		-c $(AAVMF_CODE) -V $(AAVMF_VARS) \
 		--no-default \
@@ -164,7 +164,7 @@ debian/oem-string-%: debian/PkKek-1-%.pem
 
 %/OVMF_VARS.ms.fd: %/OVMF_CODE.fd %/OVMF_VARS.fd debian/oem-string-vendor $(OVMF_ENROLL) $(OVMF_SHELL)
 	PYTHONPATH=$(CURDIR)/debian/python \
-	./debian/edk2-vars-generator.py \
+	python3 ./debian/edk2-vars-generator.py \
 		-f OVMF -e $(OVMF_ENROLL) -s $(OVMF_SHELL) \
 		-c $(OVMF_INSTALL_DIR)/OVMF_CODE.fd \
 		-V $(OVMF_INSTALL_DIR)/OVMF_VARS.fd \
@@ -172,7 +172,7 @@ debian/oem-string-%: debian/PkKek-1-%.pem
 
 %/OVMF_VARS_4M.ms.fd: %/OVMF_CODE_4M.fd %/OVMF_VARS_4M.fd debian/oem-string-vendor $(OVMF_ENROLL) $(OVMF_SHELL)
 	PYTHONPATH=$(CURDIR)/debian/python \
-	./debian/edk2-vars-generator.py \
+	python3 ./debian/edk2-vars-generator.py \
 		-f OVMF_4M -e $(OVMF_ENROLL) -s $(OVMF_SHELL) \
 		-c $(OVMF_INSTALL_DIR)/OVMF_CODE_4M.fd \
 		-V $(OVMF_INSTALL_DIR)/OVMF_VARS_4M.fd \
@@ -180,7 +180,7 @@ debian/oem-string-%: debian/PkKek-1-%.pem
 
 %/OVMF_VARS_4M.snakeoil.fd: %/OVMF_CODE_4M.fd %/OVMF_VARS_4M.fd debian/oem-string-snakeoil $(OVMF_ENROLL) $(OVMF_SHELL)
 	PYTHONPATH=$(CURDIR)/debian/python \
-	./debian/edk2-vars-generator.py \
+	python3 ./debian/edk2-vars-generator.py \
 		-f OVMF_4M -e $(OVMF_ENROLL) -s $(OVMF_SHELL) \
 		-c $(OVMF_INSTALL_DIR)/OVMF_CODE_4M.fd \
 		-V $(OVMF_INSTALL_DIR)/OVMF_VARS_4M.fd \
