@@ -1,11 +1,11 @@
-edk2 (2022.11-2) UNRELEASED; urgency=medium
+edk2 (2022.11-2) unstable; urgency=medium
 
   * d/p/Revert-ArmVirtPkg-make-EFI_LOADER_DATA-non-executabl.patch:
     Continue to allow bootloaders to execute memory allocated as
     EFI_LOADER_DATA until GRUB fixes are more generally available.
     (Closes: #1025656)
 
- -- dann frazier <dannf@debian.org>  Thu, 29 Dec 2022 11:10:54 -0700
+ -- dann frazier <dannf@debian.org>  Thu, 29 Dec 2022 11:14:52 -0700
 
 edk2 (2022.11-1) unstable; urgency=medium
 
