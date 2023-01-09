@@ -1,3 +1,12 @@
+edk2 (2022.11-3) UNRELEASED; urgency=medium
+
+  * qemu-efi-aarch64: Fix regression for VMs running on Cavium ThunderX SoCs:
+    - Add d/p/0001-ArmVirtPkg-ArmPlatformLibQemu-Ensure-that-VFP-is-on-.patch
+    - Add d/p/0002-ArmVirtPkg-ArmVirtQemu-Avoid-early-ID-map-on-Thunder.patch
+    - debian/rules: Set -DCAVIUM_ERRATUM_27456=TRUE
+
+ -- dann frazier <dannf@debian.org>  Mon, 09 Jan 2023 14:06:46 -0700
+
 edk2 (2022.11-2) unstable; urgency=medium
 
   * d/p/Revert-ArmVirtPkg-make-EFI_LOADER_DATA-non-executabl.patch:
