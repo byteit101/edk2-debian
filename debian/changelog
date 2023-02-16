@@ -1,3 +1,14 @@
+edk2 (2022.11-4) UNRELEASED; urgency=medium
+
+  * debian/rules: various improvements from Glenn Washburn:
+    - Create OVMF*_INSTALL_DIR variables to replace literals.
+    - Create BUILD_TYPE variable to make it easier to select other
+      build types.
+    - Explicitly use python3 to run ./debian/edk2-vars-generator.py
+      in case the file does not have the executable bit set.
+
+ -- dann frazier <dannf@debian.org>  Thu, 16 Feb 2023 15:59:51 -0700
+
 edk2 (2022.11-3) unstable; urgency=medium
 
   * qemu-efi-aarch64: Fix regression for VMs running on Cavium ThunderX SoCs:
