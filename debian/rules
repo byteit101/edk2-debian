@@ -81,7 +81,7 @@ AAVMF_IMAGES    = $(AAVMF_CODE) $(AAVMF_VARS)
 AAVMF_PREENROLLED_VARS = $(addprefix $(AAVMF_BUILD_DIR)/FV/,AAVMF_VARS.ms.fd AAVMF_VARS.snakeoil.fd)
 
 AAVMF32_BUILD_DIR = Build/ArmVirtQemu-ARM/$(BUILD_TYPE)_$(EDK2_TOOLCHAIN)
-AAVMF32_IMAGES    = $(AAVMF32_BUILD_DIR)/FV/,AAVMF32_CODE.fd AAVMF32_VARS.fd)
+AAVMF32_IMAGES    = $(addprefix $(AAVMF32_BUILD_DIR)/FV/,AAVMF32_CODE.fd AAVMF32_VARS.fd)
 
 build-ovmf32: $(OVMF32_BINARIES) $(OVMF32_IMAGES)
 $(OVMF32_BINARIES) $(OVMF32_IMAGES): debian/setup-build-stamp
@@ -203,11 +203,12 @@ build-qemu-efi: debian/setup-build-stamp
 	dd if=$(QEMU_EFI_BUILD_DIR)/FV/QEMU_EFI.fd of=$(QEMU_EFI_BUILD_DIR)/FV/$(FW_NAME)_CODE.fd conv=notrunc
 	dd if=/dev/zero of=$(QEMU_EFI_BUILD_DIR)/FV/$(FW_NAME)_VARS.fd bs=1M seek=64 count=0
 
-build-qemu-efi-aarch64: $(AAVMF_BINARIES) $(AAVMF_PREENROLLED_VARS)
-$(AAVMF_BINARIES): ArmPkg/Library/GccLto/liblto-aarch64.a
+build-qemu-efi-aarch64: $(AAVMF_BINARIES) $(AAVMF_IMAGES) $(AAVMF_PREENROLLED_VARS)
+$(AAVMF_BINARIES) $(AAVMF_IMAGES): ArmPkg/Library/GccLto/liblto-aarch64.a
 	$(MAKE) -f debian/rules build-qemu-efi EDK2_ARCH_DIR=AArch64 EDK2_HOST_ARCH=AARCH64 FW_NAME=AAVMF
 
-build-qemu-efi-arm: ArmPkg/Library/GccLto/liblto-arm.a
+build-qemu-efi-arm: $(AAVMF32_IMAGES)
+$(AAVMF32_IMAGES): ArmPkg/Library/GccLto/liblto-arm.a
 	$(MAKE) -f debian/rules build-qemu-efi EDK2_ARCH_DIR=Arm EDK2_HOST_ARCH=ARM FW_NAME=AAVMF32
 
 override_dh_auto_clean:
