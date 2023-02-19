@@ -354,6 +354,9 @@ class BootToShellTest(unittest.TestCase):
         )
         self.run_cmd_check_shell(q.command)
 
+    def test_riscv64(self):
+        q = Qemu.QemuCommand(QemuEfiMachine.RISCV64)
+        self.run_cmd_check_shell(q.command)
 
 if __name__ == '__main__':
     unittest.main(verbosity=2)

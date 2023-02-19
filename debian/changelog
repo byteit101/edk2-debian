@@ -18,6 +18,7 @@ edk2 (2023.02-1) UNRELEASED; urgency=medium
   * Rename binary-check.allow to binary-check.ignore.
   * Convert binary-check.ignore from a list of files to a list of globs.
   * binary-check.ignore: Update.
+  * Add qemu-efi-riscv64 package.
 
  -- dann frazier <dannf@debian.org>  Thu, 09 Mar 2023 16:03:37 -0700
 
