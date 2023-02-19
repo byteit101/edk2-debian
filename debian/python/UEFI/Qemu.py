@@ -163,18 +163,25 @@ class QemuCommand:
         be automatically cleaned up when the object is destroyed.
         '''
         def __init__(self, code_path, vars_template_path):
+            self.params = [
+                '-drive',
+                'file=%s,if=pflash,format=raw,unit=0,readonly=on' %
+                (code_path),
+            ]
+            if vars_template_path is None:
+                self.varfile_path = None
+                return
             with tempfile.NamedTemporaryFile(delete=False) as varfile:
                 self.varfile_path = varfile.name
                 with open(vars_template_path, 'rb') as template:
                     shutil.copyfileobj(template, varfile)
-                self.params = [
-                    '-drive',
-                    'file=%s,if=pflash,format=raw,unit=0,readonly=on' %
-                    (code_path),
-                    '-drive',
-                    'file=%s,if=pflash,format=raw,unit=1,readonly=off' %
-                    (varfile.name)
-                ]
+                    self.params = self.params + [
+                        '-drive',
+                        'file=%s,if=pflash,format=raw,unit=1,readonly=off' %
+                        (varfile.name)
+                    ]
 
         def __del__(self):
+            if self.varfile_path is None:
+                return
             os.unlink(self.varfile_path)
