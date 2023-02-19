@@ -11,6 +11,7 @@ Build-Depends: bc,
  gcc-aarch64-linux-gnu,
  gcc-arm-linux-gnueabi,
  gcc-multilib [i386],
+ gcc-riscv64-linux-gnu,
  iasl,
  lsb-release,
  mtools,
@@ -64,6 +65,13 @@ Multi-Arch: foreign
 Description: UEFI firmware for 64-bit ARM virtual machines
  qemu-efi-aarch64 is a build of EDK II for 64-bit ARM virtual machines. It
  includes full support for UEFI, including Secure Boot.
+
+Package: qemu-efi-riscv64
+Architecture: all
+Depends: ${misc:Depends}
+Multi-Arch: foreign
+Description: UEFI firmware for RISCV64 virtual machines
+ qemu-efi-riscv64 is a build of EDK II for RISCV64 virtual machines.
 
 Package: efi-shell-ia32
 Architecture: all
