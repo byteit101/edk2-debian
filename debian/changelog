@@ -8,6 +8,7 @@ edk2 (2022.11-4) UNRELEASED; urgency=medium
       in case the file does not have the executable bit set.
   * autopkgtest: Fail if QEMU process exits non-zero, which can catch
     issues such as passing incorrect arguments to qemu-system-*.
+  * qemu-efi-(arm,ia32): Fix indention in README.Debian.
 
  -- dann frazier <dannf@debian.org>  Thu, 16 Feb 2023 15:59:51 -0700
 
