@@ -1,4 +1,4 @@
-edk2 (2022.11-4) UNRELEASED; urgency=medium
+edk2 (2022.11-4) unstable; urgency=medium
 
   * debian/rules: various improvements from Glenn Washburn:
     - Create OVMF*_INSTALL_DIR variables to replace literals.
@@ -10,7 +10,7 @@ edk2 (2022.11-4) UNRELEASED; urgency=medium
     issues such as passing incorrect arguments to qemu-system-*.
   * qemu-efi-(arm,ia32): Fix indention in README.Debian.
 
- -- dann frazier <dannf@debian.org>  Thu, 16 Feb 2023 15:59:51 -0700
+ -- dann frazier <dannf@debian.org>  Tue, 21 Feb 2023 18:38:29 -0700
 
 edk2 (2022.11-3) unstable; urgency=medium
 
