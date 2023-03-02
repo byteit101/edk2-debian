@@ -1,3 +1,11 @@
+edk2 (2022.11-5) UNRELEASED; urgency=medium
+
+  * autopkgtest: Use 1 CPU QEMU models instead of 2. This avoids a
+    performance issue on s390x instances with 1 host CPU that can
+    result in timeouts. LP: #2008865.
+
+ -- dann frazier <dannf@debian.org>  Wed, 01 Mar 2023 21:50:03 -0700
+
 edk2 (2022.11-4) unstable; urgency=medium
 
   * debian/rules: various improvements from Glenn Washburn:
