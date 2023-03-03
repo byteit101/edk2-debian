@@ -22,6 +22,7 @@ import os
 import pexpect
 import subprocess
 import sys
+import time
 import unittest
 
 from UEFI.Filesystems import GrubShellBootableIsoImage
@@ -69,6 +70,13 @@ def get_local_shim_path(efi_arch, signed=False):
 
 class BootToShellTest(unittest.TestCase):
     debug = True
+
+    def setUp(self):
+        self.startTime = time.time()
+
+    def tearDown(self):
+        t = time.time() - self.startTime
+        sys.stdout.write("%s runtime: %.3fs\n" % (self.id(), t))
 
     def run_cmd_check_shell(self, cmd):
         child = pexpect.spawn(' '.join(cmd), encoding='UTF-8')
