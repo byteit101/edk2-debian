@@ -140,10 +140,12 @@ class BootToShellTest(unittest.TestCase):
                 if i == 4:
                     verified = False
                     continue
+        except pexpect.EOF:
+            child.close()
+            if child.exitstatus != 0:
+                self.fail("ERROR: exit code %d\n" % (child.exitstatus))
         except pexpect.TIMEOUT as err:
             self.fail("%s\n" % (err))
-        except pexpect.EOF:
-            pass
         self.assertEqual(should_verify, verified)
 
     def test_aavmf(self):

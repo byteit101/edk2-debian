@@ -2,6 +2,8 @@ edk2 (2022.11-6) UNRELEASED; urgency=medium
 
   * autopkgtest: Set an encoding in pexpect.spawn() calls so we can
     log to sys.stdout instead of using sys.stdout.buffer as a workaround.
+  * autopkgtest: Also fail secure boot tests if QEMU process exits
+    non-zero.
 
  -- dann frazier <dannf@debian.org>  Fri, 03 Mar 2023 11:27:54 -0700
 
