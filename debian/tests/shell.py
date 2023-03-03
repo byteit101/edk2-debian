@@ -92,9 +92,8 @@ class BootToShellTest(unittest.TestCase):
                     continue
         except pexpect.EOF:
             child.close()
-            if child.exitstatus == 0:
-                return
-            self.fail("ERROR: exit code %d\n" % (child.exitstatus))
+            if child.exitstatus != 0:
+                self.fail("ERROR: exit code %d\n" % (child.exitstatus))
         except pexpect.TIMEOUT as err:
             self.fail("%s\n" % (err))
 
