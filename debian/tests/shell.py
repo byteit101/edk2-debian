@@ -71,10 +71,10 @@ class BootToShellTest(unittest.TestCase):
     debug = True
 
     def run_cmd_check_shell(self, cmd):
-        child = pexpect.spawn(' '.join(cmd))
+        child = pexpect.spawn(' '.join(cmd), encoding='UTF-8')
 
         if self.debug:
-            child.logfile = sys.stdout.buffer
+            child.logfile = sys.stdout
         try:
             while True:
                 i = child.expect(
@@ -103,10 +103,10 @@ class BootToShellTest(unittest.TestCase):
             PRE_EXEC = 1
             POST_EXEC = 2
 
-        child = pexpect.spawn(' '.join(cmd))
+        child = pexpect.spawn(' '.join(cmd), encoding='UTF-8')
 
         if self.debug:
-            child.logfile = sys.stdout.buffer
+            child.logfile = sys.stdout
         try:
             state = State.PRE_EXEC
             while True:
