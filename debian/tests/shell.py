@@ -34,7 +34,6 @@ DPKG_ARCH = subprocess.check_output(
     ['dpkg', '--print-architecture']
 ).decode().rstrip()
 
-
 EfiArchToGrubArch = {
     'X64': "x86_64",
     'AA64': "arm64",
