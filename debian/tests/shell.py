@@ -40,6 +40,8 @@ EfiArchToGrubArch = {
     'AA64': "arm64",
 }
 
+TEST_TIMEOUT = 60
+
 
 def get_local_grub_path(efi_arch, signed=False):
     grub_subdir = "%s-efi" % EfiArchToGrubArch[efi_arch.upper()]
@@ -90,7 +92,7 @@ class BootToShellTest(unittest.TestCase):
                         'Press .* or any other key to continue',
                         'Shell> '
                     ],
-                    timeout=60,
+                    timeout=TEST_TIMEOUT,
                 )
                 if i == 0:
                     child.sendline('\x1b')
@@ -125,7 +127,7 @@ class BootToShellTest(unittest.TestCase):
                         'grub> ',
                         'Command Error Status: Access Denied',
                     ],
-                    timeout=60,
+                    timeout=TEST_TIMEOUT,
                 )
                 if i == 0:
                     child.sendline('\x1b')
