@@ -6,6 +6,8 @@ edk2 (2022.11-6) UNRELEASED; urgency=medium
     non-zero.
   * autopkgtest: Output test runtimes to help debug timeout issues like
     the one fixed in the last upload.
+  * autopkgtest: Bump test timeout from 60s to 120s. We've hit the
+    60s timeout on Ubuntu infrastructure with QEMU 7.2.
 
  -- dann frazier <dannf@debian.org>  Fri, 03 Mar 2023 11:27:54 -0700
 

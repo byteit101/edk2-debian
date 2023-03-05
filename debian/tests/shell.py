@@ -39,7 +39,7 @@ EfiArchToGrubArch = {
     'AA64': "arm64",
 }
 
-TEST_TIMEOUT = 60
+TEST_TIMEOUT = 120
 
 
 def get_local_grub_path(efi_arch, signed=False):
