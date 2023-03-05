@@ -1,4 +1,4 @@
-edk2 (2022.11-6) UNRELEASED; urgency=medium
+edk2 (2022.11-6) unstable; urgency=medium
 
   * autopkgtest: Set an encoding in pexpect.spawn() calls so we can
     log to sys.stdout instead of using sys.stdout.buffer as a workaround.
@@ -9,7 +9,7 @@ edk2 (2022.11-6) UNRELEASED; urgency=medium
   * autopkgtest: Bump test timeout from 60s to 120s. We've hit the
     60s timeout on Ubuntu infrastructure with QEMU 7.2.
 
- -- dann frazier <dannf@debian.org>  Fri, 03 Mar 2023 11:27:54 -0700
+ -- dann frazier <dannf@debian.org>  Sun, 05 Mar 2023 13:36:02 -0700
 
 edk2 (2022.11-5) unstable; urgency=medium
 
