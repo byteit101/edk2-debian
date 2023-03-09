@@ -41,12 +41,12 @@ def extensionOK(name):
 
 
 if __name__ == '__main__':
+    ret = 0
     top = './'
     for root, dirs, files in os.walk(top):
         with open('./debian/binary-check.allow', 'r') as f:
             allowlist = list(map(lambda s: s.strip(), f.readlines()))
 
-        ret = 0
         for name in files:
             relpath = os.path.join(root, name)[len(top):]
             if relpath in allowlist:

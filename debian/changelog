@@ -5,6 +5,8 @@ edk2 (2023.02-1) UNRELEASED; urgency=medium
     thanks to Glenn Washburn.
   * debian/binary-check.(allow,remove): Remove files that no longer
     exist upstream.
+  * debian/find-binaries.py: Fix exit code when new possible binaries
+    are found.
 
  -- dann frazier <dannf@debian.org>  Thu, 09 Mar 2023 16:03:37 -0700
 
