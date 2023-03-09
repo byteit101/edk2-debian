@@ -2,5 +2,3 @@ no-stack-protector-all-archs.diff
 brotlicompress-disable.diff
 x64-baseline-abi.patch
 Revert-ArmVirtPkg-make-EFI_LOADER_DATA-non-executabl.patch
-0001-ArmVirtPkg-ArmPlatformLibQemu-Ensure-that-VFP-is-on-.patch
-0002-ArmVirtPkg-ArmVirtQemu-Avoid-early-ID-map-on-Thunder.patch

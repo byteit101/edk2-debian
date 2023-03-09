@@ -1,6 +1,9 @@
 edk2 (2023.02-1) UNRELEASED; urgency=medium
 
   * New upstream release, based on edk2-stable202302 tag.
+    - Drop patches merged upstream:
+      + d/p/0001-ArmVirtPkg-ArmPlatformLibQemu-Ensure-that-VFP-is-on-.patch
+      + d/p/0002-ArmVirtPkg-ArmVirtQemu-Avoid-early-ID-map-on-Thunder.patch
   * debian/rules: Correctness fix for OVMF32 build target dependency,
     thanks to Glenn Washburn.
   * debian/binary-check.(allow,remove): Remove files that no longer
