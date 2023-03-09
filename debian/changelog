@@ -1,3 +1,9 @@
+edk2 (2023.02-1) UNRELEASED; urgency=medium
+
+  * New upstream release, based on edk2-stable202302 tag.
+
+ -- dann frazier <dannf@debian.org>  Thu, 09 Mar 2023 16:03:37 -0700
+
 edk2 (2022.11-6) unstable; urgency=medium
 
   * autopkgtest: Set an encoding in pexpect.spawn() calls so we can
