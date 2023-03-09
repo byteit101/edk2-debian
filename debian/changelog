@@ -9,6 +9,7 @@ edk2 (2023.02-1) UNRELEASED; urgency=medium
     are found.
   * Rename binary-check.allow to binary-check.ignore.
   * Convert binary-check.ignore from a list of files to a list of globs.
+  * binary-check.ignore: Update.
 
  -- dann frazier <dannf@debian.org>  Thu, 09 Mar 2023 16:03:37 -0700
 
