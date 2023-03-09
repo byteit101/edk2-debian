@@ -5,13 +5,11 @@ Description: Revert "ArmVirtPkg: make EFI_LOADER_DATA non-executable"
 Author: dann frazier <dannf@debian.org>
 Bug-Debian: https://bugs.debian.org/1025656
 Forwarded: https://edk2.groups.io/g/devel/message/97814
-Last-Update: 2022-12-29
+Last-Update: 2023-03-09
 
-diff --git a/ArmVirtPkg/ArmVirt.dsc.inc b/ArmVirtPkg/ArmVirt.dsc.inc
-index 462073517a..34575585ad 100644
 --- a/ArmVirtPkg/ArmVirt.dsc.inc
 +++ b/ArmVirtPkg/ArmVirt.dsc.inc
-@@ -368,7 +368,7 @@
+@@ -361,7 +361,7 @@
    # reserved ones, with the exception of LoaderData regions, of which OS loaders
    # (i.e., GRUB) may assume that its contents are executable.
    #
@@ -20,6 +18,3 @@ index 462073517a..34575585ad 100644
  
  [Components.common]
    #
--- 
-2.39.0
-

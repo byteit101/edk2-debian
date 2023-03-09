@@ -4,6 +4,11 @@ edk2 (2023.02-1) UNRELEASED; urgency=medium
     - Drop patches merged upstream:
       + d/p/0001-ArmVirtPkg-ArmPlatformLibQemu-Ensure-that-VFP-is-on-.patch
       + d/p/0002-ArmVirtPkg-ArmVirtQemu-Avoid-early-ID-map-on-Thunder.patch
+    - Refresh patches:
+      + Revert-ArmVirtPkg-make-EFI_LOADER_DATA-non-executabl.patch
+      + brotlicompress-disable.diff
+      + no-stack-protector-all-archs.diff
+      + x64-baseline-abi.patch    
   * debian/rules: Correctness fix for OVMF32 build target dependency,
     thanks to Glenn Washburn.
   * debian/binary-check.(allow,remove): Remove files that no longer
