@@ -3,6 +3,8 @@ edk2 (2023.02-1) UNRELEASED; urgency=medium
   * New upstream release, based on edk2-stable202302 tag.
   * debian/rules: Correctness fix for OVMF32 build target dependency,
     thanks to Glenn Washburn.
+  * debian/binary-check.(allow,remove): Remove files that no longer
+    exist upstream.
 
  -- dann frazier <dannf@debian.org>  Thu, 09 Mar 2023 16:03:37 -0700
 
