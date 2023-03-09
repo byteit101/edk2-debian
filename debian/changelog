@@ -7,6 +7,7 @@ edk2 (2023.02-1) UNRELEASED; urgency=medium
     exist upstream.
   * debian/find-binaries.py: Fix exit code when new possible binaries
     are found.
+  * Rename binary-check.allow to binary-check.ignore.
 
  -- dann frazier <dannf@debian.org>  Thu, 09 Mar 2023 16:03:37 -0700
 
