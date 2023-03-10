@@ -9,16 +9,16 @@ edk2 (2023.02-1) UNRELEASED; urgency=medium
       + brotlicompress-disable.diff
       + no-stack-protector-all-archs.diff
       + x64-baseline-abi.patch    
+  * Add qemu-efi-riscv64 package.
+  * d/binary-check updates:
+    - binary-check.(allow,remove): Remove files that no longer exist
+      upstream.
+    - find-binaries.py: Fix exit code when new possible binaries are found.
+    - Rename binary-check.allow to binary-check.ignore.
+    - Convert binary-check.ignore from a list of files to a list of globs.
+    - binary-check.ignore: Update.
   * debian/rules: Correctness fix for OVMF32 build target dependency,
     thanks to Glenn Washburn.
-  * debian/binary-check.(allow,remove): Remove files that no longer
-    exist upstream.
-  * debian/find-binaries.py: Fix exit code when new possible binaries
-    are found.
-  * Rename binary-check.allow to binary-check.ignore.
-  * Convert binary-check.ignore from a list of files to a list of globs.
-  * binary-check.ignore: Update.
-  * Add qemu-efi-riscv64 package.
 
  -- dann frazier <dannf@debian.org>  Thu, 09 Mar 2023 16:03:37 -0700
 
