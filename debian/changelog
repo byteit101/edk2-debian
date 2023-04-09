@@ -4,6 +4,7 @@ edk2 (2023.08-1) UNRELEASED; urgency=medium
   * Add qemu-efi-riscv64 package.
   * Use an infinite timeout for pyexpect scripts that run during build
     to avoid build failures due to slow builders. Closes: #1049840.
+  * ovmf: Drop 2M compatibility images. See README.Debian for details.
 
  -- dann frazier <dannf@debian.org>  Sun, 27 Aug 2023 19:52:10 -0600
 
