@@ -19,6 +19,8 @@ edk2 (2023.02-1) UNRELEASED; urgency=medium
     - binary-check.ignore: Update.
   * debian/rules: Correctness fix for OVMF32 build target dependency,
     thanks to Glenn Washburn.
+  * Provide PCD configuration for SMBIOS release info. Thanks to Fiona Ebner
+    of Proxmox for noticing and reporting the need for this.
 
  -- dann frazier <dannf@debian.org>  Thu, 09 Mar 2023 16:03:37 -0700
 
