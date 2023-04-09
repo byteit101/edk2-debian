@@ -8,7 +8,7 @@ edk2 (2023.02-1) UNRELEASED; urgency=medium
       + Revert-ArmVirtPkg-make-EFI_LOADER_DATA-non-executabl.patch
       + brotlicompress-disable.diff
       + no-stack-protector-all-archs.diff
-      + x64-baseline-abi.patch    
+      + x64-baseline-abi.patch
   * Add qemu-efi-riscv64 package.
   * d/binary-check updates:
     - binary-check.(allow,remove): Remove files that no longer exist
