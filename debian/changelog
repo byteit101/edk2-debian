@@ -1,4 +1,4 @@
-edk2 (2023.02-1) UNRELEASED; urgency=medium
+edk2 (2023.02-1) experimental; urgency=medium
 
   * New upstream release, based on edk2-stable202302 tag.
     - Drop patches merged upstream:
@@ -21,7 +21,7 @@ edk2 (2023.02-1) UNRELEASED; urgency=medium
   * Provide PCD configuration for SMBIOS release info. Thanks to Fiona Ebner
     of Proxmox for noticing and reporting the need for this.
 
- -- dann frazier <dannf@debian.org>  Thu, 09 Mar 2023 16:03:37 -0700
+ -- dann frazier <dannf@debian.org>  Mon, 10 Apr 2023 14:16:04 -0600
 
 edk2 (2022.11-6) unstable; urgency=medium
 
