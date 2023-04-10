@@ -10,7 +10,6 @@ Build-Depends: bc,
  gcc-aarch64-linux-gnu,
  gcc-arm-linux-gnueabi,
  gcc-multilib [i386],
- gcc-riscv64-linux-gnu,
  iasl,
  mtools,
  nasm,
@@ -71,10 +70,3 @@ Multi-Arch: foreign
 Description: transitional dummy package
  This is a transitional dummy package. It contains a compatibility symlink
  of /usr/share/qemu-efi/QEMU_EFI.fd to /usr/share/qemu-efi-aarch64/QEMU_EFI.fd.
-
-Package: qemu-efi-riscv64
-Architecture: all
-Depends: ${misc:Depends}
-Multi-Arch: foreign
-Description: UEFI firmware for RISCV64 virtual machines
- qemu-efi-riscv64 is a build of EDK II for RISCV64 virtual machines.
