@@ -5,6 +5,7 @@ Maintainer: Debian QEMU Team <pkg-qemu-devel@lists.alioth.debian.org>
 Uploaders: Steve Langasek <vorlon@debian.org>, Serge Hallyn <serge.hallyn@ubuntu.com>, dann frazier <dannf@debian.org>
 Build-Depends: bc,
  debhelper-compat (= 12),
+ dh-exec,
  dosfstools,
  dpkg (>= 1.19.3),
  gcc-aarch64-linux-gnu,
@@ -71,3 +72,39 @@ Multi-Arch: foreign
 Description: transitional dummy package
  This is a transitional dummy package. It contains a compatibility symlink
  of /usr/share/qemu-efi/QEMU_EFI.fd to /usr/share/qemu-efi-aarch64/QEMU_EFI.fd.
+
+Package: efi-shell-ia32
+Architecture: all
+Description: UEFI Shell for 32-bit x86 architecture
+ The UEFI Shell provides a command line interface running on top of the EFI API.
+ It can be used to execute EFI binaries, to manage EFI variables and boot
+ options, or to display details of installed devices, drivers, and protocols.
+ This package contains the shellia32.efi binary for the a 32-bit x86
+ architecture.
+
+Package: efi-shell-x64
+Architecture: all
+Description: UEFI Shell for 64-bit x86 architecture
+ The UEFI Shell provides a command line interface running on top of the EFI API.
+ It can be used to execute EFI binaries, to manage EFI variables and boot
+ options, or to display details of installed devices, drivers, and protocols.
+ This package contains the shellx64.efi binary for the a 64-bit x86
+ architecture.
+
+Package: efi-shell-arm
+Architecture: all
+Description: UEFI Shell for 32-bit ARM architecture
+ The UEFI Shell provides a command line interface running on top of the EFI API.
+ It can be used to execute EFI binaries, to manage EFI variables and boot
+ options, or to display details of installed devices, drivers, and protocols.
+ This package contains the shellarm.efi binary for the a 32-bit ARM
+ architecture.
+
+Package: efi-shell-aa64
+Architecture: all
+Description: UEFI Shell for 64-bit ARM architecture
+ The UEFI Shell provides a command line interface running on top of the EFI API.
+ It can be used to execute EFI binaries, to manage EFI variables and boot
+ options, or to display details of installed devices, drivers, and protocols.
+ This package contains the shellaa64.efi binary for the a 64-bit ARM
+ architecture.

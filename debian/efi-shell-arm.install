@@ -1,0 +1,2 @@
+#!/usr/bin/dh-exec
+Build/ArmVirtQemu-ARM/RELEASE_GCC5/ARM/Shell.efi => /usr/share/efi-shell-arm/shellarm.efi

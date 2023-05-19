@@ -1,4 +1,4 @@
-Build/ArmVirtQemu-AARCH64/RELEASE_*GCC*/FV/QEMU_EFI.fd /usr/share/qemu-efi-aarch64
-Build/ArmVirtQemu-AARCH64/RELEASE_*GCC*/FV/AAVMF_*.fd /usr/share/AAVMF
+Build/ArmVirtQemu-AARCH64/RELEASE_GCC5/FV/QEMU_EFI.fd /usr/share/qemu-efi-aarch64
+Build/ArmVirtQemu-AARCH64/RELEASE_GCC5/FV/AAVMF_*.fd /usr/share/AAVMF
 debian/descriptors/*-edk2-aarch64*.json	/usr/share/qemu/firmware
 debian/PkKek-1-snakeoil.* /usr/share/qemu-efi-aarch64
