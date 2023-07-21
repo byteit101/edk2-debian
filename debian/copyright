@@ -79,8 +79,8 @@ Copyright: 1999-2013, Intel Corporation
            2013, Hewlett-Packard Development Company, L.P.
 License: BSD-2-Clause-Patent
 
-Files: CryptoPkg/Library/OpensslLib/openssl-0.9.8w/*
-Copyright: 1998-2004 The OpenSSL Project
+Files: CryptoPkg/Library/OpensslLib/openssl/*
+Copyright: 1998-2019 The OpenSSL Project
            1995-1998 Eric A. Young, Tim J. Hudson
 License: OpenSSL
 
