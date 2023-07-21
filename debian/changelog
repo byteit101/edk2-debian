@@ -1,3 +1,9 @@
+edk2 (2023.05-1) UNRELEASED; urgency=medium
+
+  * New upstream release, based on edk2-stable202305 tag.
+
+ -- dann frazier <dannf@debian.org>  Mon, 03 Jul 2023 14:41:50 -0600
+
 edk2 (2023.02-2) experimental; urgency=medium
 
   * Introduce efi-shell-* packages. Thanks to Heinrich Schuchardt of

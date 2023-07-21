@@ -1,7 +1,7 @@
 /** @file
   The CPU specific programming for PiSmmCpuDxeSmm module.
 
-  Copyright (c) 2010 - 2015, Intel Corporation. All rights reserved.<BR>
+  Copyright (c) 2010 - 2023, Intel Corporation. All rights reserved.<BR>
 
   SPDX-License-Identifier: BSD-2-Clause-Patent
 **/
@@ -17,10 +17,12 @@
 #include <Library/SmmCpuFeaturesLib.h>
 #include <Library/SmmServicesTableLib.h>
 #include <Library/UefiBootServicesTableLib.h>
+#include <Library/HobLib.h>
 #include <Pcd/CpuHotEjectData.h>
 #include <PiSmm.h>
 #include <Register/Intel/SmramSaveStateMap.h>
 #include <Register/QemuSmramSaveStateMap.h>
+#include <Guid/SmmBaseHob.h>
 
 //
 // EFER register LMA bit
@@ -43,6 +45,12 @@ SmmCpuFeaturesLibConstructor (
   IN EFI_SYSTEM_TABLE  *SystemTable
   )
 {
+  //
+  // If gSmmBaseHobGuid found, means SmBase info has been relocated and recorded
+  // in the SmBase array. ASSERT it's not supported in OVMF.
+  //
+  ASSERT (GetFirstGuidHob (&gSmmBaseHobGuid) == NULL);
+
   //
   // No need to program SMRRs on our virtual platform.
   //
@@ -212,7 +220,7 @@ InitCpuHotEjectData (
       RETURN_ERROR (SafeUintnAdd (Size, sizeof (*mCpuHotEjectData), &Size)) ||
       RETURN_ERROR (SafeUintnAdd (Size, sizeof (UINT64) - 1, &Size)))
   {
-    DEBUG ((DEBUG_ERROR, "%a: invalid CPU_HOT_EJECT_DATA\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: invalid CPU_HOT_EJECT_DATA\n", __func__));
     goto Fatal;
   }
 
@@ -295,7 +303,7 @@ SmmCpuFeaturesSmmRelocationComplete (
     DEBUG ((
       DEBUG_ERROR,
       "%a: MemEncryptSevSetPageEncMask(): %r\n",
-      __FUNCTION__,
+      __func__,
       Status
       ));
     ASSERT (FALSE);

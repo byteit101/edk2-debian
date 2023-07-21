@@ -177,8 +177,9 @@ R: Julien Grall <julien@xen.org> [jgrall]
 BaseTools
 F: BaseTools/
 W: https://github.com/tianocore/tianocore.github.io/wiki/BaseTools
-M: Bob Feng <bob.c.feng@intel.com> [BobCF]
+M: Rebecca Cran <rebecca@bsdio.com> [bcran]
 M: Liming Gao <gaoliming@byosoft.com.cn> [lgao4]
+R: Bob Feng <bob.c.feng@intel.com> [BobCF]
 R: Yuwei Chen <yuwei.chen@intel.com> [YuweiChen1110]
 
 CryptoPkg
@@ -236,14 +237,24 @@ F: IntelFsp2Pkg/
 W: https://github.com/tianocore/tianocore.github.io/wiki/IntelFsp2Pkg
 M: Chasel Chiu <chasel.chiu@intel.com> [ChaselChiu]
 M: Nate DeSimone <nathaniel.l.desimone@intel.com> [nate-desimone]
+M: Duggapu Chinni B <chinni.b.duggapu@intel.com> [cbduggap]
+M: Ray Han Lim Ng <ray.han.lim.ng@intel.com> [rayhanlimng]
 R: Star Zeng <star.zeng@intel.com> [lzeng14]
+R: Ted Kuo <ted.kuo@intel.com> [tedkuo1]
+R: Ashraf Ali S <ashraf.ali.s@intel.com> [AshrafAliS]
+R: Susovan Mohapatra <susovan.mohapatra@intel.com> [susovanmohapatra]
 
 IntelFsp2WrapperPkg
 F: IntelFsp2WrapperPkg/
 W: https://github.com/tianocore/tianocore.github.io/wiki/IntelFsp2WrapperPkg
 M: Chasel Chiu <chasel.chiu@intel.com> [ChaselChiu]
 M: Nate DeSimone <nathaniel.l.desimone@intel.com> [nate-desimone]
+M: Duggapu Chinni B <chinni.b.duggapu@intel.com> [cbduggap]
+M: Chen Gang C <gang.c.chen@intel.com> [chengangc]
 R: Star Zeng <star.zeng@intel.com> [lzeng14]
+R: Ted Kuo <ted.kuo@intel.com> [tedkuo1]
+R: Ashraf Ali S <ashraf.ali.s@intel.com> [AshrafAliS]
+R: Susovan Mohapatra <susovan.mohapatra@intel.com> [susovanmohapatra]
 
 MdeModulePkg
 F: MdeModulePkg/
@@ -426,12 +437,38 @@ R: Zhiguang Liu <zhiguang.liu@intel.com> [LiuZhiguang001]
 R: Ray Ni <ray.ni@intel.com> [niruiyu]
 R: Gua Guo <gua.guo@intel.com> [gguo11837463]
 
+MdeModulePkg: Trace Hub debug message related library instance
+F: MdeModulePkg/Library/TraceHubDebugSysTLib/
+F: MdeModulePkg/Include/Guid/TraceHubDebugInfoHob.h
+M: Gua Guo <gua.guo@intel.com> [gguo11837463]
+M: Prakashan Krishnadas Veliyathuparambil <krishnadas.veliyathuparambil.prakashan@intel.com> [kprakas2]
+R: Chan Laura <laura.chan@intel.com> [lauracha]
+R: K N Karthik <karthik.k.n@intel.com> [karthikkabbigere1]
+
 MdePkg
 F: MdePkg/
 W: https://github.com/tianocore/tianocore.github.io/wiki/MdePkg
 M: Michael D Kinney <michael.d.kinney@intel.com> [mdkinney]
 M: Liming Gao <gaoliming@byosoft.com.cn> [lgao4]
 R: Zhiguang Liu <zhiguang.liu@intel.com> [LiuZhiguang001]
+
+MdePkg: Trace Hub debug message related library instance
+F: MdePkg/Library/TraceHubDebugSysTLibNull/
+F: MdePkg/Library/MipiSysTLib/
+F: MdePkg/Include/Library/TraceHubDebugSysTLib.h
+F: MdePkg/Include/Library/MipiSysTLib.h
+M: Gua Guo <gua.guo@intel.com> [gguo11837463]
+M: Prakashan Krishnadas Veliyathuparambil <krishnadas.veliyathuparambil.prakashan@intel.com> [kprakas2]
+R: Chan Laura <laura.chan@intel.com> [lauracha]
+R: K N Karthik <karthik.k.n@intel.com> [karthikkabbigere1]
+
+MdePkg: FDT related library instance
+F: MdePkg/Library/BaseFdtLib/FdtLib.c
+F: MdePkg/Include/Library/FdtLib.h
+M: Benny Lin <benny.lin@intel.com> [Benny3345678]
+R: Gua Guo <gua.guo@intel.com> [gguo11837463]
+R: Chasel Chiu <chasel.chiu@intel.com> [ChaselChiu]
+R: James Lu <james.lu@intel.com> [jameslu8]
 
 NetworkPkg
 F: NetworkPkg/
@@ -461,6 +498,7 @@ F: OvmfPkg/Library/ResetSystemLib/BaseResetShutdownBhyve.c
 F: OvmfPkg/Library/ResetSystemLib/BaseResetSystemLibBhyve.inf
 R: Rebecca Cran <rebecca@bsdio.com> [bcran]
 R: Peter Grehan <grehan@freebsd.org> [grehan-freebsd]
+R: Corvin Köhne <corvink@freebsd.org> [corvink]
 
 OvmfPkg: cloudhv-related modules
 F: OvmfPkg/CloudHv/

@@ -1,7 +1,7 @@
 ## @file  UefiCpuPkg.dec
 # This Package provides UEFI compatible CPU modules and libraries.
 #
-# Copyright (c) 2007 - 2022, Intel Corporation. All rights reserved.<BR>
+# Copyright (c) 2007 - 2023, Intel Corporation. All rights reserved.<BR>
 #
 # SPDX-License-Identifier: BSD-2-Clause-Patent
 #
@@ -18,11 +18,6 @@
   Include
 
 [LibraryClasses]
-  ##  @libraryclass  Defines some routines that are generic for IA32 family CPU
-  ##                 to be UEFI specification compliant.
-  ##
-  UefiCpuLib|Include/Library/UefiCpuLib.h
-
   ##  @libraryclass  Defines some routines that are used to register/manage/program
   ##                 CPU features.
   ##
@@ -77,6 +72,9 @@
 
   ## Include/Guid/MicrocodePatchHob.h
   gEdkiiMicrocodePatchHobGuid    = { 0xd178f11d, 0x8716, 0x418e, { 0xa1, 0x31, 0x96, 0x7d, 0x2a, 0xc4, 0x28, 0x43 }}
+
+  ## Include/Guid/SmmBaseHob.h
+  gSmmBaseHobGuid      = { 0xc2217ba7, 0x03bb, 0x4f63, {0xa6, 0x47, 0x7c, 0x25, 0xc5, 0xfc, 0x9d, 0x73 }}
 
 [Protocols]
   ## Include/Protocol/SmmCpuService.h
@@ -339,6 +337,21 @@
   #   FALSE - Current boot is not a power-on reset.<BR>
   # @Prompt Current boot is a power-on reset.
   gUefiCpuPkgTokenSpaceGuid.PcdIsPowerOnReset|FALSE|BOOLEAN|0x0000001B
+
+  ## This PCD indicates whether CPU processor trace is enabled on BSP only when CPU processor trace is enabled.<BR><BR>
+  #  This PCD is ignored if CPU processor trace is disabled.<BR><BR>
+  #  TRUE  - CPU processor trace is enabled on BSP only.<BR>
+  #  FASLE - CPU processor trace is enabled on all CPU.<BR>
+  # @Prompt Enable CPU processor trace only on BSP.
+  gUefiCpuPkgTokenSpaceGuid.PcdCpuProcTraceBspOnly|FALSE|BOOLEAN|0x60000019
+
+  ## This PCD indicates if enable performance collecting when CPU processor trace is enabled.<BR><BR>
+  #  CYC/TSC timing packets will be generated to collect performance data if this PCD is TRUE.
+  #  This PCD is ignored if CPU processor trace is disabled.<BR><BR>
+  #  TRUE  - Performance collecting will be enabled in processor trace.<BR>
+  #  FASLE - Performance collecting will be disabled in processor trace.<BR>
+  # @Prompt Enable performance collecting when processor trace is enabled.
+  gUefiCpuPkgTokenSpaceGuid.PcdCpuProcTracePerformanceCollecting|FALSE|BOOLEAN|0x60000020
 
 [PcdsFixedAtBuild.X64, PcdsPatchableInModule.X64, PcdsDynamic.X64, PcdsDynamicEx.X64]
   ## Indicate access to non-SMRAM memory is restricted to reserved, runtime and ACPI NVS type after SmmReadyToLock.
