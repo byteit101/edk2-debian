@@ -1,6 +1,8 @@
 edk2 (2023.05-1) UNRELEASED; urgency=medium
 
   * New upstream release, based on edk2-stable202305 tag.
+    - Update debian/copyright, including change to BSD-2-Clause-Patent
+      license that happened in 2019.
 
  -- dann frazier <dannf@debian.org>  Mon, 03 Jul 2023 14:41:50 -0600
 
