@@ -199,6 +199,10 @@ MdeModulePkg/Library/BrotliCustomDecompressLib/brotli/tests/testdata/empty.compr
 MdeModulePkg/Library/BrotliCustomDecompressLib/brotli/tests/testdata/ukkonooa
 MdeModulePkg/Library/BrotliCustomDecompressLib/brotli/tests/testdata/ukkonooa.compressed
 MdeModulePkg/Library/BrotliCustomDecompressLib/brotli/WORKSPACE
+MdePkg/Library/MipiSysTLib/mipisyst/CODEOWNERS
+MdePkg/Library/MipiSysTLib/mipisyst/collateral/sys-t_1-0.xsd
+MdePkg/Library/MipiSysTLib/mipisyst/.gitmodules
+MdePkg/Library/MipiSysTLib/mipisyst/library/doxygen/mipi_sys_t_library_flow.vsd
 OvmfPkg/AmdSev/Grub/grub.cfg
 .pytool/Plugin/UncrustifyCheck/uncrustify.cfg
 ReadMe.rst
