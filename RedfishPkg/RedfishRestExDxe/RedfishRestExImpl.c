@@ -4,6 +4,7 @@
   Copyright (c) 2019, Intel Corporation. All rights reserved.<BR>
   (C) Copyright 2020 Hewlett Packard Enterprise Development LP<BR>
   Copyright (c) 2023, American Megatrends International LLC.
+  Copyright (c) 2023, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
 
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
@@ -12,8 +13,7 @@
 #include "RedfishRestExInternal.h"
 
 /**
-  Create a new TLS session becuase the previous on is closed.
-  status.
+  Create a new TLS session because the previous one is closed.
 
   @param[in]  Instance            Pointer to EFI_REST_EX_PROTOCOL instance for a particular
                                   REST service.
@@ -28,7 +28,7 @@ ResetHttpTslSession (
 {
   EFI_STATUS  Status;
 
-  DEBUG ((DEBUG_INFO, "%a: TCP connection is finished. Could be TSL session closure, reset HTTP instance for the new TLS session.\n", __func__));
+  DEBUG ((DEBUG_MANAGEABILITY, "%a: TCP connection is finished. Could be TSL session closure, reset HTTP instance for the new TLS session.\n", __func__));
 
   Status = Instance->HttpIo.Http->Configure (Instance->HttpIo.Http, NULL);
   if (EFI_ERROR (Status)) {

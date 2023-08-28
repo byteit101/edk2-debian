@@ -66,11 +66,11 @@ VirtioSerialTxControl (
   IN     UINT16             Value
   )
 {
-  VIRTIO_SERIAL_CONTROL  Control = {
-    .Id    = Id,
-    .Event = Event,
-    .Value = Value,
-  };
+  VIRTIO_SERIAL_CONTROL  Control;
+
+  Control.Id    = Id;
+  Control.Event = Event;
+  Control.Value = Value;
 
   DEBUG ((
     DEBUG_INFO,
@@ -509,8 +509,6 @@ VirtioSerialDriverBindingSupported (
   if (VirtIo->SubSystemDeviceId != VIRTIO_SUBSYSTEM_CONSOLE) {
     Status = EFI_UNSUPPORTED;
   }
-
-  DEBUG ((DEBUG_INFO, "%a:%d: subsystem %d -> %r\n", __func__, __LINE__, VirtIo->SubSystemDeviceId, Status));
 
   //
   // We needed VirtIo access only transitorily, to see whether we support the

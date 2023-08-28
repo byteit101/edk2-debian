@@ -3,12 +3,3 @@ ArmPkg/Library/GccLto/liblto-arm.a
 BaseTools/Source/Python/Eot/EfiCompressor.pyd
 BaseTools/Source/Python/Eot/LzmaCompressor.pyd
 IntelFsp2Pkg/FspSecCore/Vtf0/Bin/ResetVec.ia32.raw
-UefiCpuPkg/ResetVector/Vtf0/Bin/IA32/ResetVector.ia32.port80.raw
-UefiCpuPkg/ResetVector/Vtf0/Bin/IA32/ResetVector.ia32.serial.raw
-UefiCpuPkg/ResetVector/Vtf0/Bin/IA32/ResetVector.ia32.raw
-UefiCpuPkg/ResetVector/Vtf0/Bin/X64/PageTable2M/ResetVector.x64.port80.raw
-UefiCpuPkg/ResetVector/Vtf0/Bin/X64/PageTable2M/ResetVector.x64.serial.raw
-UefiCpuPkg/ResetVector/Vtf0/Bin/X64/PageTable2M/ResetVector.x64.raw
-UefiCpuPkg/ResetVector/Vtf0/Bin/X64/PageTable1G/ResetVector.x64.port80.raw
-UefiCpuPkg/ResetVector/Vtf0/Bin/X64/PageTable1G/ResetVector.x64.serial.raw
-UefiCpuPkg/ResetVector/Vtf0/Bin/X64/PageTable1G/ResetVector.x64.raw

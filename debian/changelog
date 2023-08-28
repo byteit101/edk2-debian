@@ -1,3 +1,9 @@
+edk2 (2023.08-1) UNRELEASED; urgency=medium
+
+  * New upstream release, based on edk2-stable202308 tag.
+
+ -- dann frazier <dannf@debian.org>  Sun, 27 Aug 2023 19:52:10 -0600
+
 edk2 (2023.05-1) unstable; urgency=medium
 
   * New upstream release, based on edk2-stable202305 tag.
