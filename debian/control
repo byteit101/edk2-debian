@@ -65,14 +65,6 @@ Description: UEFI firmware for 64-bit ARM virtual machines
  qemu-efi-aarch64 is a build of EDK II for 64-bit ARM virtual machines. It
  includes full support for UEFI, including Secure Boot.
 
-Package: qemu-efi
-Architecture: all
-Depends: qemu-efi-aarch64, ${misc:Depends}
-Multi-Arch: foreign
-Description: transitional dummy package
- This is a transitional dummy package. It contains a compatibility symlink
- of /usr/share/qemu-efi/QEMU_EFI.fd to /usr/share/qemu-efi-aarch64/QEMU_EFI.fd.
-
 Package: efi-shell-ia32
 Architecture: all
 Description: UEFI Shell for 32-bit x86 architecture
