@@ -1,6 +1,7 @@
 edk2 (2023.08-1) UNRELEASED; urgency=medium
 
   * New upstream release, based on edk2-stable202308 tag.
+  * Drop qemu-efi transitional package. Closes: #1032695.
 
  -- dann frazier <dannf@debian.org>  Sun, 27 Aug 2023 19:52:10 -0600
 
