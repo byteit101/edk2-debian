@@ -2,6 +2,9 @@ edk2 (2023.08-1) UNRELEASED; urgency=medium
 
   * New upstream release, based on edk2-stable202308 tag.
   * Drop qemu-efi transitional package. Closes: #1032695.
+  * qemu-efi-aarch64/qemu-efi-arm: Disable the EFI_MEMORY_ATTRIBUTE
+    protocol temporarily to workaround a bug in shim until distributions
+    have had a chance to fix it. Closes: #1042438, LP: #2036604.
 
  -- dann frazier <dannf@debian.org>  Sun, 27 Aug 2023 19:52:10 -0600
 
