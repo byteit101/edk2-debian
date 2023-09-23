@@ -1,11 +1,11 @@
-edk2 (2023.05-2) UNRELEASED; urgency=medium
+edk2 (2023.05-2) unstable; urgency=medium
 
   * qemu-efi-aarch64/qemu-efi-arm: Disable the EFI_MEMORY_ATTRIBUTE
     protocol temporarily to workaround a bug in shim until distributions
     have had a chance to fix it. Closes: #1042438, LP: #2036604.
   * Drop qemu-efi transitional package. Closes: #1032695.
 
- -- dann frazier <dannf@debian.org>  Sat, 23 Sep 2023 08:15:38 -0600
+ -- dann frazier <dannf@debian.org>  Sat, 23 Sep 2023 08:35:39 -0600
 
 edk2 (2023.05-1) unstable; urgency=medium
 
