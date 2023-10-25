@@ -8,10 +8,6 @@ Files: *
 Copyright: 2019, TianoCore and contributors.  All rights reserved.
 License: BSD-2-Clause-Patent
 
-Files: MdePkg/Library/MipiSysTLib/mipisyst/*
-Copyright: 2018, MIPI Alliance, Inc.
-License: BSD-3-clause
-
 Files: MdePkg/Library/MipiSysTLib/mipisyst/library/include/mipi_syst/api.h
 Copyright: 2018-2023, MIPI Alliance, Inc.
 License: BSD-3-clause
@@ -34,6 +30,10 @@ License: BSD-3-clause
 
 Files: MdePkg/Library/MipiSysTLib/mipisyst/library/src/mipi_syst_writer.c
 Copyright: 2018-2023, MIPI Alliance, Inc.
+License: BSD-3-clause
+
+Files: MdePkg/Library/MipiSysTLib/mipisyst/*
+Copyright: 2018, MIPI Alliance, Inc.
 License: BSD-3-clause
 
 Files: OvmfPkg/*
