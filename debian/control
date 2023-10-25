@@ -75,6 +75,7 @@ Description: UEFI firmware for RISCV64 virtual machines
 
 Package: efi-shell-ia32
 Architecture: all
+Depends: ${misc:Depends}
 Description: UEFI Shell for 32-bit x86 architecture
  The UEFI Shell provides a command line interface running on top of the EFI API.
  It can be used to execute EFI binaries, to manage EFI variables and boot
@@ -84,6 +85,7 @@ Description: UEFI Shell for 32-bit x86 architecture
 
 Package: efi-shell-x64
 Architecture: all
+Depends: ${misc:Depends}
 Description: UEFI Shell for 64-bit x86 architecture
  The UEFI Shell provides a command line interface running on top of the EFI API.
  It can be used to execute EFI binaries, to manage EFI variables and boot
@@ -93,6 +95,7 @@ Description: UEFI Shell for 64-bit x86 architecture
 
 Package: efi-shell-arm
 Architecture: all
+Depends: ${misc:Depends}
 Description: UEFI Shell for 32-bit ARM architecture
  The UEFI Shell provides a command line interface running on top of the EFI API.
  It can be used to execute EFI binaries, to manage EFI variables and boot
@@ -102,6 +105,7 @@ Description: UEFI Shell for 32-bit ARM architecture
 
 Package: efi-shell-aa64
 Architecture: all
+Depends: ${misc:Depends}
 Description: UEFI Shell for 64-bit ARM architecture
  The UEFI Shell provides a command line interface running on top of the EFI API.
  It can be used to execute EFI binaries, to manage EFI variables and boot
