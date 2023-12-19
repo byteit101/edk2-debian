@@ -2,6 +2,7 @@ edk2 (2023.11-1) UNRELEASED; urgency=medium
 
   * New upstream release, based on edk2-stable202311 tag.
     - Include new MbedTlsLib submodule.
+    - d/binary-check.ignore: Add new upstream files.
   * qemu-efi-riscv64: Add a README.Debian, thanks to Heinrich Schuchardt.
     Closes: #1054651.
   * ovmf/qemu-efi-*: Add a Suggests for the appropriate QEMU system package.

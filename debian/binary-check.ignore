@@ -68,12 +68,18 @@ BaseTools/BuildEnv
 BaseTools/Conf/diff.order
 BaseTools/Conf/gitattributes
 BaseTools/Conf/XMLSchema/DistributionPackage.xsd
+BaseTools/Plugin/CodeQL/CodeQlQueries.qls
 BaseTools/ReadMe.rst
 BaseTools/Scripts/PackageDocumentTools/packagedocapp.pyw
 BaseTools/Source/C/Makefiles/ms.app
 BaseTools/Source/C/Makefiles/ms.common
 BaseTools/Source/C/Makefiles/ms.lib
 BaseTools/Source/C/Makefiles/ms.rule
+BaseTools/Source/C/VfrCompile/Pccts/antlr/makefile1
+BaseTools/Source/C/VfrCompile/Pccts/antlr/makefile.cygwin
+BaseTools/Source/C/VfrCompile/Pccts/dlg/makefile1
+BaseTools/Source/C/VfrCompile/Pccts/dlg/makefile.cygwin
+BaseTools/Source/C/VfrCompile/Pccts/makefile.old
 BaseTools/Source/C/VfrCompile/Pccts/MPW_Read_Me
 BaseTools/Source/C/VfrCompile/Pccts/NOTES.bcc
 BaseTools/Source/C/VfrCompile/Pccts/NOTES.msvc
@@ -159,6 +165,7 @@ CryptoPkg/Library/OpensslLib/openssl/external/perl/Text-Template-1.56/Changes
 CryptoPkg/Library/OpensslLib/openssl/external/perl/Text-Template-1.56/INSTALL
 CryptoPkg/Library/OpensslLib/openssl/external/perl/Text-Template-1.56/lib/Text/Template.pm
 CryptoPkg/Library/OpensslLib/openssl/external/perl/Text-Template-1.56/lib/Text/Template/Preprocess.pm
+CryptoPkg/Library/OpensslLib/openssl/external/perl/Text-Template-1.56/Makefile.PL
 CryptoPkg/Library/OpensslLib/openssl/external/perl/Text-Template-1.56/MANIFEST
 CryptoPkg/Library/OpensslLib/openssl/external/perl/Text-Template-1.56/SIGNATURE
 CryptoPkg/Library/OpensslLib/openssl/providers/common/der/DIGESTS.asn1
@@ -247,7 +254,9 @@ debian/**
 **/*.dsc
 **/*.dsp
 **/*.dsw
+.editorconfig
 **/*.el
+EmbeddedPkg/Library/FdtLib/Makefile.libfdt
 EmulatorPkg/Unix/.gdbinit
 EmulatorPkg/Unix/Host/X11IncludeHack
 EmulatorPkg/Unix/lldbinit
@@ -287,7 +296,10 @@ IntelFsp2Pkg/Tools/Tests/ExpectedOutput.bsf
 MdeModulePkg/Library/BrotliCustomDecompressLib/brotli/bootstrap
 MdeModulePkg/Library/BrotliCustomDecompressLib/brotli/BUILD
 MdeModulePkg/Library/BrotliCustomDecompressLib/brotli/compiler_config_setting.bzl
+MdeModulePkg/Library/BrotliCustomDecompressLib/brotli/configure.ac
+MdeModulePkg/Library/BrotliCustomDecompressLib/brotli/configure-cmake
 MdeModulePkg/Library/BrotliCustomDecompressLib/brotli/docs/brotli.svg
+MdeModulePkg/Library/BrotliCustomDecompressLib/brotli/Makefile.am
 MdeModulePkg/Library/BrotliCustomDecompressLib/brotli/python/_brotli.cc
 MdeModulePkg/Library/BrotliCustomDecompressLib/brotli/scripts/sources.lst
 MdeModulePkg/Library/BrotliCustomDecompressLib/brotli/setup.cfg
