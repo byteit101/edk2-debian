@@ -4,6 +4,7 @@ edk2 (2023.11-1) UNRELEASED; urgency=medium
   * qemu-efi-riscv64: Add a README.Debian, thanks to Heinrich Schuchardt.
     Closes: #1054651.
   * ovmf/qemu-efi-*: Add a Suggests for the appropriate QEMU system package.
+  * d/find-binaries.py: Replace nameOK() with globs in d/binary-check.ignore.
 
  -- dann frazier <dannf@debian.org>  Tue, 19 Dec 2023 10:41:33 -0700
 

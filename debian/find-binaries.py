@@ -11,18 +11,6 @@ import re
 import sys
 
 
-def nameOK(name):
-    OKPatterns = [r'\.gitignore', r'AUTHORS', r'FILE.LST', r'Change[lL]og',
-                  r'COPYING', r'configure', r'FAQ', r'(GNU)?[Mm]akefile',
-                  r'INDEX', r'LICENSE', r'README', r'TODO']
-    OKRegexs = map(re.compile, OKPatterns)
-
-    for r in OKRegexs:
-        if r.match(name):
-            return True
-    return False
-
-
 def extensionOK(name):
     OKExtensions = ['1', '3', 'ASL', 'asi', 'asl', 'aslc', 'Asm', 'asm',
                     'asm16', 'bat', 'bmp', 'c', 'CMM', 'cmm', 'cnf', 'cpp',
@@ -62,8 +50,6 @@ if __name__ == '__main__':
             relpath = os.path.join(root, name)[len(top):]
             if relpath in ignorelist:
                 print(f"Ignoring: {relpath}", file=sys.stderr)
-                continue
-            if nameOK(name):
                 continue
             if extensionOK(name):
                 continue
