@@ -33,10 +33,9 @@ if __name__ == '__main__':
             if relpath in ignorelist:
                 print(f"Ignoring: {relpath}", file=sys.stderr)
                 continue
-            else:
-                sys.stdout.write(
-                    "WARNING: Possible binary %s\n" %
-                    (os.path.join(root, name))
-                )
-                ret = -1
+            sys.stdout.write(
+                "WARNING: Possible binary %s\n" %
+                (os.path.join(root, name))
+            )
+            ret = -1
     sys.exit(ret)
