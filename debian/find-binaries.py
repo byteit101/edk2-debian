@@ -11,24 +11,6 @@ import re
 import sys
 
 
-def extensionOK(name):
-    OKExtensions = ['1', '3', 'ASL', 'asi', 'asl', 'aslc', 'Asm', 'asm',
-                    'asm16', 'bat', 'bmp', 'c', 'CMM', 'cmm', 'cnf', 'cpp',
-                    'css', 'dec', 'decTest', 'dlg', 'dsc', 'docx', 'dsp',
-                    'dsw', 'el', 'env', 'fdf', 'g', 'gif', 'H', 'h', 'hpp',
-                    'html', 'i', 'idf', 'in', 'inc', 'inf', 'info', 'ini',
-                    'lds', 'log', 'lua', 'mak', 'makefile', 'md', 'nasm',
-                    'nasmb', 'nsh', 'patch', 'pbxuser', 'pbxproj', 'pdf',
-                    'pem', 'pl', 'png', 'pod', 'ps', 'py', 'r', 'rtf', 'S',
-                    's', 'sct', 'sh', 'sln', 't', 'template', 'txt', 'uni',
-                    'Vfr', 'vcproj', 'vfi', 'vfr', 'xml']
-    ext = name.split('.')[-1]
-
-    if ext in OKExtensions:
-        return True
-    return False
-
-
 if __name__ == '__main__':
     ret = 0
     top = './'
@@ -50,8 +32,6 @@ if __name__ == '__main__':
             relpath = os.path.join(root, name)[len(top):]
             if relpath in ignorelist:
                 print(f"Ignoring: {relpath}", file=sys.stderr)
-                continue
-            if extensionOK(name):
                 continue
             else:
                 sys.stdout.write(
