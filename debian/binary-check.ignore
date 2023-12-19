@@ -308,7 +308,6 @@ EmulatorPkg/Win/VS2017/Win.vcxproj.filters
 EmulatorPkg/Win/VS2017/Win.vcxproj.user
 .git/**
 .git-blame-ignore-revs
-.github/codeql/edk2.qls
 .gitmodules
 IntelFsp2Pkg/Tools/Tests/ExpectedOutput.bsf
 **/*.json
