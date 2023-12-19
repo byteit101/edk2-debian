@@ -10,6 +10,7 @@ edk2 (2023.11-1) UNRELEASED; urgency=medium
   * d/find-binaries.py: Replace extensionOK() with globs in
     d/binary-check.ignore.
   * d/copyright: Remove superfluous file patterns. Thanks lintian.
+  * d/copyright: Correct globbing order. Thanks lintian.
 
  -- dann frazier <dannf@debian.org>  Tue, 19 Dec 2023 10:41:33 -0700
 
