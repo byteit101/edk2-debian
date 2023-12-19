@@ -31,7 +31,6 @@ if __name__ == '__main__':
         for name in files:
             relpath = os.path.join(root, name)[len(top):]
             if relpath in ignorelist:
-                print(f"Ignoring: {relpath}", file=sys.stderr)
                 continue
             sys.stdout.write(
                 "WARNING: Possible binary %s\n" %
