@@ -1,4 +1,2 @@
-usr/share/ovmf/OVMF.fd usr/share/qemu/OVMF.fd
-usr/share/OVMF/OVMF_CODE.secboot.fd usr/share/OVMF/OVMF_CODE.ms.fd
 usr/share/OVMF/OVMF_CODE_4M.secboot.fd usr/share/OVMF/OVMF_CODE_4M.ms.fd
 usr/share/OVMF/OVMF_CODE_4M.secboot.fd usr/share/OVMF/OVMF_CODE_4M.snakeoil.fd

@@ -1,3 +1,11 @@
+edk2 (2023.11-2) UNRELEASED; urgency=medium
+
+  * ovmf: Remove broken symlinks to removed 2M images:
+    - /usr/share/qemu/OVMF.fd
+    - /usr/share/OVMF/OVMF_CODE.ms.fd
+
+ -- dann frazier <dannf@debian.org>  Fri, 22 Dec 2023 13:33:41 -0700
+
 edk2 (2023.11-1) experimental; urgency=medium
 
   * New upstream release, based on edk2-stable202311 tag.
