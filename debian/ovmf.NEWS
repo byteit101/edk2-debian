@@ -1,11 +1,8 @@
 edk2 (2023.11-2) unstable; urgency=medium
 
-  The 2MB ovmf images have now been removed. This includes the pflash
-  images OVMF_CODE.*.fd and OVMF_VARS.*.fd, as well as the unified image
-  which contained both code and variable storage in one file: OVMF.fd.
-
-  Users of the 2MB pflash images should migrate to their 4MB image
-  counterparts:
+  The 2MB ovmf pflash images, OVMF_CODE.*.fd and OVMF_VARS.*.fd, have now
+  been removed. Users of the 2MB pflash images should migrate to their 4MB
+  image counterparts:
 
     OVMF_CODE.fd         -> OVMF_CODE_4M.fd
     OVMF_CODE.ms.fd      -> OVMF_CODE_4M.ms.fd
@@ -16,10 +13,7 @@ edk2 (2023.11-2) unstable; urgency=medium
   2MB VAR images are not compatible with 4MB CODE images. Users must
   migrate both CODE and VARS images simultaneously.
 
-  Users of the unified OVMF_VARS.fd image should transition to using the
-  split 4M pflash images.
-
   A migration guide is provided at:
     /usr/share/doc/ovmf/howto-2M-to-4M-migration.md for
 
- -- dann frazier <dannf@debian.org>  Tue, 24 Oct 2023 16:25:26 -0600
+ -- dann frazier <dannf@debian.org>  Sun, 24 Dec 2023 14:48:43 -0700

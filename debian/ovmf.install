@@ -1,3 +1,4 @@
+debian/ovmf-install/OVMF.fd		/usr/share/ovmf
 debian/ovmf-install/OVMF_CODE*.fd	/usr/share/OVMF
 debian/ovmf-install/OVMF_VARS*.fd	/usr/share/OVMF
 debian/descriptors/*-edk2-x86_64*.json	/usr/share/qemu/firmware

@@ -47,23 +47,11 @@
 
 ## VMs using a unified CODE/VARS image ##
 
-The `ovmf` package no longer provides a unified CODE/VARS image. Use
-of unified images required that each VM have a separate copy of the
-image in order to have its own writeable variable store. Use of such
-copies divorces the CODE those VMs use from the CODE provided by the
-`ovmf` package, which means they do not benefit from fixes/features
-provided by `ovmf` package updates.
-
 If you have VMs using a copy of a 2M unified image, then those VMs are
 already divorced and are unaffected by the removal of the unified
 image from `ovmf`. You should consider migrating these to separate
 CODE/VARS pflash images if you wish to benefit from `ovmf` package
-updates, but it is not required. However, if you have VMs that were
-using the shared unified CODE/VARS image - `/usr/share/ovmf/OVMF.fd`
-or `/usr/share/qemu/OVMF.fd` - which presumably do not use persistent
-UEFI variables, then you will now need to migrate them to use separate
-CODE/VARS pflash images.
-
+updates, but it is not required.
 
 ### Migrating VMs using unified CODE/VARS image to separate CODE/VARS pflash images ###
 
@@ -72,12 +60,11 @@ to replace this option with separate `-pflash` options that point to individual
 CODE and VARS files.
 
 1. `/usr/share/OVMF/OVMF_CODE_4M.fd` is the functional equivalent of
-   the CODE section in the previously provided unified image. If you
-   wish to review the other CODE options, consult
-   `/usr/share/doc/ovmf/README.Debian`.
+   the CODE section in the unified image. If you wish to review the other
+   CODE options, consult `/usr/share/doc/ovmf/README.Debian`. CODE images
+   require only read access, so VMs can share the system copy.
 
-1. For the VARS image, you will now need to create a separate VARS
-   file for each VM.
+1. You will now need to create a separate VARS file for each VM.
 
     * If you were using `/usr/share/ovmf/OVMF.fd` or
       `/usr/share/qemu/OVMF.fd` directly, you presumably were not
