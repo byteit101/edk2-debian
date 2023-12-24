@@ -64,7 +64,6 @@ debian/setup-build-stamp:
 	touch $@
 
 OVMF_INSTALL_DIR = debian/ovmf-install
-OVMF_BUILD_DIR = Build/OvmfX64/$(BUILD_TYPE)_$(EDK2_TOOLCHAIN)
 OVMF3264_BUILD_DIR = Build/Ovmf3264/$(BUILD_TYPE)_$(EDK2_TOOLCHAIN)
 OVMF_ENROLL = $(OVMF3264_BUILD_DIR)/X64/EnrollDefaultKeys.efi
 OVMF_SHELL =  $(OVMF3264_BUILD_DIR)/X64/Shell.efi
