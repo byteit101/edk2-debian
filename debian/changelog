@@ -1,4 +1,4 @@
-edk2 (2023.11-2) UNRELEASED; urgency=medium
+edk2 (2023.11-2) unstable; urgency=medium
 
   * ovmf: Remove dangling symlink to removed 2M image:
     - /usr/share/OVMF/OVMF_CODE.ms.fd
@@ -9,7 +9,7 @@ edk2 (2023.11-2) UNRELEASED; urgency=medium
     as a 4M image. Document that it is being provided as a convenience
     for testing purposes only.
 
- -- dann frazier <dannf@debian.org>  Fri, 22 Dec 2023 13:33:41 -0700
+ -- dann frazier <dannf@debian.org>  Sun, 24 Dec 2023 16:24:28 -0700
 
 edk2 (2023.11-1) experimental; urgency=medium
 
