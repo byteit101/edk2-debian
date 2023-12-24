@@ -26,7 +26,7 @@
 
    ```
       # apt install -y python3-virt-firmware  
-      # /usr/share/doc/ovmf/2M_VARS-to-4M_VARS.sh -i vm_VARS.fd  
+      # bash /usr/share/doc/ovmf/2M_VARS-to-4M_VARS.sh -i vm_VARS.fd  
       Backing up vm_VARS.fd to vm_VARS.fd.1703354741  
       INFO: reading raw edk2 varstore from vm_VARS.fd  
       INFO: var store range: 0x64 -> 0x40000  
@@ -94,7 +94,7 @@ CODE and VARS files.
 
    ```
       # apt install -y python3-virt-firmware  
-      # /usr/share/doc/ovmf/2M_VARS-to-4M_VARS.sh -i OVMF.fd -o vm_VARS.fd  
+      # bash /usr/share/doc/ovmf/2M_VARS-to-4M_VARS.sh -i OVMF.fd -o vm_VARS.fd  
       INFO: reading raw edk2 varstore from OVMF.fd  
       INFO: var store range: 0x64 -> 0x40000  
       INFO: writing json varstore to /tmp/tmp.huJ5wEmlTM  
