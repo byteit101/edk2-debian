@@ -4,6 +4,8 @@ edk2 (2023.11-2) UNRELEASED; urgency=medium
     - /usr/share/qemu/OVMF.fd
     - /usr/share/OVMF/OVMF_CODE.ms.fd
   * autopkgtest: Add missing dependency on qemu-efi-riscv64.
+  * ovmf: Add guide and tool for migrating VMs using 2M images to 4M
+    images now that python3-virt-firmware is available in Debian.
 
  -- dann frazier <dannf@debian.org>  Fri, 22 Dec 2023 13:33:41 -0700
 
