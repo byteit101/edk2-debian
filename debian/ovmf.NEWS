@@ -14,6 +14,6 @@ edk2 (2023.11-2) unstable; urgency=medium
   migrate both CODE and VARS images simultaneously.
 
   A migration guide is provided at:
-    /usr/share/doc/ovmf/howto-2M-to-4M-migration.md for
+    /usr/share/doc/ovmf/howto-2M-to-4M-migration.md.gz
 
- -- dann frazier <dannf@debian.org>  Sun, 24 Dec 2023 14:48:43 -0700
+ -- dann frazier <dannf@debian.org>  Wed, 27 Dec 2023 10:15:33 -0700
