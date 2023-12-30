@@ -1,0 +1,2 @@
+#!/usr/bin/dh-exec
+Build/RiscVVirtQemu/RELEASE_GCC5/RISCV64/Shell.efi => /usr/share/efi-shell-riscv64/shellriscv64.efi

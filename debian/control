@@ -117,3 +117,13 @@ Description: UEFI Shell for 64-bit ARM architecture
  options, or to display details of installed devices, drivers, and protocols.
  This package contains the shellaa64.efi binary for the 64-bit ARM
  architecture.
+
+Package: efi-shell-riscv64
+Architecture: all
+Depends: ${misc:Depends}
+Description: UEFI Shell for 64-bit RISC-V architecture
+ The UEFI Shell provides a command line interface running on top of the EFI API.
+ It can be used to execute EFI binaries, to manage EFI variables and boot
+ options, or to display details of installed devices, drivers, and protocols.
+ This package contains the shellriscv64.efi binary for the 64-bit RISC-V
+ architecture.
