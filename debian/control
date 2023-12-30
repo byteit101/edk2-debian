@@ -95,7 +95,7 @@ Description: UEFI Shell for 64-bit x86 architecture
  The UEFI Shell provides a command line interface running on top of the EFI API.
  It can be used to execute EFI binaries, to manage EFI variables and boot
  options, or to display details of installed devices, drivers, and protocols.
- This package contains the shellx64.efi binary for the a 64-bit x86
+ This package contains the shellx64.efi binary for the 64-bit x86
  architecture.
 
 Package: efi-shell-arm
@@ -105,7 +105,7 @@ Description: UEFI Shell for 32-bit ARM architecture
  The UEFI Shell provides a command line interface running on top of the EFI API.
  It can be used to execute EFI binaries, to manage EFI variables and boot
  options, or to display details of installed devices, drivers, and protocols.
- This package contains the shellarm.efi binary for the a 32-bit ARM
+ This package contains the shellarm.efi binary for the 32-bit ARM
  architecture.
 
 Package: efi-shell-aa64
@@ -115,5 +115,5 @@ Description: UEFI Shell for 64-bit ARM architecture
  The UEFI Shell provides a command line interface running on top of the EFI API.
  It can be used to execute EFI binaries, to manage EFI variables and boot
  options, or to display details of installed devices, drivers, and protocols.
- This package contains the shellaa64.efi binary for the a 64-bit ARM
+ This package contains the shellaa64.efi binary for the 64-bit ARM
  architecture.
