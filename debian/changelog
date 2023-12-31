@@ -1,6 +1,7 @@
 edk2 (2023.11-3) UNRELEASED; urgency=medium
 
   * ovmf: Fix link to migration doc (missing .gz). Closes: #1059506.
+  * Add efi-shell-riscv64 package, thanks to Heinrich Schuchardt.
 
  -- dann frazier <dannf@debian.org>  Wed, 27 Dec 2023 10:16:10 -0700
 
