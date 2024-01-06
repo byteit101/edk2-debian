@@ -1,3 +1,9 @@
+edk2 (2023.11-4) UNRELEASED; urgency=medium
+
+  * ovmf: Enable EFI_CC_MEASUREMENT_PROTOCOL. LP: #2047922.
+
+ -- dann frazier <dannf@debian.org>  Wed, 03 Jan 2024 15:23:17 -0700
+
 edk2 (2023.11-3) unstable; urgency=medium
 
   * ovmf: Fix link to migration doc (missing .gz). Closes: #1059506.
