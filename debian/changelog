@@ -1,8 +1,8 @@
-edk2 (2023.11-4) UNRELEASED; urgency=medium
+edk2 (2023.11-4) unstable; urgency=medium
 
   * ovmf: Enable EFI_CC_MEASUREMENT_PROTOCOL. LP: #2047922.
 
- -- dann frazier <dannf@debian.org>  Wed, 03 Jan 2024 15:23:17 -0700
+ -- dann frazier <dannf@debian.org>  Sat, 06 Jan 2024 11:16:34 -0700
 
 edk2 (2023.11-3) unstable; urgency=medium
 
