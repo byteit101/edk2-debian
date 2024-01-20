@@ -3,3 +3,13 @@ brotlicompress-disable.diff
 x64-baseline-abi.patch
 Revert-ArmVirtPkg-make-EFI_LOADER_DATA-non-executabl.patch
 ArmVirtPkg-disable-the-EFI_MEMORY_ATTRIBUTE-protocol.patch
+0001-SecurityPkg-DxeTpm2MeasureBootLib-SECURITY-PATCH-411.patch
+0002-SecurityPkg-DxeTpmMeasureBootLib-SECURITY-PATCH-4117.patch
+0003-SecurityPkg-Adding-CVE-2022-36763-to-SecurityFixes.y.patch
+0001-SecurityPkg-DxeTpm2MeasureBootLib-SECURITY-PATCH-411-2.patch
+0002-SecurityPkg-DxeTpmMeasureBootLib-SECURITY-PATCH-4118.patch
+0003-SecurityPkg-Adding-CVE-2022-36764-to-SecurityFixes.y.patch
+0001-SecurityPkg-DxeTpm2MeasureBootLib-SECURITY-PATCH-411-3.patch
+0002-SecurityPkg-DxeTpmMeasureBootLib-SECURITY-PATCH-4117-2.patch
+0003-SecurityPkg-Updating-SecurityFixes.yaml-after-symbol.patch
+0001-UefiPayloadPkg-Hob-Integer-Overflow-in-CreateHob.patch

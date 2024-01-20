@@ -1,3 +1,23 @@
+edk2 (2023.11-5) UNRELEASED; urgency=medium
+
+  * Cherry-pick security fixes from upstream (Closes: #1060408):
+    - Fix heap buffer overflow in Tcg2MeasureGptTable(), CVE-2022-36763
+      + 0001-SecurityPkg-DxeTpm2MeasureBootLib-SECURITY-PATCH-411.patch
+      + 0002-SecurityPkg-DxeTpmMeasureBootLib-SECURITY-PATCH-4117.patch
+      + 0003-SecurityPkg-Adding-CVE-2022-36763-to-SecurityFixes.y.patch
+    - Fix heap buffer overflow in Tcg2MeasurePeImage(), CVE-2022-36764
+      + 0001-SecurityPkg-DxeTpm2MeasureBootLib-SECURITY-PATCH-411-2.patch
+      + 0002-SecurityPkg-DxeTpmMeasureBootLib-SECURITY-PATCH-4118.patch
+      + 0003-SecurityPkg-Adding-CVE-2022-36764-to-SecurityFixes.y.patch
+    - Fix build failure due to symbol collision in above patches:
+      + 0001-SecurityPkg-DxeTpm2MeasureBootLib-SECURITY-PATCH-411-3.patch
+      + 0002-SecurityPkg-DxeTpmMeasureBootLib-SECURITY-PATCH-4117-2.patch
+      + 0003-SecurityPkg-Updating-SecurityFixes.yaml-after-symbol.patch
+    - Fix integer overflow in CreateHob(), CVE-2022-36765
+      + 0001-UefiPayloadPkg-Hob-Integer-Overflow-in-CreateHob.patch
+
+ -- dann frazier <dannf@debian.org>  Thu, 18 Jan 2024 08:14:35 -0700
+
 edk2 (2023.11-4) unstable; urgency=medium
 
   * ovmf: Enable EFI_CC_MEASUREMENT_PROTOCOL. LP: #2047922.
