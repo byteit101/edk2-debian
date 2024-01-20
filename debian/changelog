@@ -1,4 +1,4 @@
-edk2 (2023.11-5) UNRELEASED; urgency=medium
+edk2 (2023.11-5) unstable; urgency=medium
 
   * Cherry-pick security fixes from upstream (Closes: #1060408):
     - Fix heap buffer overflow in Tcg2MeasureGptTable(), CVE-2022-36763
@@ -16,7 +16,7 @@ edk2 (2023.11-5) UNRELEASED; urgency=medium
     - Fix integer overflow in CreateHob(), CVE-2022-36765
       + 0001-UefiPayloadPkg-Hob-Integer-Overflow-in-CreateHob.patch
 
- -- dann frazier <dannf@debian.org>  Thu, 18 Jan 2024 08:14:35 -0700
+ -- dann frazier <dannf@debian.org>  Sat, 20 Jan 2024 09:13:36 -0700
 
 edk2 (2023.11-4) unstable; urgency=medium
 
