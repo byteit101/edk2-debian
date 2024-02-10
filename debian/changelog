@@ -1,3 +1,39 @@
+edk2 (2023.11-6) UNRELEASED; urgency=medium
+
+  * Cherry-pick security fixes from upstream:
+    - Fix a buffer overflow via a long server ID option in DHCPv6
+      client, CVE-2023-45230:
+      + 0001-NetworkPkg-Dhcp6Dxe-SECURITY-PATCH-CVE-2023-45230-Pa.patch
+      + 0002-NetworkPkg-Add-Unit-tests-to-CI-and-create-Host-Test.patch
+      + 0003-NetworkPkg-Dhcp6Dxe-SECURITY-PATCH-CVE-2023-45230-Un.patch
+    - Fix an out-of-bounds read vulnerability when processing the IA_NA
+      or IA_TA option in a DHCPv6 Advertise message, CVE-2023-45229:
+      + 0004-NetworkPkg-Dhcp6Dxe-SECURITY-PATCH-CVE-2023-45229-Pa.patch
+      + 0005-NetworkPkg-Dhcp6Dxe-SECURITY-PATCH-CVE-2023-45229-Un.patch
+    - Fix an out-of-bounds read when processing Neighbor Discovery
+      Redirect messages, CVE-2023-45231:
+      + 0006-NetworkPkg-Ip6Dxe-SECURITY-PATCH-CVE-2023-45231-Patc.patch
+      + 0007-NetworkPkg-Ip6Dxe-SECURITY-PATCH-CVE-2023-45231-Unit.patch
+    - Avoid an infinite loop when parsing unknown options in the
+      Destination Options header of IPv6, CVE-2023-45232:
+      + 0008-NetworkPkg-Ip6Dxe-SECURITY-PATCH-CVE-2023-45232-Patc.patch
+      + 0009-NetworkPkg-Ip6Dxe-SECURITY-PATCH-CVE-2023-45232-Unit.patch
+    - Avoid an infinite loop when parsing a PadN option in the
+      Destination Options header of IPv6, CVE-2023-45233:
+      + 0010-NetworkPkg-UefiPxeBcDxe-SECURITY-PATCH-CVE-2023-4523.patch
+      + 0011-NetworkPkg-UefiPxeBcDxe-SECURITY-PATCH-CVE-2023-4523.patch
+    - Fix a potential buffer overflow when processing a DNS Servers
+      option from a DHCPv6 Advertise message, CVE-2023-45234:
+      + 0013-NetworkPkg-UefiPxeBcDxe-SECURITY-PATCH-CVE-2023-4523.patch
+    - Fix a potential buffer overflow when handling a Server ID option
+      from a DHCPv6 proxy Advertise message, CVE-2023-45235:
+      + 0012-MdePkg-Test-Add-gRT_GetTime-Google-Test-Mock.patch
+      + 0014-NetworkPkg-UefiPxeBcDxe-SECURITY-PATCH-CVE-2023-4523.patch
+    - Record fixes in a SecurityFix.yaml file:
+      + 0015-NetworkPkg-Adds-a-SecurityFix.yaml-file.patch
+
+ -- dann frazier <dannf@debian.org>  Sat, 10 Feb 2024 13:06:30 -0700
+
 edk2 (2023.11-5) unstable; urgency=medium
 
   * Cherry-pick security fixes from upstream (Closes: #1060408):
