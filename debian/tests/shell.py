@@ -201,7 +201,14 @@ class BootToShellTest(unittest.TestCase):
         q = Qemu.QemuCommand(QemuEfiMachine.AAVMF32)
         self.run_cmd_check_shell(q.command)
 
-    def test_ovmf_4m(self):
+    def test_ovmf_4m_pc(self):
+        q = Qemu.QemuCommand(
+            QemuEfiMachine.OVMF_PC,
+            flash_size=QemuEfiFlashSize.SIZE_4MB,
+        )
+        self.run_cmd_check_shell(q.command)
+
+    def test_ovmf_4m_q35(self):
         q = Qemu.QemuCommand(
             QemuEfiMachine.OVMF_Q35,
             flash_size=QemuEfiFlashSize.SIZE_4MB,
