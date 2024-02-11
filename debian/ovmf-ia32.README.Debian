@@ -1,14 +1,18 @@
-OVMF_CODE32_4M.secboot.fd
+OVMF_CODE32_4M.fd
   UEFI firmware for a 32-bit QEMU guest that is intended to be read-only.
-  This is a Secure Boot-capable image, but it will only be enabled if
-  the variable store has configured it on.
+
+OVMF32_CODE_4M.secboot.fd
+  Like OVMF32_CODE_4M.fd, but will abort if QEMU does not support SMM.
+  Use this for guests for which you may enable Secure Boot. Be aware
+  that the included JSON firmware descriptors associate this with
+  OVMF32_VARS_4M.fd. Which means, if you specify this image in libvirt, you'll
+  get a guest that is Secure Boot-*capable*, but has Secure Boot disabled.
+  To enable it, you'll need to manually import PK/KEK/DB keys and activate
+  Secure Boot from the UEFI setup menu.
 
 OVMF32_VARS_4M.fd
   A variable template image that is intended to be read-write, and therefore
   each guest should be given its own copy. This is an empty variable store
-  template, which means it has no built-in Secure Boot keys and Secure Boot
-  is disabled. You can use it with any OVMF32_CODE_4M.secboot.fd image, but
-  keep in mind that if you want to boot in Secure Boot mode, you will have
-  to enable it manually.
+  template.
 
- -- dann frazier <dannf@debian.org>, Fri,  4 Feb 2022 17:07:25 -0700
+ -- dann frazier <dannf@debian.org>, Sun, 11 Feb 2024 08:46:01 -0700

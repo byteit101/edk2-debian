@@ -3,6 +3,8 @@ edk2 (2023.11-7) UNRELEASED; urgency=medium
   * ovmf, qemu-efi-*: Stop building Secure Boot code into non-secboot
     images so they can include a built-in shell which is unsafe in
     Secure Boot mode.
+  * ovmf-ia32: Add non-secboot image. Thanks to Lionel Debroux.
+    (Closes: #1023491).
 
  -- dann frazier <dannf@debian.org>  Sat, 10 Feb 2024 21:17:35 -0700
 
