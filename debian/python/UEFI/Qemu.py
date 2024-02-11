@@ -111,6 +111,14 @@ class QemuCommand:
                 '/usr/share/AAVMF/AAVMF32_CODE.fd',
                 '/usr/share/AAVMF/AAVMF32_VARS.fd'
             )
+        if machine == QemuEfiMachine.RISCV64:
+            assert(variant is None)
+            assert(flash_size == QemuEfiFlashSize.DEFAULT)
+            return (
+                '/usr/share/qemu-efi-riscv64/RISCV_VIRT_CODE.fd',
+                '/usr/share/qemu-efi-riscv64/RISCV_VIRT_VARS.fd',
+            )
+        # Remaining possibilities are OVMF variants
         if machine == QemuEfiMachine.OVMF32:
             assert(variant is None or variant in [QemuEfiVariant.SECBOOT])
             assert(
@@ -122,16 +130,8 @@ class QemuCommand:
                 '/usr/share/OVMF/OVMF32_CODE_4M.secboot.fd',
                 '/usr/share/OVMF/OVMF32_VARS_4M.fd',
             )
-        # Remaining possibilities are OVMF variants
         if machine == QemuEfiMachine.OVMF_PC:
             assert(variant is None)
-        if machine == QemuEfiMachine.RISCV64:
-            assert(variant is None)
-            assert(flash_size == QemuEfiFlashSize.DEFAULT)
-            return (
-                '/usr/share/qemu-efi-riscv64/RISCV_VIRT_CODE.fd',
-                '/usr/share/qemu-efi-riscv64/RISCV_VIRT_VARS.fd',
-            )
         size_ext = '_4M'
         return (
             f'/usr/share/OVMF/OVMF_CODE{size_ext}{code_ext}.fd',
