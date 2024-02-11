@@ -106,7 +106,7 @@ class QemuCommand:
             assert(flash_size == QemuEfiFlashSize.DEFAULT)
             return (
                 f'/usr/share/AAVMF/AAVMF_CODE{code_ext}.fd',
-                f'/usr/share/AAVMF/AAVMF_VARS{code_ext}.fd',
+                f'/usr/share/AAVMF/AAVMF_VARS{vars_ext}.fd',
             )
         if machine == QemuEfiMachine.AAVMF32:
             assert(variant is None)
