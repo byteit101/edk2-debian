@@ -94,6 +94,10 @@ class QemuCommand:
         elif variant == QemuEfiVariant.SNAKEOIL:
             vars_ext = '.snakeoil'
 
+        if variant == QemuEfiVariant.SNAKEOIL:
+            # We provide one size - you don't get to pick.
+            assert(flash_size == QemuEfiFlashSize.DEFAULT)
+
         if machine == QemuEfiMachine.AAVMF:
             assert(flash_size == QemuEfiFlashSize.DEFAULT)
             return (
@@ -128,9 +132,6 @@ class QemuCommand:
                 '/usr/share/qemu-efi-riscv64/RISCV_VIRT_CODE.fd',
                 '/usr/share/qemu-efi-riscv64/RISCV_VIRT_VARS.fd',
             )
-        if variant == QemuEfiVariant.SNAKEOIL:
-            # We provide one size - you don't get to pick.
-            assert(flash_size == QemuEfiFlashSize.DEFAULT)
         size_ext = '_4M'
         return (
             f'/usr/share/OVMF/OVMF_CODE{size_ext}{code_ext}.fd',
