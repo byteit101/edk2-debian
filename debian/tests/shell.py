@@ -299,6 +299,20 @@ class BootToShellTest(unittest.TestCase):
         q.add_disk(iso.path)
         self.run_cmd_check_secure_boot(q.command, 'x64', False)
 
+    def test_ovmf32_4m_pc(self):
+        q = Qemu.QemuCommand(
+            QemuEfiMachine.OVMF32_PC,
+            flash_size=QemuEfiFlashSize.SIZE_4MB,
+        )
+        self.run_cmd_check_shell(q.command)
+
+    def test_ovmf32_4m_q35(self):
+        q = Qemu.QemuCommand(
+            QemuEfiMachine.OVMF32_Q35,
+            flash_size=QemuEfiFlashSize.SIZE_4MB,
+        )
+        self.run_cmd_check_shell(q.command)
+
     def test_ovmf32_4m_secboot(self):
         q = Qemu.QemuCommand(
             QemuEfiMachine.OVMF32_Q35,

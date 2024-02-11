@@ -5,6 +5,7 @@ edk2 (2023.11-7) UNRELEASED; urgency=medium
     Secure Boot mode.
   * ovmf-ia32: Add non-secboot image. Thanks to Lionel Debroux.
     (Closes: #1023491).
+  * debian/tests/shell.py: Add tests for ovmf-ia32 non-secboot image.
 
  -- dann frazier <dannf@debian.org>  Sat, 10 Feb 2024 21:17:35 -0700
 

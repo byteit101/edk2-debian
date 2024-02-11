@@ -25,6 +25,7 @@ import tempfile
 class QemuEfiMachine(enum.Enum):
     OVMF_PC = enum.auto()
     OVMF_Q35 = enum.auto()
+    OVMF32_PC = enum.auto()
     OVMF32_Q35 = enum.auto()
     AAVMF = enum.auto()
     AAVMF32 = enum.auto()
@@ -72,6 +73,9 @@ class QemuCommand:
         ] + Ovmf_Common_Params,
         QemuEfiMachine.OVMF_Q35: [
             'qemu-system-x86_64', '-machine', 'q35,accel=tcg',
+        ] + Ovmf_Common_Params,
+        QemuEfiMachine.OVMF32_PC: [
+            'qemu-system-i386', '-machine', 'pc,accel=tcg',
         ] + Ovmf_Common_Params,
         QemuEfiMachine.OVMF32_Q35: [
             'qemu-system-i386', '-machine', 'q35,accel=tcg',
@@ -125,11 +129,11 @@ class QemuCommand:
             ]
         )
         size_ext = '_4M'
-        if machine == QemuEfiMachine.OVMF_PC:
+        if machine in [QemuEfiMachine.OVMF_PC, QemuEfiMachine.OVMF32_PC]:
             assert(variant is None)
         if machine == QemuEfiMachine.OVMF32_Q35:
             assert(variant is None or variant == QemuEfiVariant.SECBOOT)
-        if machine == QemuEfiMachine.OVMF32_Q35:
+        if machine in [QemuEfiMachine.OVMF32_PC, QemuEfiMachine.OVMF32_Q35]:
             OVMF_ARCH = "OVMF32"
         else:
             OVMF_ARCH = "OVMF"
