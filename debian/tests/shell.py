@@ -294,7 +294,7 @@ class BootToShellTest(unittest.TestCase):
 
     def test_ovmf32_4m_secboot(self):
         q = Qemu.QemuCommand(
-            QemuEfiMachine.OVMF32,
+            QemuEfiMachine.OVMF32_Q35,
             variant=QemuEfiVariant.SECBOOT,
             flash_size=QemuEfiFlashSize.SIZE_4MB,
         )
