@@ -1,2 +1,3 @@
-usr/share/AAVMF/AAVMF_CODE.fd usr/share/AAVMF/AAVMF_CODE.ms.fd
-usr/share/AAVMF/AAVMF_CODE.fd usr/share/AAVMF/AAVMF_CODE.snakeoil.fd
+usr/share/AAVMF/AAVMF_CODE.secboot.fd usr/share/AAVMF/AAVMF_CODE.ms.fd
+usr/share/AAVMF/AAVMF_CODE.secboot.fd usr/share/AAVMF/AAVMF_CODE.snakeoil.fd
+usr/share/AAVMF/AAVMF_CODE.no-secboot.fd usr/share/AAVMF/AAVMF_CODE.fd

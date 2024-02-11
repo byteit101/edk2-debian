@@ -86,7 +86,7 @@ AAVMF_BUILD_DIR = $(AAVMF_BUILD_ROOT)/$(BUILD_TYPE)_$(EDK2_TOOLCHAIN)
 AAVMF_ENROLL    = $(AAVMF_INSTALL_DIR)/EnrollDefaultKeys.efi
 AAVMF_SHELL     = $(AAVMF_INSTALL_DIR)/Shell.efi
 AAVMF_BINARIES  = $(AAVMF_ENROLL) $(AAVMF_SHELL)
-AAVMF_IMAGES    = $(addprefix $(AAVMF_INSTALL_DIR)/,AAVMF_CODE.no-secboot.fd AAVMF_CODE.fd AAVMF_VARS.fd)
+AAVMF_IMAGES    = $(addprefix $(AAVMF_INSTALL_DIR)/,AAVMF_CODE.no-secboot.fd AAVMF_CODE.secboot.fd AAVMF_VARS.fd)
 AAVMF_PREENROLLED_VARS = $(addprefix $(AAVMF_INSTALL_DIR)/,AAVMF_VARS.ms.fd AAVMF_VARS.snakeoil.fd)
 
 AAVMF32_INSTALL_DIR = debian/aavmf32-install
@@ -162,19 +162,19 @@ debian/oem-string-%: debian/PkKek-1-%.pem
 	tr -d '\n' < $< | \
 		sed -e 's/.*-----BEGIN CERTIFICATE-----/4e32566d-8e9e-4f52-81d3-5bb9715f9727:/' -e 's/-----END CERTIFICATE-----//' > $@
 
-%/AAVMF_VARS.ms.fd: %/AAVMF_CODE.fd %/AAVMF_VARS.fd debian/oem-string-vendor $(AAVMF_ENROLL) $(AAVMF_SHELL)
+%/AAVMF_VARS.ms.fd: %/AAVMF_CODE.secboot.fd %/AAVMF_VARS.fd debian/oem-string-vendor $(AAVMF_ENROLL) $(AAVMF_SHELL)
 	PYTHONPATH=$(CURDIR)/debian/python \
 	python3 ./debian/edk2-vars-generator.py \
 		-f AAVMF -e $(AAVMF_ENROLL) -s $(AAVMF_SHELL) \
-		-c $(AAVMF_INSTALL_DIR)/AAVMF_CODE.fd \
+		-c $(AAVMF_INSTALL_DIR)/AAVMF_CODE.secboot.fd \
 		-V $(AAVMF_INSTALL_DIR)/AAVMF_VARS.fd \
 		-C `< debian/oem-string-vendor` -o $@
 
-%/AAVMF_VARS.snakeoil.fd: %/AAVMF_CODE.fd %/AAVMF_VARS.fd debian/oem-string-snakeoil $(AAVMF_ENROLL) $(AAVMF_SHELL)
+%/AAVMF_VARS.snakeoil.fd: %/AAVMF_CODE.no-secboot.fd %/AAVMF_VARS.fd debian/oem-string-snakeoil $(AAVMF_ENROLL) $(AAVMF_SHELL)
 	PYTHONPATH=$(CURDIR)/debian/python \
 	python3 ./debian/edk2-vars-generator.py \
 		-f AAVMF -e $(AAVMF_ENROLL) -s $(AAVMF_SHELL) \
-		-c $(AAVMF_INSTALL_DIR)/AAVMF_CODE.fd \
+		-c $(AAVMF_INSTALL_DIR)/AAVMF_CODE.secboot.fd \
 		-V $(AAVMF_INSTALL_DIR)/AAVMF_VARS.fd \
 		--no-default \
 		-C `< debian/oem-string-snakeoil` -o $@
@@ -223,7 +223,7 @@ $(AAVMF_BINARIES) $(AAVMF_IMAGES): debian/setup-build-stamp ArmPkg/Library/GccLt
 		$(AAVMF_INSTALL_DIR)/
 	cp $(AAVMF_BUILD_DIR)/FV/QEMU_EFI.fd $(AAVMF_INSTALL_DIR)
 	cp $(AAVMF_BUILD_DIR)/FV/QEMU_EFI.fd \
-		$(AAVMF_INSTALL_DIR)/AAVMF_CODE.fd
+		$(AAVMF_INSTALL_DIR)/AAVMF_CODE.secboot.fd
 	cp $(AAVMF_BUILD_DIR)/FV/QEMU_VARS.fd \
 		$(AAVMF_INSTALL_DIR)/AAVMF_VARS.fd
 	rm -rf $(AAVMF_BUILD_ROOT)
@@ -239,7 +239,7 @@ $(AAVMF_BINARIES) $(AAVMF_IMAGES): debian/setup-build-stamp ArmPkg/Library/GccLt
 	# QEMU expects 64MiB CODE and VARS files on ARM/AARCH64 architectures
 	# Truncate the firmware files to the expected size
 	truncate -s 64M $(AAVMF_INSTALL_DIR)/AAVMF_CODE.no-secboot.fd
-	truncate -s 64M $(AAVMF_INSTALL_DIR)/AAVMF_CODE.fd
+	truncate -s 64M $(AAVMF_INSTALL_DIR)/AAVMF_CODE.secboot.fd
 	truncate -s 64M $(AAVMF_INSTALL_DIR)/AAVMF_VARS.fd
 
 build-qemu-efi-arm: $(AAVMF32_IMAGES)
