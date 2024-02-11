@@ -1,2 +1,2 @@
 #!/usr/bin/dh-exec
-Build/ArmVirtQemu-AARCH64/RELEASE_GCC5/AARCH64/Shell.efi => /usr/share/efi-shell-aa64/shellaa64.efi
+debian/aavmf-install/Shell.efi => /usr/share/efi-shell-aa64/shellaa64.efi

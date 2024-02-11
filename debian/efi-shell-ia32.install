@@ -1,2 +1,2 @@
 #!/usr/bin/dh-exec
-Build/OvmfIa32/RELEASE_GCC5/IA32/Shell.efi => /usr/share/efi-shell-ia32/shellia32.efi
+debian/ovmf32-install/Shell.efi => /usr/share/efi-shell-ia32/shellia32.efi

@@ -1,2 +1,2 @@
 #!/usr/bin/dh-exec
-Build/Ovmf3264/RELEASE_GCC5/X64/Shell.efi => /usr/share/efi-shell-x64/shellx64.efi
+debian/ovmf-install/Shell.efi => /usr/share/efi-shell-x64/shellx64.efi
