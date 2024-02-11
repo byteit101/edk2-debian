@@ -120,34 +120,19 @@ class BootToShellTest(unittest.TestCase):
             while True:
                 i = child.expect(
                     [
-                        'Press .* or any other key to continue',
-                        'Shell> ',
-                        "FS0:\\\\> ",
                         'grub> ',
-                        'Command Error Status: Access Denied',
+                        'BdsDxe: failed to start .*: Security Violation',
                     ],
                     timeout=TEST_TIMEOUT,
                 )
                 if i == 0:
-                    child.sendline('\x1b')
-                    continue
-                if i == 1:
-                    child.sendline('fs0:\r')
-                    continue
-                if i == 2:
-                    if state == State.PRE_EXEC:
-                        child.sendline(f'\\efi\\boot\\boot{efiarch}.efi\r')
-                        state = State.POST_EXEC
-                    elif state == State.POST_EXEC:
-                        child.sendline('reset -s\r')
-                    continue
-                if i == 3:
                     child.sendline('halt\r')
                     verified = True
                     continue
-                if i == 4:
+                if i == 1:
+                    child.close()
                     verified = False
-                    continue
+                    break
         except pexpect.EOF:
             child.close()
             if child.exitstatus != 0:
