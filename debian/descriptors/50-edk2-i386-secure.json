@@ -1,5 +1,5 @@
 {
-    "description": "UEFI firmware for i386, with Secure Boot and SMM, empty varstore",
+    "description": "UEFI firmware for i386, with Secure Boot, required SMM, empty varstore",
     "interface-types": [
         "uefi"
     ],

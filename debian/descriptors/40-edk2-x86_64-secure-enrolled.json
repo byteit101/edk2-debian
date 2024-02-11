@@ -1,5 +1,5 @@
 {
-    "description": "UEFI firmware for x86_64, with Secure Boot and SMM, SB enabled, MS certs enrolled",
+    "description": "UEFI firmware for x86_64, with Secure Boot, required SMM, SB enabled, MS certs enrolled",
     "interface-types": [
         "uefi"
     ],
