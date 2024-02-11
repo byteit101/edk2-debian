@@ -13,6 +13,7 @@ edk2 (2023.11-7) UNRELEASED; urgency=medium
   * ovmf, ovmf-ia32, qemu-efi-aarch64: Stop including a built-in shell
     in secboot variants, CVE-2023-48733. Thanks to Mate Kukri.
     LP: #2040137.
+    - d/tests: Drop the boot-to-shell tests for images w/ Secure Boot.
 
  -- dann frazier <dannf@debian.org>  Sat, 10 Feb 2024 21:17:35 -0700
 
