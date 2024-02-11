@@ -80,25 +80,24 @@ OVMF32_SHELL = $(OVMF32_BUILD_DIR)/IA32/Shell.efi
 OVMF32_BINARIES = $(OVMF32_SHELL)
 OVMF32_IMAGES  := $(addprefix $(OVMF32_INSTALL_DIR)/,OVMF32_CODE_4M.secboot.fd OVMF32_VARS_4M.fd)
 
-QEMU_EFI_BUILD_ROOT = Build/ArmVirtQemu-$(EDK2_HOST_ARCH)
-QEMU_EFI_BUILD_DIR = $(QEMU_EFI_BUILD_ROOT)/$(BUILD_TYPE)_$(EDK2_TOOLCHAIN)
+AAVMF_INSTALL_DIR = debian/aavmf-install
 AAVMF_BUILD_ROOT = Build/ArmVirtQemu-AARCH64
 AAVMF_BUILD_DIR = $(AAVMF_BUILD_ROOT)/$(BUILD_TYPE)_$(EDK2_TOOLCHAIN)
 AAVMF_ENROLL    = $(AAVMF_BUILD_DIR)/AARCH64/EnrollDefaultKeys.efi
 AAVMF_SHELL     = $(AAVMF_BUILD_DIR)/AARCH64/Shell.efi
 AAVMF_BINARIES  = $(AAVMF_ENROLL) $(AAVMF_SHELL)
-AAVMF_CODE      = $(AAVMF_BUILD_DIR)/FV/AAVMF_CODE.fd
-AAVMF_VARS      = $(AAVMF_BUILD_DIR)/FV/AAVMF_VARS.fd
-AAVMF_IMAGES    = $(AAVMF_CODE) $(AAVMF_VARS)
-AAVMF_PREENROLLED_VARS = $(addprefix $(AAVMF_BUILD_DIR)/FV/,AAVMF_VARS.ms.fd AAVMF_VARS.snakeoil.fd)
+AAVMF_IMAGES    = $(addprefix $(AAVMF_INSTALL_DIR)/,AAVMF_CODE.fd AAVMF_VARS.fd)
+AAVMF_PREENROLLED_VARS = $(addprefix $(AAVMF_INSTALL_DIR)/,AAVMF_VARS.ms.fd AAVMF_VARS.snakeoil.fd)
 
-AAVMF32_BUILD_ROOT = Build/ArmVirtQemu-ARM/$(BUILD_TYPE)_$(EDK2_TOOLCHAIN)
-AAVMF32_BUILD_DIR = $(AAVMF32_BUILD_ROOT)/ArmVirtQemu-ARM/$(BUILD_TYPE)_$(EDK2_TOOLCHAIN)
-AAVMF32_IMAGES    = $(addprefix $(AAVMF32_BUILD_DIR)/FV/,AAVMF32_CODE.fd AAVMF32_VARS.fd)
+AAVMF32_INSTALL_DIR = debian/aavmf32-install
+AAVMF32_BUILD_ROOT = Build/ArmVirtQemu-ARM
+AAVMF32_BUILD_DIR = $(AAVMF32_BUILD_ROOT)/$(BUILD_TYPE)_$(EDK2_TOOLCHAIN)
+AAVMF32_IMAGES    = $(addprefix $(AAVMF32_INSTALL_DIR)/,AAVMF32_CODE.fd AAVMF32_VARS.fd)
 
+RISCV64_INSTALL_DIR = debian/riscv64-install
 RISCV64_BUILD_ROOT = Build/RiscVVirtQemu
 RISCV64_BUILD_DIR = $(RISCV64_BUILD_ROOT)/$(BUILD_TYPE)_$(EDK2_TOOLCHAIN)
-RISCV64_IMAGES    = $(addprefix $(RISCV64_BUILD_DIR)/FV/,RISCV_VIRT_CODE.fd RISCV_VIRT_VARS.fd)
+RISCV64_IMAGES    = $(addprefix $(RISCV64_INSTALL_DIR)/,RISCV_VIRT_CODE.fd RISCV_VIRT_VARS.fd)
 
 build-ovmf32: $(OVMF32_BINARIES) $(OVMF32_IMAGES)
 $(OVMF32_BINARIES) $(OVMF32_IMAGES): debian/setup-build-stamp
@@ -153,14 +152,16 @@ debian/oem-string-%: debian/PkKek-1-%.pem
 	PYTHONPATH=$(CURDIR)/debian/python \
 	python3 ./debian/edk2-vars-generator.py \
 		-f AAVMF -e $(AAVMF_ENROLL) -s $(AAVMF_SHELL) \
-		-c $(AAVMF_CODE) -V $(AAVMF_VARS) \
+		-c $(AAVMF_INSTALL_DIR)/AAVMF_CODE.fd \
+		-V $(AAVMF_INSTALL_DIR)/AAVMF_VARS.fd \
 		-C `< debian/oem-string-vendor` -o $@
 
 %/AAVMF_VARS.snakeoil.fd: %/AAVMF_CODE.fd %/AAVMF_VARS.fd debian/oem-string-snakeoil $(AAVMF_ENROLL) $(AAVMF_SHELL)
 	PYTHONPATH=$(CURDIR)/debian/python \
 	python3 ./debian/edk2-vars-generator.py \
 		-f AAVMF -e $(AAVMF_ENROLL) -s $(AAVMF_SHELL) \
-		-c $(AAVMF_CODE) -V $(AAVMF_VARS) \
+		-c $(AAVMF_INSTALL_DIR)/AAVMF_CODE.fd \
+		-V $(AAVMF_INSTALL_DIR)/AAVMF_VARS.fd \
 		--no-default \
 		-C `< debian/oem-string-snakeoil` -o $@
 
@@ -195,38 +196,59 @@ ArmPkg/Library/GccLto/liblto-aarch64.a:	ArmPkg/Library/GccLto/liblto-aarch64.s
 ArmPkg/Library/GccLto/liblto-arm.a: ArmPkg/Library/GccLto/liblto-arm.s
 	$($(EDK2_TOOLCHAIN)_ARM_PREFIX)gcc -c -fpic $< -o $@
 
-build-qemu-efi: debian/setup-build-stamp
+build-qemu-efi-aarch64: $(AAVMF_BINARIES) $(AAVMF_IMAGES) $(AAVMF_PREENROLLED_VARS)
+$(AAVMF_BINARIES) $(AAVMF_IMAGES): debian/setup-build-stamp ArmPkg/Library/GccLto/liblto-aarch64.a
+	rm -rf $(AAVMF_INSTALL_DIR)
+	mkdir $(AAVMF_INSTALL_DIR)
 	set -e; . ./edksetup.sh; \
-		build -a $(EDK2_HOST_ARCH) \
+		build -a AARCH64 \
 			-t $(EDK2_TOOLCHAIN) \
 			-p ArmVirtPkg/ArmVirtQemu.dsc \
 			$(AAVMF_FLAGS) -b $(BUILD_TYPE)
-	cp $(QEMU_EFI_BUILD_DIR)/FV/QEMU_EFI.fd \
-		$(QEMU_EFI_BUILD_DIR)/FV/$(FW_NAME)_CODE.fd
-	cp $(QEMU_EFI_BUILD_DIR)/FV/QEMU_VARS.fd \
-		$(QEMU_EFI_BUILD_DIR)/FV/$(FW_NAME)_VARS.fd
+	cp $(AAVMF_BUILD_DIR)/FV/QEMU_EFI.fd $(AAVMF_INSTALL_DIR)
+	cp $(AAVMF_BUILD_DIR)/FV/QEMU_EFI.fd \
+		$(AAVMF_INSTALL_DIR)/AAVMF_CODE.fd
+	cp $(AAVMF_BUILD_DIR)/FV/QEMU_VARS.fd \
+		$(AAVMF_INSTALL_DIR)/AAVMF_VARS.fd
 	# QEMU expects 64MiB CODE and VARS files on ARM/AARCH64 architectures
 	# Truncate the firmware files to the expected size
-	truncate -s 64M $(QEMU_EFI_BUILD_DIR)/FV/$(FW_NAME)_CODE.fd
-	truncate -s 64M $(QEMU_EFI_BUILD_DIR)/FV/$(FW_NAME)_VARS.fd
-
-build-qemu-efi-aarch64: $(AAVMF_BINARIES) $(AAVMF_IMAGES) $(AAVMF_PREENROLLED_VARS)
-$(AAVMF_BINARIES) $(AAVMF_IMAGES): ArmPkg/Library/GccLto/liblto-aarch64.a
-	$(MAKE) -f debian/rules build-qemu-efi EDK2_ARCH_DIR=AArch64 EDK2_HOST_ARCH=AARCH64 FW_NAME=AAVMF
+	truncate -s 64M $(AAVMF_INSTALL_DIR)/AAVMF_CODE.fd
+	truncate -s 64M $(AAVMF_INSTALL_DIR)/AAVMF_VARS.fd
 
 build-qemu-efi-arm: $(AAVMF32_IMAGES)
-$(AAVMF32_IMAGES): ArmPkg/Library/GccLto/liblto-arm.a
-	$(MAKE) -f debian/rules build-qemu-efi EDK2_ARCH_DIR=Arm EDK2_HOST_ARCH=ARM FW_NAME=AAVMF32
+$(AAVMF32_IMAGES): debian/setup-build-stamp ArmPkg/Library/GccLto/liblto-arm.a
+	rm -rf $(AAVMF32_INSTALL_DIR)
+	mkdir $(AAVMF32_INSTALL_DIR)
+	set -e; . ./edksetup.sh; \
+		build -a ARM \
+			-t $(EDK2_TOOLCHAIN) \
+			-p ArmVirtPkg/ArmVirtQemu.dsc \
+			$(AAVMF32_FLAGS) -b $(BUILD_TYPE)
+	cp $(AAVMF32_BUILD_DIR)/FV/QEMU_EFI.fd $(AAVMF32_INSTALL_DIR)
+	cp $(AAVMF32_BUILD_DIR)/FV/QEMU_EFI.fd \
+		$(AAVMF32_INSTALL_DIR)/AAVMF32_CODE.fd
+	cp $(AAVMF32_BUILD_DIR)/FV/QEMU_VARS.fd \
+		$(AAVMF32_INSTALL_DIR)/AAVMF32_VARS.fd
+	# QEMU expects 64MiB CODE and VARS files on ARM/AARCH64 architectures
+	# Truncate the firmware files to the expected size
+	truncate -s 64M $(AAVMF32_INSTALL_DIR)/AAVMF32_CODE.fd
+	truncate -s 64M $(AAVMF32_INSTALL_DIR)/AAVMF32_VARS.fd
 
 build-qemu-efi-riscv64:  $(RISCV64_IMAGES)
 $(RISCV64_IMAGES): debian/setup-build-stamp
+	rm -rf $(RISCV64_INSTALL_DIR)
+	mkdir $(RISCV64_INSTALL_DIR)
 	set -e; . ./edksetup.sh; \
 		build -a RISCV64 \
 			-t $(EDK2_TOOLCHAIN) \
 			-p OvmfPkg/RiscVVirt/RiscVVirtQemu.dsc \
 			$(RISCV64_FLAGS) -b $(BUILD_TYPE)
-	truncate -s 32M $(RISCV64_BUILD_DIR)/FV/RISCV_VIRT_CODE.fd
-	truncate -s 32M $(RISCV64_BUILD_DIR)/FV/RISCV_VIRT_VARS.fd
+	cp $(RISCV64_BUILD_DIR)/FV/RISCV_VIRT_CODE.fd \
+		$(RISCV64_INSTALL_DIR)/
+	cp $(RISCV64_BUILD_DIR)/FV/RISCV_VIRT_VARS.fd \
+		$(RISCV64_INSTALL_DIR)/
+	truncate -s 32M $(RISCV64_INSTALL_DIR)/RISCV_VIRT_CODE.fd
+	truncate -s 32M $(RISCV64_INSTALL_DIR)/RISCV_VIRT_VARS.fd
 
 override_dh_auto_clean:
 	-. ./edksetup.sh; build clean

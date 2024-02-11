@@ -1,2 +1,2 @@
-Build/ArmVirtQemu-ARM/RELEASE_GCC5/FV/AAVMF32_*.fd /usr/share/AAVMF
+debian/aavmf32-install/AAVMF32_*.fd /usr/share/AAVMF
 debian/descriptors/60-edk2-arm.json /usr/share/qemu/firmware
