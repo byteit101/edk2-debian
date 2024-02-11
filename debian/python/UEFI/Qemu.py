@@ -119,23 +119,23 @@ class QemuCommand:
                 '/usr/share/qemu-efi-riscv64/RISCV_VIRT_VARS.fd',
             )
         # Remaining possibilities are OVMF variants
-        if machine == QemuEfiMachine.OVMF32_Q35:
-            assert(variant is None or variant in [QemuEfiVariant.SECBOOT])
-            assert(
-                flash_size in [
-                    QemuEfiFlashSize.DEFAULT, QemuEfiFlashSize.SIZE_4MB
-                ]
-            )
-            return (
-                '/usr/share/OVMF/OVMF32_CODE_4M.secboot.fd',
-                '/usr/share/OVMF/OVMF32_VARS_4M.fd',
-            )
+        assert(
+            flash_size in [
+                QemuEfiFlashSize.DEFAULT, QemuEfiFlashSize.SIZE_4MB
+            ]
+        )
+        size_ext = '_4M'
         if machine == QemuEfiMachine.OVMF_PC:
             assert(variant is None)
-        size_ext = '_4M'
+        if machine == QemuEfiMachine.OVMF32_Q35:
+            assert(variant is None or variant == QemuEfiVariant.SECBOOT)
+        if machine == QemuEfiMachine.OVMF32_Q35:
+            OVMF_ARCH = "OVMF32"
+        else:
+            OVMF_ARCH = "OVMF"
         return (
-            f'/usr/share/OVMF/OVMF_CODE{size_ext}{code_ext}.fd',
-            f'/usr/share/OVMF/OVMF_VARS{size_ext}{vars_ext}.fd'
+            f'/usr/share/OVMF/{OVMF_ARCH}_CODE{size_ext}{code_ext}.fd',
+            f'/usr/share/OVMF/{OVMF_ARCH}_VARS{size_ext}{vars_ext}.fd'
         )
 
     def __init__(
