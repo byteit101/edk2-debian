@@ -6,7 +6,7 @@
     "mapping": {
         "device": "flash",
         "executable": {
-            "filename": "/usr/share/AAVMF/AAVMF_CODE.fd",
+            "filename": "/usr/share/AAVMF/AAVMF_CODE.no-secboot.fd",
             "format": "raw"
         },
         "nvram-template": {

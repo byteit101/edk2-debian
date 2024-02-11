@@ -90,7 +90,8 @@ class QemuCommand:
         assert(variant is None or variant in QemuEfiVariant)
         assert(flash_size in QemuEfiFlashSize)
 
-        code_ext = vars_ext = ''
+        code_ext = '.no-secboot' if machine == QemuEfiMachine.AAVMF else ''
+        vars_ext = ''
         if variant == QemuEfiVariant.MS:
             code_ext = vars_ext = '.ms'
         elif variant == QemuEfiVariant.SECBOOT:

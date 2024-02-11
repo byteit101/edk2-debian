@@ -86,7 +86,7 @@ AAVMF_BUILD_DIR = $(AAVMF_BUILD_ROOT)/$(BUILD_TYPE)_$(EDK2_TOOLCHAIN)
 AAVMF_ENROLL    = $(AAVMF_INSTALL_DIR)/EnrollDefaultKeys.efi
 AAVMF_SHELL     = $(AAVMF_INSTALL_DIR)/Shell.efi
 AAVMF_BINARIES  = $(AAVMF_ENROLL) $(AAVMF_SHELL)
-AAVMF_IMAGES    = $(addprefix $(AAVMF_INSTALL_DIR)/,AAVMF_CODE.fd AAVMF_VARS.fd)
+AAVMF_IMAGES    = $(addprefix $(AAVMF_INSTALL_DIR)/,AAVMF_CODE.no-secboot.fd AAVMF_CODE.fd AAVMF_VARS.fd)
 AAVMF_PREENROLLED_VARS = $(addprefix $(AAVMF_INSTALL_DIR)/,AAVMF_VARS.ms.fd AAVMF_VARS.snakeoil.fd)
 
 AAVMF32_INSTALL_DIR = debian/aavmf32-install
@@ -219,8 +219,6 @@ $(AAVMF_BINARIES) $(AAVMF_IMAGES): debian/setup-build-stamp ArmPkg/Library/GccLt
 			-t $(EDK2_TOOLCHAIN) \
 			-p ArmVirtPkg/ArmVirtQemu.dsc \
 			$(AAVMF_SECBOOT_FLAGS) -b $(BUILD_TYPE)
-	cp $(AAVMF_BUILD_DIR)/AARCH64/Shell.efi \
-		$(AAVMF_INSTALL_DIR)/
 	cp $(AAVMF_BUILD_DIR)/AARCH64/EnrollDefaultKeys.efi \
 		$(AAVMF_INSTALL_DIR)/
 	cp $(AAVMF_BUILD_DIR)/FV/QEMU_EFI.fd $(AAVMF_INSTALL_DIR)
@@ -228,8 +226,19 @@ $(AAVMF_BINARIES) $(AAVMF_IMAGES): debian/setup-build-stamp ArmPkg/Library/GccLt
 		$(AAVMF_INSTALL_DIR)/AAVMF_CODE.fd
 	cp $(AAVMF_BUILD_DIR)/FV/QEMU_VARS.fd \
 		$(AAVMF_INSTALL_DIR)/AAVMF_VARS.fd
+	rm -rf $(AAVMF_BUILD_ROOT)
+	set -e; . ./edksetup.sh; \
+		build -a AARCH64 \
+			-t $(EDK2_TOOLCHAIN) \
+			-p ArmVirtPkg/ArmVirtQemu.dsc \
+			$(AAVMF_COMMON_FLAGS) -b $(BUILD_TYPE)
+	cp $(AAVMF_BUILD_DIR)/AARCH64/Shell.efi \
+		$(AAVMF_INSTALL_DIR)/
+	cp $(AAVMF_BUILD_DIR)/FV/QEMU_EFI.fd \
+		$(AAVMF_INSTALL_DIR)/AAVMF_CODE.no-secboot.fd
 	# QEMU expects 64MiB CODE and VARS files on ARM/AARCH64 architectures
 	# Truncate the firmware files to the expected size
+	truncate -s 64M $(AAVMF_INSTALL_DIR)/AAVMF_CODE.no-secboot.fd
 	truncate -s 64M $(AAVMF_INSTALL_DIR)/AAVMF_CODE.fd
 	truncate -s 64M $(AAVMF_INSTALL_DIR)/AAVMF_VARS.fd
 
