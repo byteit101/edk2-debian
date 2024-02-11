@@ -118,7 +118,7 @@ build-ovmf: $(OVMF_BINARIES) $(OVMF_IMAGES) $(OVMF_PREENROLLED_VARS)
 $(OVMF_BINARIES) $(OVMF_IMAGES): debian/setup-build-stamp
 	rm -rf $(OVMF_INSTALL_DIR)
 	mkdir $(OVMF_INSTALL_DIR)
-	rm -rf Build/OvmfX64
+	rm -rf $(OVMF3264_BUILD_ROOT)
 	set -e; . ./edksetup.sh; \
 		build -a IA32 -a X64 \
 			-t $(EDK2_TOOLCHAIN) \
@@ -129,7 +129,7 @@ $(OVMF_BINARIES) $(OVMF_IMAGES): debian/setup-build-stamp
 		$(OVMF_INSTALL_DIR)/OVMF_CODE_4M.fd
 	cp $(OVMF3264_BUILD_DIR)/FV/OVMF_VARS.fd \
 		$(OVMF_INSTALL_DIR)/OVMF_VARS_4M.fd
-	rm -rf Build/OvmfX64
+	rm -rf $(OVMF3264_BUILD_ROOT)
 	set -e; . ./edksetup.sh; \
 		build -a IA32 -a X64 \
 			-t $(EDK2_TOOLCHAIN) \
