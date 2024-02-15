@@ -65,8 +65,8 @@ debian/setup-build-stamp:
 	touch $@
 
 OVMF_INSTALL_DIR = debian/ovmf-install
-OVMF3264_BUILD_ROOT = Build/Ovmf3264
-OVMF3264_BUILD_DIR = $(OVMF3264_BUILD_ROOT)/$(BUILD_TYPE)_$(EDK2_TOOLCHAIN)
+OVMF64_BUILD_ROOT = Build/OvmfX64
+OVMF3264_BUILD_DIR = $(OVMF64_BUILD_ROOT)/$(BUILD_TYPE)_$(EDK2_TOOLCHAIN)
 OVMF_ENROLL = $(OVMF_INSTALL_DIR)/EnrollDefaultKeys.efi
 OVMF_SHELL =  $(OVMF_INSTALL_DIR)/Shell.efi
 OVMF_BINARIES = $(OVMF_ENROLL) $(OVMF_SHELL)
@@ -127,11 +127,11 @@ build-ovmf: $(OVMF_BINARIES) $(OVMF_IMAGES) $(OVMF_PREENROLLED_VARS)
 $(OVMF_BINARIES) $(OVMF_IMAGES): debian/setup-build-stamp
 	rm -rf $(OVMF_INSTALL_DIR)
 	mkdir $(OVMF_INSTALL_DIR)
-	rm -rf $(OVMF3264_BUILD_ROOT)
+	rm -rf $(OVMF64_BUILD_ROOT)
 	set -e; . ./edksetup.sh; \
-		build -a IA32 -a X64 \
+		build -a X64 \
 			-t $(EDK2_TOOLCHAIN) \
-			-p OvmfPkg/OvmfPkgIa32X64.dsc \
+			-p OvmfPkg/OvmfPkgX64.dsc \
 			$(OVMF_4M_FLAGS) -b $(BUILD_TYPE)
 	cp $(OVMF3264_BUILD_DIR)/X64/Shell.efi \
 		$(OVMF_INSTALL_DIR)/
@@ -140,11 +140,11 @@ $(OVMF_BINARIES) $(OVMF_IMAGES): debian/setup-build-stamp
 		$(OVMF_INSTALL_DIR)/OVMF_CODE_4M.fd
 	cp $(OVMF3264_BUILD_DIR)/FV/OVMF_VARS.fd \
 		$(OVMF_INSTALL_DIR)/OVMF_VARS_4M.fd
-	rm -rf $(OVMF3264_BUILD_ROOT)
+	rm -rf $(OVMF64_BUILD_ROOT)
 	set -e; . ./edksetup.sh; \
-		build -a IA32 -a X64 \
+		build -a X64 \
 			-t $(EDK2_TOOLCHAIN) \
-			-p OvmfPkg/OvmfPkgIa32X64.dsc \
+			-p OvmfPkg/OvmfPkgX64.dsc \
 			$(OVMF_4M_SECBOOT_FLAGS) -b $(BUILD_TYPE)
 	cp $(OVMF3264_BUILD_DIR)/X64/EnrollDefaultKeys.efi \
 		$(OVMF_INSTALL_DIR)/
