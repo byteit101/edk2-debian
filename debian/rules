@@ -199,7 +199,7 @@ debian/oem-string-%: debian/PkKek-1-%.pem
 	PYTHONPATH=$(CURDIR)/debian/python \
 	python3 ./debian/edk2-vars-generator.py -d \
 		-f OVMF_4M -e $(OVMF_ENROLL) -s $(OVMF_SHELL) \
-		-c $(OVMF_INSTALL_DIR)/OVMF_CODE_4M.fd \
+		-c $(OVMF_INSTALL_DIR)/OVMF_CODE_4M.secboot.fd \
 		-V $(OVMF_INSTALL_DIR)/OVMF_VARS_4M.fd \
 		--no-default \
 		-C `< debian/oem-string-snakeoil` -o $@
