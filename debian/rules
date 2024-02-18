@@ -164,7 +164,7 @@ debian/oem-string-%: debian/PkKek-1-%.pem
 
 %/AAVMF_VARS.ms.fd: %/AAVMF_CODE.secboot.fd %/AAVMF_VARS.fd debian/oem-string-vendor $(AAVMF_ENROLL) $(AAVMF_SHELL)
 	PYTHONPATH=$(CURDIR)/debian/python \
-	python3 ./debian/edk2-vars-generator.py \
+	python3 ./debian/edk2-vars-generator.py -d \
 		-f AAVMF -e $(AAVMF_ENROLL) -s $(AAVMF_SHELL) \
 		-c $(AAVMF_INSTALL_DIR)/AAVMF_CODE.secboot.fd \
 		-V $(AAVMF_INSTALL_DIR)/AAVMF_VARS.fd \
@@ -172,7 +172,7 @@ debian/oem-string-%: debian/PkKek-1-%.pem
 
 %/AAVMF_VARS.snakeoil.fd: %/AAVMF_CODE.no-secboot.fd %/AAVMF_VARS.fd debian/oem-string-snakeoil $(AAVMF_ENROLL) $(AAVMF_SHELL)
 	PYTHONPATH=$(CURDIR)/debian/python \
-	python3 ./debian/edk2-vars-generator.py \
+	python3 ./debian/edk2-vars-generator.py -d \
 		-f AAVMF -e $(AAVMF_ENROLL) -s $(AAVMF_SHELL) \
 		-c $(AAVMF_INSTALL_DIR)/AAVMF_CODE.secboot.fd \
 		-V $(AAVMF_INSTALL_DIR)/AAVMF_VARS.fd \
@@ -181,7 +181,7 @@ debian/oem-string-%: debian/PkKek-1-%.pem
 
 %/OVMF_VARS.ms.fd: %/OVMF_CODE.secboot.fd %/OVMF_VARS.fd debian/oem-string-vendor $(OVMF_ENROLL) $(OVMF_SHELL)
 	PYTHONPATH=$(CURDIR)/debian/python \
-	python3 ./debian/edk2-vars-generator.py \
+	python3 ./debian/edk2-vars-generator.py -d \
 		-f OVMF -e $(OVMF_ENROLL) -s $(OVMF_SHELL) \
 		-c $(OVMF_INSTALL_DIR)/OVMF_CODE.secboot.fd \
 		-V $(OVMF_INSTALL_DIR)/OVMF_VARS.fd \
@@ -197,7 +197,7 @@ debian/oem-string-%: debian/PkKek-1-%.pem
 
 %/OVMF_VARS_4M.snakeoil.fd: %/OVMF_CODE_4M.fd %/OVMF_VARS_4M.fd debian/oem-string-snakeoil $(OVMF_ENROLL) $(OVMF_SHELL)
 	PYTHONPATH=$(CURDIR)/debian/python \
-	python3 ./debian/edk2-vars-generator.py \
+	python3 ./debian/edk2-vars-generator.py -d \
 		-f OVMF_4M -e $(OVMF_ENROLL) -s $(OVMF_SHELL) \
 		-c $(OVMF_INSTALL_DIR)/OVMF_CODE_4M.fd \
 		-V $(OVMF_INSTALL_DIR)/OVMF_VARS_4M.fd \

@@ -1,3 +1,9 @@
+edk2 (2023.11-8) UNRELEASED; urgency=medium
+
+  * debian/rules: Add debug flag to edk2-vars-generator.py commands.
+
+ -- dann frazier <dannf@debian.org>  Sun, 18 Feb 2024 12:17:14 -0700
+
 edk2 (2023.11-7) unstable; urgency=medium
 
   * ovmf, qemu-efi-*: Stop building Secure Boot code into non-secboot
