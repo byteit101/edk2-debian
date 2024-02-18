@@ -6,6 +6,8 @@ edk2 (2023.11-8) UNRELEASED; urgency=medium
     CODE variant.
   * debian/tests/shell.py: Detect "Access Denied" message to fix
     test_*_ms_secure_boot_unsigned cases.
+  * debian/rules: switch to 64bit PEI for OVMF(X64) images now that
+    it supports S3 suspend. Thanks Hector Cao.
 
  -- dann frazier <dannf@debian.org>  Sun, 18 Feb 2024 12:17:14 -0700
 
