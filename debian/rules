@@ -66,7 +66,7 @@ debian/setup-build-stamp:
 
 OVMF_INSTALL_DIR = debian/ovmf-install
 OVMF64_BUILD_ROOT = Build/OvmfX64
-OVMF3264_BUILD_DIR = $(OVMF64_BUILD_ROOT)/$(BUILD_TYPE)_$(EDK2_TOOLCHAIN)
+OVMF64_BUILD_DIR = $(OVMF64_BUILD_ROOT)/$(BUILD_TYPE)_$(EDK2_TOOLCHAIN)
 OVMF_ENROLL = $(OVMF_INSTALL_DIR)/EnrollDefaultKeys.efi
 OVMF_SHELL =  $(OVMF_INSTALL_DIR)/Shell.efi
 OVMF_BINARIES = $(OVMF_ENROLL) $(OVMF_SHELL)
@@ -133,12 +133,12 @@ $(OVMF_BINARIES) $(OVMF_IMAGES): debian/setup-build-stamp
 			-t $(EDK2_TOOLCHAIN) \
 			-p OvmfPkg/OvmfPkgX64.dsc \
 			$(OVMF_4M_FLAGS) -b $(BUILD_TYPE)
-	cp $(OVMF3264_BUILD_DIR)/X64/Shell.efi \
+	cp $(OVMF64_BUILD_DIR)/X64/Shell.efi \
 		$(OVMF_INSTALL_DIR)/
-	cp $(OVMF3264_BUILD_DIR)/FV/OVMF.fd $(OVMF_INSTALL_DIR)/
-	cp $(OVMF3264_BUILD_DIR)/FV/OVMF_CODE.fd \
+	cp $(OVMF64_BUILD_DIR)/FV/OVMF.fd $(OVMF_INSTALL_DIR)/
+	cp $(OVMF64_BUILD_DIR)/FV/OVMF_CODE.fd \
 		$(OVMF_INSTALL_DIR)/OVMF_CODE_4M.fd
-	cp $(OVMF3264_BUILD_DIR)/FV/OVMF_VARS.fd \
+	cp $(OVMF64_BUILD_DIR)/FV/OVMF_VARS.fd \
 		$(OVMF_INSTALL_DIR)/OVMF_VARS_4M.fd
 	rm -rf $(OVMF64_BUILD_ROOT)
 	set -e; . ./edksetup.sh; \
@@ -146,9 +146,9 @@ $(OVMF_BINARIES) $(OVMF_IMAGES): debian/setup-build-stamp
 			-t $(EDK2_TOOLCHAIN) \
 			-p OvmfPkg/OvmfPkgX64.dsc \
 			$(OVMF_4M_SECBOOT_FLAGS) -b $(BUILD_TYPE)
-	cp $(OVMF3264_BUILD_DIR)/X64/EnrollDefaultKeys.efi \
+	cp $(OVMF64_BUILD_DIR)/X64/EnrollDefaultKeys.efi \
 		$(OVMF_INSTALL_DIR)/
-	cp $(OVMF3264_BUILD_DIR)/FV/OVMF_CODE.fd \
+	cp $(OVMF64_BUILD_DIR)/FV/OVMF_CODE.fd \
 		$(OVMF_INSTALL_DIR)/OVMF_CODE_4M.secboot.fd
 
 ifeq ($(call dpkg_vendor_derives_from_v1,ubuntu),yes)
