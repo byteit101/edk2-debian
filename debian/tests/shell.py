@@ -17,7 +17,6 @@
 # this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-import enum
 import os
 import pexpect
 import subprocess
@@ -107,16 +106,11 @@ class BootToShellTest(unittest.TestCase):
             self.fail("%s\n" % (err))
 
     def run_cmd_check_secure_boot(self, cmd, efiarch, should_verify):
-        class State(enum.Enum):
-            PRE_EXEC = 1
-            POST_EXEC = 2
-
         child = pexpect.spawn(' '.join(cmd), encoding='UTF-8')
 
         if self.debug:
             child.logfile = sys.stdout
         try:
-            state = State.PRE_EXEC
             while True:
                 i = child.expect(
                     [
