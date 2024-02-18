@@ -97,7 +97,7 @@ class QemuCommand:
         elif variant == QemuEfiVariant.SECBOOT:
             code_ext = '.secboot'
         elif variant == QemuEfiVariant.SNAKEOIL:
-            vars_ext = '.snakeoil'
+            code_ext = vars_ext = '.snakeoil'
 
         if variant == QemuEfiVariant.SNAKEOIL:
             # We provide one size - you don't get to pick.

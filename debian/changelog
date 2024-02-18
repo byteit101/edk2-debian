@@ -1,6 +1,7 @@
 edk2 (2023.11-8) UNRELEASED; urgency=medium
 
   * debian/rules: Add debug flag to edk2-vars-generator.py commands.
+  * debian/python/UEFI/Qemu: Fix var template for snakeoil commands.
 
  -- dann frazier <dannf@debian.org>  Sun, 18 Feb 2024 12:17:14 -0700
 
