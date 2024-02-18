@@ -4,6 +4,8 @@ edk2 (2023.11-8) UNRELEASED; urgency=medium
   * debian/python/UEFI/Qemu: Fix var template for snakeoil commands.
   * debian/rules: Fix OVMF snakeoil enrollment by using the secboot
     CODE variant.
+  * debian/tests/shell.py: Detect "Access Denied" message to fix
+    test_*_ms_secure_boot_unsigned cases.
 
  -- dann frazier <dannf@debian.org>  Sun, 18 Feb 2024 12:17:14 -0700
 

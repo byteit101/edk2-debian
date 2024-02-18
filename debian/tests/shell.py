@@ -115,7 +115,7 @@ class BootToShellTest(unittest.TestCase):
                 i = child.expect(
                     [
                         'grub> ',
-                        'BdsDxe: failed to start .*: Security Violation',
+                        'BdsDxe: failed to load.*: Access Denied',
                     ],
                     timeout=TEST_TIMEOUT,
                 )
