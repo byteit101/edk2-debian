@@ -1,4 +1,4 @@
-edk2 (2023.11-8) UNRELEASED; urgency=medium
+edk2 (2023.11-8) unstable; urgency=medium
 
   * debian/rules: Add debug flag to edk2-vars-generator.py commands.
   * debian/python/UEFI/Qemu: Fix var template for snakeoil commands.
@@ -9,7 +9,7 @@ edk2 (2023.11-8) UNRELEASED; urgency=medium
   * debian/rules: switch to 64bit PEI for OVMF(X64) images now that
     it supports S3 suspend. Thanks Hector Cao.
 
- -- dann frazier <dannf@debian.org>  Sun, 18 Feb 2024 12:17:14 -0700
+ -- dann frazier <dannf@debian.org>  Wed, 21 Feb 2024 16:25:20 -0700
 
 edk2 (2023.11-7) unstable; urgency=medium
 
