@@ -104,19 +104,19 @@ EDK II Continuous Integration:
 .azurepipelines/
 F: .azurepipelines/
 M: Sean Brogan <sean.brogan@microsoft.com> [spbrogan]
-M: Michael Kubacki <mikuback@linux.microsoft.com> [makubacki]
+M: Joey Vagedes <joey.vagedes@gmail.com> [javagedes]
 R: Michael D Kinney <michael.d.kinney@intel.com> [mdkinney]
 R: Liming Gao <gaoliming@byosoft.com.cn> [lgao4]
 
 .devcontainer/
 F: .devcontainer/
-M: Michael Kubacki <mikuback@linux.microsoft.com> [makubacki]
+M: Joey Vagedes <joey.vagedes@gmail.com> [javagedes]
 R: Chris Fernald <chris.fernald@outlook.com> [cfernald]
 
 .github/
 F: .github/
 M: Sean Brogan <sean.brogan@microsoft.com> [spbrogan]
-M: Michael Kubacki <mikuback@linux.microsoft.com> [makubacki]
+M: Joey Vagedes <joey.vagedes@gmail.com> [javagedes]
 R: Michael D Kinney <michael.d.kinney@intel.com> [mdkinney]
 
 .mergify/
@@ -128,7 +128,7 @@ R: Sean Brogan <sean.brogan@microsoft.com> [spbrogan]
 .pytool/
 F: .pytool/
 M: Sean Brogan <sean.brogan@microsoft.com> [spbrogan]
-M: Michael Kubacki <mikuback@linux.microsoft.com> [makubacki]
+M: Joey Vagedes <joey.vagedes@gmail.com> [javagedes]
 R: Michael D Kinney <michael.d.kinney@intel.com> [mdkinney]
 R: Liming Gao <gaoliming@byosoft.com.cn> [lgao4]
 
@@ -151,6 +151,7 @@ ArmVirtPkg
 F: ArmVirtPkg/
 W: https://github.com/tianocore/tianocore.github.io/wiki/ArmVirtPkg
 M: Ard Biesheuvel <ardb+tianocore@kernel.org> [ardbiesheuvel]
+M: Laszlo Ersek <lersek@redhat.com> [lersek]
 R: Leif Lindholm <quic_llindhol@quicinc.com> [leiflindholm]
 R: Sami Mujawar <sami.mujawar@arm.com> [samimujawar]
 R: Gerd Hoffmann <kraxel@redhat.com> [kraxel]
@@ -166,7 +167,7 @@ R: Yuwei Chen <yuwei.chen@intel.com> [YuweiChen1110]
 BaseTools: Plugins
 F: BaseTools/Plugin/
 M: Sean Brogan <sean.brogan@microsoft.com> [spbrogan]
-M: Michael Kubacki <mikuback@linux.microsoft.com> [makubacki]
+M: Joey Vagedes <joey.vagedes@gmail.com> [javagedes]
 R: Michael D Kinney <michael.d.kinney@intel.com> [mdkinney]
 R: Liming Gao <gaoliming@byosoft.com.cn> [lgao4]
 
@@ -461,6 +462,7 @@ F: OvmfPkg/
 W: http://www.tianocore.org/ovmf/
 M: Ard Biesheuvel <ardb+tianocore@kernel.org> [ardbiesheuvel]
 M: Jiewen Yao <jiewen.yao@intel.com> [jyao1]
+M: Laszlo Ersek <lersek@redhat.com> [lersek]
 R: Gerd Hoffmann <kraxel@redhat.com> [kraxel]
 S: Maintained
 
@@ -516,6 +518,11 @@ R: Abner Chang <abner.chang@amd.com> [changab]
 OvmfPkg: LsiScsi driver
 F: OvmfPkg/LsiScsiDxe/
 R: Gary Lin <glin@suse.com> [lcp]
+
+OvmfPkg: MptScsi and PVSCSI driver
+F: OvmfPkg/MptScsiDxe/
+F: OvmfPkg/PvScsiDxe/
+R: Aaron Young <aaron.young@oracle.com> [ajyoung-oracle]
 
 OvmfPkg: TCG- and TPM2-related modules
 F: OvmfPkg/Include/IndustryStandard/QemuTpm.h
@@ -615,6 +622,7 @@ UefiCpuPkg
 F: UefiCpuPkg/
 W: https://github.com/tianocore/tianocore.github.io/wiki/UefiCpuPkg
 M: Ray Ni <ray.ni@intel.com> [niruiyu]
+M: Laszlo Ersek <lersek@redhat.com> [lersek]
 R: Rahul Kumar <rahul1.kumar@intel.com> [rahul1-kumar]
 R: Gerd Hoffmann <kraxel@redhat.com> [kraxel]
 

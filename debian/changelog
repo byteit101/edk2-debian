@@ -1,3 +1,38 @@
+edk2 (2024.02-1) UNRELEASED; urgency=medium
+
+  * New upstream release, based on edk2-stable202402 tag:
+    - Stop including unused mbedtls source to avoid unnecessary
+      security triage:
+      + d/p/mbedtls-disable.diff
+    - Drop patches merged upstream:
+      + d/p/0001-SecurityPkg-DxeTpm2MeasureBootLib-SECURITY-PATCH-411.patch
+      + d/p/0002-SecurityPkg-DxeTpmMeasureBootLib-SECURITY-PATCH-4117.patch
+      + d/p/0003-SecurityPkg-Adding-CVE-2022-36763-to-SecurityFixes.y.patch
+      + d/p/0001-SecurityPkg-DxeTpm2MeasureBootLib-SECURITY-PATCH-411-2.patch
+      + d/p/0002-SecurityPkg-DxeTpmMeasureBootLib-SECURITY-PATCH-4118.patch
+      + d/p/0003-SecurityPkg-Adding-CVE-2022-36764-to-SecurityFixes.y.patch
+      + d/p/0001-SecurityPkg-DxeTpm2MeasureBootLib-SECURITY-PATCH-411-3.patch
+      + d/p/0002-SecurityPkg-DxeTpmMeasureBootLib-SECURITY-PATCH-4117-2.patch
+      + d/p/0003-SecurityPkg-Updating-SecurityFixes.yaml-after-symbol.patch
+      + d/p/0001-UefiPayloadPkg-Hob-Integer-Overflow-in-CreateHob.patch
+      + d/p/0001-NetworkPkg-Dhcp6Dxe-SECURITY-PATCH-CVE-2023-45230-Pa.patch
+      + d/p/0002-NetworkPkg-Add-Unit-tests-to-CI-and-create-Host-Test.patch
+      + d/p/0003-NetworkPkg-Dhcp6Dxe-SECURITY-PATCH-CVE-2023-45230-Un.patch
+      + d/p/0004-NetworkPkg-Dhcp6Dxe-SECURITY-PATCH-CVE-2023-45229-Pa.patch
+      + d/p/0005-NetworkPkg-Dhcp6Dxe-SECURITY-PATCH-CVE-2023-45229-Un.patch
+      + d/p/0006-NetworkPkg-Ip6Dxe-SECURITY-PATCH-CVE-2023-45231-Patc.patch
+      + d/p/0007-NetworkPkg-Ip6Dxe-SECURITY-PATCH-CVE-2023-45231-Unit.patch
+      + d/p/0008-NetworkPkg-Ip6Dxe-SECURITY-PATCH-CVE-2023-45232-Patc.patch
+      + d/p/0009-NetworkPkg-Ip6Dxe-SECURITY-PATCH-CVE-2023-45232-Unit.patch
+      + d/p/0010-NetworkPkg-UefiPxeBcDxe-SECURITY-PATCH-CVE-2023-4523.patch
+      + d/p/0011-NetworkPkg-UefiPxeBcDxe-SECURITY-PATCH-CVE-2023-4523.patch
+      + d/p/0012-MdePkg-Test-Add-gRT_GetTime-Google-Test-Mock.patch
+      + d/p/0013-NetworkPkg-UefiPxeBcDxe-SECURITY-PATCH-CVE-2023-4523.patch
+      + d/p/0014-NetworkPkg-UefiPxeBcDxe-SECURITY-PATCH-CVE-2023-4523.patch
+      + d/p/0015-NetworkPkg-Adds-a-SecurityFix.yaml-file.patch
+
+ -- dann frazier <dannf@debian.org>  Sun, 25 Feb 2024 13:56:00 -0700
+
 edk2 (2023.11-8) unstable; urgency=medium
 
   * debian/rules: Add debug flag to edk2-vars-generator.py commands.

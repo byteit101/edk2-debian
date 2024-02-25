@@ -80,14 +80,6 @@ Copyright: 1998-2019 The OpenSSL Project
            1995-1998 Eric A. Young, Tim J. Hudson
 License: OpenSSL
 
-Files: CryptoPkg/Library/MbedTlsLib/mbedtls/*
-Copyright: The Mbed TLS Contributors
-License: Apache-2.0
-
-Files: CryptoPkg/Library/MbedTlsLib/mbedtls/programs/x509/load_roots.c
-Copyright: The Mbed TLS Contributors
-License: Apache-2.0 or GPL-2+
-
 Files: debian/tests/shell.py
 Copyright: 2019 Canonical Ltd.
 License: GPL-3
