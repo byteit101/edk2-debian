@@ -30,6 +30,7 @@ edk2 (2024.02-1) UNRELEASED; urgency=medium
       + d/p/0013-NetworkPkg-UefiPxeBcDxe-SECURITY-PATCH-CVE-2023-4523.patch
       + d/p/0014-NetworkPkg-UefiPxeBcDxe-SECURITY-PATCH-CVE-2023-4523.patch
       + d/p/0015-NetworkPkg-Adds-a-SecurityFix.yaml-file.patch
+   * d/binary-check.ignore: Remove globs that no longer match anything.
 
  -- dann frazier <dannf@debian.org>  Sun, 25 Feb 2024 13:56:00 -0700
 

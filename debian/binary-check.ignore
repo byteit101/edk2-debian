@@ -90,12 +90,10 @@ BaseTools/Source/Python/Rsa2048Sha256Sign/TestSigningPublicKey.bin
 **/*.bat
 **/*.bmp
 **/*.c
-**/ChangeLog
 **/*.cmake
 **/*.cmm
 **/*.CMM
 **/*.cnf
-**/*.cocci
 **/*.conf
 **/configure
 **/*.cpp
@@ -235,8 +233,6 @@ debian/**
 **/*.der
 **/*.dlg
 **/*.dsc
-**/*.dsp
-**/*.dsw
 .editorconfig
 **/*.el
 EmbeddedPkg/Library/FdtLib/Makefile.libfdt
@@ -263,7 +259,6 @@ EmulatorPkg/Win/VS2017/Win.vcxproj.user
 **/*.info
 **/*.ini
 IntelFsp2Pkg/Tools/Tests/ExpectedOutput.bsf
-**/*.jinja
 **/*.json
 **/*.key
 **/*.lds
