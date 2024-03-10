@@ -1,3 +1,9 @@
+edk2 (2024.02-2) UNRELEASED; urgency=medium
+
+  * Drop unused build-dependency on python3-distutils. Closes: #1065854.
+
+ -- dann frazier <dannf@debian.org>  Sun, 10 Mar 2024 16:29:32 -0600
+
 edk2 (2024.02-1) unstable; urgency=medium
 
   * New upstream release, based on edk2-stable202402 tag:
