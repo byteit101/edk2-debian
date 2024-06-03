@@ -70,10 +70,9 @@ Copyright: 2011-2013, ARM Limited
            2003-2008 University of Illinois at Urbana-Champaign
 License: BSD-2-Clause-Patent
 
-Files: ShellPkg/Application/Shell/* ShellPkg/Library/*
-Copyright: 1999-2013, Intel Corporation
-           2013, Hewlett-Packard Development Company, L.P.
-License: BSD-2-Clause-Patent
+Files: SecurityPkg/DeviceSecurity/SpdmLib/libspdm/*
+Copyright: 2021-2024, Contributing Member(s) of Distributed Management Task Force, Inc.. All rights reserved.
+License: BSD-3-clause
 
 Files: CryptoPkg/Library/OpensslLib/openssl/*
 Copyright: 1998-2019 The OpenSSL Project
