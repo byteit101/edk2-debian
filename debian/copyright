@@ -23,31 +23,31 @@ License: BSD-2-Clause-Patent
 
 Files: MdePkg/Library/MipiSysTLib/mipisyst/*
 Copyright: 2018, MIPI Alliance, Inc.
-License: BSD-3-clause
+License: BSD-3-Clause
 
 Files: MdePkg/Library/MipiSysTLib/mipisyst/library/include/mipi_syst/api.h
 Copyright: 2018-2023, MIPI Alliance, Inc.
-License: BSD-3-clause
+License: BSD-3-Clause
 
 Files: MdePkg/Library/MipiSysTLib/mipisyst/library/include/mipi_syst/message.h
 Copyright: 2018-2023, MIPI Alliance, Inc.
-License: BSD-3-clause
+License: BSD-3-Clause
 
 Files: MdePkg/Library/MipiSysTLib/mipisyst/library/include/mipi_syst.h.in
 Copyright: 2018-2023, MIPI Alliance, Inc.
-License: BSD-3-clause
+License: BSD-3-Clause
 
 Files: MdePkg/Library/MipiSysTLib/mipisyst/library/src/mipi_syst_api.c
 Copyright: 2018-2023, MIPI Alliance, Inc.
-License: BSD-3-clause
+License: BSD-3-Clause
 
 Files: MdePkg/Library/MipiSysTLib/mipisyst/library/test/unit/mipi_syst_sbd_test.cpp
 Copyright: 2018-2023, MIPI Alliance, Inc.
-License: BSD-3-clause
+License: BSD-3-Clause
 
 Files: MdePkg/Library/MipiSysTLib/mipisyst/library/src/mipi_syst_writer.c
 Copyright: 2018-2023, MIPI Alliance, Inc.
-License: BSD-3-clause
+License: BSD-3-Clause
 
 Files: OvmfPkg/*
 Copyright: 2004-2019, Intel Corporation
@@ -72,7 +72,7 @@ License: BSD-2-Clause-Patent
 
 Files: SecurityPkg/DeviceSecurity/SpdmLib/libspdm/*
 Copyright: 2021-2024, Contributing Member(s) of Distributed Management Task Force, Inc.. All rights reserved.
-License: BSD-3-clause
+License: BSD-3-Clause
 
 Files: CryptoPkg/Library/OpensslLib/openssl/*
 Copyright: 1998-2019 The OpenSSL Project
@@ -148,7 +148,7 @@ License: BSD-2-Clause-Patent
  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  POSSIBILITY OF SUCH DAMAGE.
 
-License: BSD-3-clause
+License: BSD-3-Clause
  Redistribution and use in source and binary forms, with or without
  modification, are permitted provided that the following conditions are met:
  .
@@ -175,7 +175,7 @@ License: BSD-3-clause
  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  POSSIBILITY OF SUCH DAMAGE.
 
-License: BSD-4-clause
+License: BSD-4-Clause
  Redistribution and use in source and binary forms, with or without
  modification, are permitted provided that the following conditions
  are met:
