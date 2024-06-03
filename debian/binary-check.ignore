@@ -312,6 +312,8 @@ RedfishPkg/Documents/Media/EmualtorPlatformLibrary.svg
 RedfishPkg/Documents/Media/PlatformWihtBmcLibrary.svg
 RedfishPkg/Documents/Media/RedfishDriverStack.svg
 RedfishPkg/Library/JsonLib/Readme.rst
+SecurityPkg/DeviceSecurity/SpdmLib/libspdm/unit_test/**
+**/*.gitmodules
 **/*.rtf
 **/*.s
 **/*.S
@@ -322,6 +324,7 @@ RedfishPkg/Library/JsonLib/Readme.rst
 **/*.template
 **/TODO
 **/*.txt
+**/*.uncrustify.cfg
 **/*.uni
 **/*.vcxproj
 **/*.vfr
