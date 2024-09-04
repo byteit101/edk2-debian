@@ -22,6 +22,8 @@ ifeq ($(DEB_BUILD_ARCH),arm64)
 	EDK2_BUILD_ARCH=AARCH64
 endif
 
+unexport ELF_PACKAGE_METADATA
+
 PCD_RELEASE_DATE = $(shell date -d@$(SOURCE_DATE_EPOCH) "+%m/%d/%Y")
 PCD_FLAGS  = --pcd PcdFirmwareVendor=L"$(shell lsb_release -is) distribution of EDK II\\0"
 PCD_FLAGS += --pcd PcdFirmwareVersionString=L"$(DEB_VERSION)\\0"
