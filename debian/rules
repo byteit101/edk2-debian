@@ -22,6 +22,7 @@ ifeq ($(DEB_BUILD_ARCH),arm64)
 	EDK2_BUILD_ARCH=AARCH64
 endif
 
+# LP: #2078252
 unexport ELF_PACKAGE_METADATA
 
 PCD_RELEASE_DATE = $(shell date -d@$(SOURCE_DATE_EPOCH) "+%m/%d/%Y")
