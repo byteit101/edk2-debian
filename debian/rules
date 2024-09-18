@@ -292,6 +292,7 @@ override_dh_auto_clean:
 EMBEDDED_SUBMODULES += CryptoPkg/Library/OpensslLib/openssl
 EMBEDDED_SUBMODULES += ArmPkg/Library/ArmSoftFloatLib/berkeley-softfloat-3
 EMBEDDED_SUBMODULES += MdeModulePkg/Library/BrotliCustomDecompressLib/brotli
+EMBEDDED_SUBMODULES += MdePkg/Library/BaseFdtLib/libfdt
 EMBEDDED_SUBMODULES += MdePkg/Library/MipiSysTLib/mipisyst
 EMBEDDED_SUBMODULES += SecurityPkg/DeviceSecurity/SpdmLib/libspdm
 get-orig-source:

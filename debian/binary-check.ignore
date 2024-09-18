@@ -286,6 +286,9 @@ MdeModulePkg/Library/BrotliCustomDecompressLib/brotli/tests/testdata/empty.compr
 MdeModulePkg/Library/BrotliCustomDecompressLib/brotli/tests/testdata/ukkonooa
 MdeModulePkg/Library/BrotliCustomDecompressLib/brotli/tests/testdata/ukkonooa.compressed
 MdeModulePkg/Library/BrotliCustomDecompressLib/brotli/WORKSPACE
+MdePkg/Library/BaseFdtLib/libfdt/BSD-2-Clause
+MdePkg/Library/BaseFdtLib/libfdt/GPL
+MdePkg/Library/BaseFdtLib/libfdt/libfdt/libfdt.i
 MdePkg/Library/MipiSysTLib/mipisyst/CODEOWNERS
 MdePkg/Library/MipiSysTLib/mipisyst/collateral/sys-t_1-0.xsd
 MdePkg/Library/MipiSysTLib/mipisyst/.gitmodules

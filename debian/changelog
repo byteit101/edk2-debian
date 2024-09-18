@@ -1,6 +1,8 @@
 edk2 (2024.08-1) UNRELEASED; urgency=medium
 
-  * New upstream release, based on edk2-stable202405 tag.
+  * New upstream release, based on edk2-stable202408 tag:
+    - Vendor in the MdePkg/Library/BaseFdtLib/libfdt submodule, now
+      required for building ArmVirtQemu.
 
  -- dann frazier <dannf@debian.org>  Wed, 18 Sep 2024 13:40:14 -0600
 
