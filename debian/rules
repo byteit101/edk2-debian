@@ -207,14 +207,14 @@ debian/oem-string-%: debian/PkKek-1-%.pem
 		--no-default \
 		-C `< debian/oem-string-snakeoil` -o $@
 
-ArmPkg/Library/GccLto/liblto-aarch64.a:	ArmPkg/Library/GccLto/liblto-aarch64.s
+BaseTools/Bin/GccLto/liblto-aarch64.a:	BaseTools/Bin/GccLto/liblto-aarch64.s
 	$($(EDK2_TOOLCHAIN)_AARCH64_PREFIX)gcc -c -fpic $< -o $@
 
-ArmPkg/Library/GccLto/liblto-arm.a: ArmPkg/Library/GccLto/liblto-arm.s
+BaseTools/Bin/GccLto/liblto-arm.a: BaseTools/Bin/GccLto/liblto-arm.s
 	$($(EDK2_TOOLCHAIN)_ARM_PREFIX)gcc -c -fpic $< -o $@
 
 build-qemu-efi-aarch64: $(AAVMF_BINARIES) $(AAVMF_IMAGES) $(AAVMF_PREENROLLED_VARS)
-$(AAVMF_BINARIES) $(AAVMF_IMAGES): debian/setup-build-stamp ArmPkg/Library/GccLto/liblto-aarch64.a
+$(AAVMF_BINARIES) $(AAVMF_IMAGES): debian/setup-build-stamp BaseTools/Bin/GccLto/liblto-aarch64.a
 	rm -rf $(AAVMF_INSTALL_DIR)
 	mkdir $(AAVMF_INSTALL_DIR)
 	set -e; . ./edksetup.sh; \
@@ -246,7 +246,7 @@ $(AAVMF_BINARIES) $(AAVMF_IMAGES): debian/setup-build-stamp ArmPkg/Library/GccLt
 	truncate -s 64M $(AAVMF_INSTALL_DIR)/AAVMF_VARS.fd
 
 build-qemu-efi-arm: $(AAVMF32_IMAGES)
-$(AAVMF32_IMAGES): debian/setup-build-stamp ArmPkg/Library/GccLto/liblto-arm.a
+$(AAVMF32_IMAGES): debian/setup-build-stamp BaseTools/Bin/GccLto/liblto-arm.a
 	rm -rf $(AAVMF32_INSTALL_DIR)
 	mkdir $(AAVMF32_INSTALL_DIR)
 	set -e; . ./edksetup.sh; \
