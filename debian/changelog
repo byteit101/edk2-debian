@@ -3,6 +3,11 @@ edk2 (2024.08-1) UNRELEASED; urgency=medium
   * New upstream release, based on edk2-stable202408 tag:
     - Vendor in the MdePkg/Library/BaseFdtLib/libfdt submodule, now
       required for building ArmVirtQemu.
+    - Refresh patches:
+      + d/p/no-stack-protector-all-archs.diff
+      + d/p/x64-baseline-abi.patch
+      + d/p/Revert-ArmVirtPkg-make-EFI_LOADER_DATA-non-executabl.patch
+      + d/p/ArmVirtPkg-disable-the-EFI_MEMORY_ATTRIBUTE-protocol.patch
 
  -- dann frazier <dannf@debian.org>  Wed, 18 Sep 2024 13:40:14 -0600
 
