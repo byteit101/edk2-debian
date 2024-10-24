@@ -1,4 +1,4 @@
-edk2 (2024.08-3) UNRELEASED; urgency=medium
+edk2 (2024.08-3) unstable; urgency=medium
 
   * Fix overflow condition in PeCoffLoaderRelocateImage(), CVE-2024-38796:
     - d/p/0001-MdePkg-Fix-overflow-issue-in-BasePeCoffLib.patch
@@ -7,7 +7,7 @@ edk2 (2024.08-3) UNRELEASED; urgency=medium
   * OpenSSL: Avoid type errors in EAI-related name check logic, CVE-2024-6119:
     - d/p/0001-Avoid-type-errors-in-EAI-related-name-check-logic.patch
 
- -- dann frazier <dannf@debian.org>  Thu, 24 Oct 2024 10:54:21 -0600
+ -- dann frazier <dannf@debian.org>  Thu, 24 Oct 2024 11:11:27 -0600
 
 edk2 (2024.08-2) unstable; urgency=medium
 
