@@ -9,3 +9,4 @@ mbedtls-disable.diff
 0003-OvmfPkg-RiscV64-build-BaseRiscVFpuLib.patch
 0001-MdePkg-Fix-overflow-issue-in-BasePeCoffLib.patch
 0002-MdePkg-Improving-readability-of-CVE-patch-for-PeCoff.patch
+0001-Avoid-type-errors-in-EAI-related-name-check-logic.patch
