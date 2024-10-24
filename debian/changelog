@@ -1,3 +1,12 @@
+edk2 (2024.08-3) UNRELEASED; urgency=medium
+
+  * Fix overflow condition in PeCoffLoaderRelocateImage(), CVE-2024-38796:
+    - d/p/0001-MdePkg-Fix-overflow-issue-in-BasePeCoffLib.patch
+    - d/p/0002-MdePkg-Improving-readability-of-CVE-patch-for-PeCoff.patch
+    (Closes: #1084055)
+
+ -- dann frazier <dannf@debian.org>  Thu, 24 Oct 2024 10:54:21 -0600
+
 edk2 (2024.08-2) unstable; urgency=medium
 
   * qemu-efi-riscv64: Fix crash in KVM-based emulation (LP: #2036604):
