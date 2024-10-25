@@ -1,10 +1,10 @@
-edk2 (2024.08-4) UNRELEASED; urgency=medium
+edk2 (2024.08-4) unstable; urgency=medium
 
   * d/control, d/tests/control: Update relationships to use
     qemu-system-riscv64 instead of qemu-system-misc. Thanks to
     Michael Tokarev.
 
- -- dann frazier <dannf@debian.org>  Fri, 25 Oct 2024 11:43:46 -0600
+ -- dann frazier <dannf@debian.org>  Fri, 25 Oct 2024 11:46:04 -0600
 
 edk2 (2024.08-3) unstable; urgency=medium
 
