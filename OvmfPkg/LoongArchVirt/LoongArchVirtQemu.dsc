@@ -102,9 +102,6 @@
   TlsLib|CryptoPkg/Library/TlsLib/TlsLib.inf
 !endif
 
-  # For stack protector support
-  NULL                             | MdePkg/Library/BaseStackCheckLib/BaseStackCheckLib.inf
-
   BaseLib                          | MdePkg/Library/BaseLib/BaseLib.inf
   SafeIntLib                       | MdePkg/Library/BaseSafeIntLib/BaseSafeIntLib.inf
   TimeBaseLib                      | EmbeddedPkg/Library/TimeBaseLib/TimeBaseLib.inf
@@ -373,7 +370,7 @@
   #
   # Network Pcds
   #
-!include NetworkPkg/NetworkPcds.dsc.inc
+!include NetworkPkg/NetworkFixedPcds.dsc.inc
 
   gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageVariableSize         | 0x40000
   gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageFtwSpareSize         | 0x40000
@@ -414,11 +411,7 @@
   # PCD and PcdPciDisableBusEnumeration above have not been assigned yet
   gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseAddress                    |0xFFFFFFFFFFFFFFFF
 
-  #
-  # IPv4 and IPv6 PXE Boot support.
-  #
-  gEfiNetworkPkgTokenSpaceGuid.PcdIPv4PXESupport                       | 0x01
-  gEfiNetworkPkgTokenSpaceGuid.PcdIPv6PXESupport                       | 0x01
+!include NetworkPkg/NetworkDynamicPcds.dsc.inc
 
   #
   # SMBIOS entry point version

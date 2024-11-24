@@ -1,3 +1,23 @@
+edk2 (2024.11-1) UNRELEASED; urgency=medium
+
+  * New upstream release, based on edk2-stable202411 tag:
+    - d/rules: Vendor MbedTlsLib submodule. This is now required
+      for building ARM.
+      + Drop d/p/mbedtls-disable.diff
+    - Drop patches merged upstream:
+      + d/p/0001-MdePkg-BaseLib-RISC-V-Add-FPU-CSR-constants.patch
+      + d/p/0002-UefiCpuPkg-RiscV64-initialize-FPU.patch
+      + d/p/0003-OvmfPkg-RiscV64-build-BaseRiscVFpuLib.patch
+      + d/p/0001-MdePkg-Fix-overflow-issue-in-BasePeCoffLib.patch
+      + d/p/0002-MdePkg-Improving-readability-of-CVE-patch-for-PeCoff.patch
+      + d/p/0001-Avoid-type-errors-in-EAI-related-name-check-logic.patch
+    - Refresh patches:
+      + d/p/Revert-ArmVirtPkg-make-EFI_LOADER_DATA-non-executabl.patch
+      + d/p/no-stack-protector-all-archs.diff
+      + d/p/x64-baseline-abi.patch
+
+ -- dann frazier <dannf@debian.org>  Sat, 23 Nov 2024 10:10:44 -0700
+
 edk2 (2024.08-4) unstable; urgency=medium
 
   * d/control, d/tests/control: Update relationships to use
