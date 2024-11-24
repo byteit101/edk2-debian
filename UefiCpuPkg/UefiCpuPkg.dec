@@ -75,6 +75,8 @@
   SmmRelocationLib|Include/Library/SmmRelocationLib.h
 
 [LibraryClasses.RISCV64]
+  ##  @libraryclass  Provides function to initialize the FPU.
+  RiscVFpuLib|Include/Library/BaseRiscVFpuLib.h
   ##  @libraryclass  Provides functions to manage MMU features on RISCV64 CPUs.
   ##
   RiscVMmuLib|Include/Library/BaseRiscVMmuLib.h
@@ -107,6 +109,18 @@
   #
   ## Include/Guid/GhcbApicIds.h
   gGhcbApicIdsGuid               = { 0xbc964338, 0xee39, 0x4fc8, { 0xa2, 0x24, 0x10, 0x10, 0x8b, 0x17, 0x80, 0x1b }}
+
+  ## Include/Guid/MmUnblockRegion.h
+  gMmUnblockRegionHobGuid        = { 0x7c316fb3, 0x849e, 0x4ee7, { 0x87, 0xfc, 0x16, 0x2d, 0x0b, 0x03, 0x42, 0xbf }}
+
+  ## Include/Guid/MmProfileData.h
+  gMmProfileDataHobGuid          = { 0x26ef081d, 0x19b0, 0x4c42, { 0xa2, 0x57, 0xa7, 0xf5, 0x9f, 0x8b, 0xd0, 0x38 }}
+
+  ## Include/Guid/MmCpuSyncConfig.h
+  gMmCpuSyncConfigHobGuid        = { 0x8b90bd26, 0xe4f9, 0x45c2, { 0x92, 0xa2, 0x9e, 0xac, 0xe6, 0x0e, 0x9d, 0xcc }}
+
+  # Include/Guid/MmAcpiS3Enable.h
+  gMmAcpiS3EnableHobGuid         = { 0xe7402821, 0x2654, 0x4c1b, { 0x99, 0x0e, 0x04, 0x8f, 0x8d, 0x82, 0xcf, 0x67 }}
 
 [Protocols]
   ## Include/Protocol/SmmCpuService.h
@@ -248,6 +262,14 @@
   # @Prompt BSP Broadcast Method for the first-time wakeup of APs
   gUefiCpuPkgTokenSpaceGuid.PcdFirstTimeWakeUpAPsBySipi|TRUE|BOOLEAN|0x30002007
 
+  ## The max mapping address in page table before Temp Ram Exit.
+  # After physical memory is initialized and before Temp Ram Exit, the physical memory is in UC state.
+  # The PCD controls the page table max mapping address in physical memory before Temp Ram Exit
+  # because creating a big page table in UC physical memory to cover the entire memory space
+  # is slow. The value of 0xFFFFFFFFFFFFFFFF, then firmware will map entire physical address space.
+  # @Prompt Configure max mapping address in page table before Temp Ram Exit.
+  gUefiCpuPkgTokenSpaceGuid.PcdMaxMappingAddressBeforeTempRamExit|0xFFFFFFFFFFFFFFFF|UINT64|0x30002008
+
 [PcdsFixedAtBuild, PcdsPatchableInModule]
   ## This value is the CPU Local APIC base address, which aligns the address on a 4-KByte boundary.
   # @Prompt Configure base address of CPU Local APIC
@@ -269,7 +291,7 @@
 
   ## Specifies buffer size in bytes to save SMM profile data. The value should be a multiple of 4KB.
   # @Prompt SMM profile data buffer size.
-  gUefiCpuPkgTokenSpaceGuid.PcdCpuSmmProfileSize|0x200000|UINT32|0x32132107
+  gUefiCpuPkgTokenSpaceGuid.PcdCpuSmmProfileSize|0x600000|UINT32|0x32132107
 
   ## Specifies stack size in bytes for each processor in SMM.
   # @Prompt Processor stack size in SMM.

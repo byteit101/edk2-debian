@@ -485,6 +485,12 @@
   ## HOB GUID to get ACPI table after FSP is done. The ACPI table that related SOC will be pass by this HOB.
   gAcpiTableHobGuid = { 0xf9886b57, 0x8a35, 0x455e, { 0xbb, 0xb1, 0x14, 0x65, 0x5e, 0x7b, 0xe7, 0xec }}
 
+  ## Include/Guid/MmCommBuffer.h
+  gMmCommBufferHobGuid  = { 0x6c2a2520, 0x0131, 0x4aee, { 0xa7, 0x50, 0xcc, 0x38, 0x4a, 0xac, 0xe8, 0xc6 }}
+
+  ## Include/Guid/DelayedDispatch.h
+  gEfiDelayedDispatchTableGuid = { 0x4b733449, 0x8eff, 0x488c, { 0x92, 0x1a, 0x15, 0x4a, 0xda, 0x25, 0x18, 0x07 }}
+
 [Ppis]
   ## Include/Ppi/FirmwareVolumeShadowPpi.h
   gEdkiiPeiFirmwareVolumeShadowPpiGuid = { 0x7dfe756c, 0xed8d, 0x4d77, {0x9e, 0xc4, 0x39, 0x9a, 0x8a, 0x81, 0x51, 0x16 } }
@@ -524,6 +530,9 @@
 
   ## Include/Ppi/UfsHostController.h
   gEdkiiPeiUfsHostControllerPpiGuid  =  { 0xdc54b283, 0x1a77, 0x4cd6, { 0x83, 0xbb, 0xfd, 0xda, 0x46, 0x9a, 0x2e, 0xc6 }}
+
+  ## Include/Ppi/UfsHostControllerPlatformPpi.h
+  gEdkiiUfsHcPlatformPpiGuid =  { 0x9e2bde17, 0x7df0, 0x42ea, {0x98, 0xa3, 0xf6, 0x9a, 0xf3, 0xfb, 0x2b, 0xb9 }}
 
   ## Include/Ppi/IpmiPpi.h
   gPeiIpmiPpiGuid               =  { 0xa9731431, 0xd968, 0x4277, { 0xb7, 0x52, 0xa3, 0xa9, 0xa6, 0xae, 0x18, 0x98 }}
@@ -585,6 +594,10 @@
   # Include/Protocol/Print2.h
   gEfiPrint2ProtocolGuid          = { 0xf05976ef, 0x83f1, 0x4f3d, { 0x86, 0x19, 0xf7, 0x59, 0x5d, 0x41, 0xe5, 0x38 } }
   gEfiPrint2SProtocolGuid         = { 0xcc252d2, 0xc106, 0x4661, { 0xb5, 0xbd, 0x31, 0x47, 0xa4, 0xf8, 0x1f, 0x92 } }
+
+  ## This protocol defines the Media Clear and Sanitize operations defined by NIST
+  # Include/Protocol/MediaSanitize.h
+  gMediaSanitizeProtocolGuid = { 0x0d799a99, 0x25af, 0x429e, {0x92, 0x72, 0xd0, 0xb2, 0x7d, 0x6d, 0x5f, 0x14 } }
 
   ## This protocol defines the generic memory test interfaces in Dxe phase.
   # Include/Protocol/GenericMemoryTest.h
@@ -1034,6 +1047,14 @@
   # @ValidList  0x80000006 | 0x03058002
   gEfiMdeModulePkgTokenSpaceGuid.PcdErrorCodeSetVariable|0x03058002|UINT32|0x30001040
 
+  ## Delayed Dispatch Maximum Delay in us (microseconds)
+  # Maximum delay for any particular delay request - 5 seconds
+  gEfiMdeModulePkgTokenSpaceGuid.PcdDelayedDispatchMaxDelayUs|5000000|UINT32|0x3000104A
+
+  ## Delayed Dispatch timeout in us (microseconds)
+  # Maximum delay when waiting for completion (ie EndOfPei) - 10 seconds
+  gEfiMdeModulePkgTokenSpaceGuid.PcdDelayedDispatchCompletionTimeoutUs|10000000|UINT32|0x3000104B
+
   ## Mask to control the NULL address detection in code for different phases.
   #  If enabled, accessing NULL address in UEFI or SMM code can be caught.<BR><BR>
   #    BIT0    - Enable NULL pointer detection for UEFI.<BR>
@@ -1186,6 +1207,10 @@
   # Default is 2000, it represent delay is 2 ms.
   # @Prompt Delay access XHCI register after it issues HCRST (us)
   gEfiMdeModulePkgTokenSpaceGuid.PcdDelayXhciHCReset|2000|UINT16|0x30001060
+
+  ## Specifies the page count allocated for the MM communication buffer.
+  # @Prompt Defines the page allocation for the MM communication buffer; default is 128 pages (512KB).
+  gEfiMdeModulePkgTokenSpaceGuid.PcdMmCommBufferPages|128|UINT32|0x30001061
 
 [PcdsFixedAtBuild, PcdsPatchableInModule]
   ## Dynamic type PCD can be registered callback function for Pcd setting action.
