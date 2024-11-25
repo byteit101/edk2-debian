@@ -1,4 +1,4 @@
-edk2 (2024.11-1) UNRELEASED; urgency=medium
+edk2 (2024.11-1) unstable; urgency=medium
 
   * New upstream release, based on edk2-stable202411 tag:
     - d/rules: Vendor MbedTlsLib submodule. This is now required
@@ -16,7 +16,7 @@ edk2 (2024.11-1) UNRELEASED; urgency=medium
       + d/p/no-stack-protector-all-archs.diff
       + d/p/x64-baseline-abi.patch
 
- -- dann frazier <dannf@debian.org>  Sat, 23 Nov 2024 10:10:44 -0700
+ -- dann frazier <dannf@debian.org>  Mon, 25 Nov 2024 06:51:27 -0700
 
 edk2 (2024.08-4) unstable; urgency=medium
 
