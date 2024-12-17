@@ -1,0 +1,3 @@
+debian/loongarch64-install/QEMU_EFI.fd /usr/share/qemu-efi-loongarch64
+debian/loongarch64-install/QEMU_VARS.fd /usr/share/qemu-efi-loongarch64
+debian/descriptors/60-edk2-loongarch64.json /usr/share/qemu/firmware

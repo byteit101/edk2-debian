@@ -1,0 +1,2 @@
+#!/usr/bin/dh-exec
+debian/loongarch64-install/Shell.efi => /usr/share/efi-shell-loongarch64/shellloongarch64.efi

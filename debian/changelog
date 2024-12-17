@@ -1,3 +1,15 @@
+edk2 (2024.11-3) UNRELEASED; urgency=medium
+
+  * Add loongarch64 support.
+    - Add qemu-efi-loongarch64 package.
+      + qemu-efi-loongarch64/QEMU_EFI.fd
+      + qemu-efi-loongarch64/QEMU_VARS.fd
+      + qemu/firmware/60-edk2-loongarch64.json
+    - Add efi-shell-loongarch64 package.
+      + efi-shell-loongarch64/shellloongarch64.efi
+
+ -- Dandan Zhang <zhangdandan@loongson.cn>  Mon, 16 Dec 2024 18:44:12 +0800
+
 edk2 (2024.11-2) unstable; urgency=medium
 
   * qemu-efi-riscv64: Add 60-edk2-riscv64.json firmware descriptor,

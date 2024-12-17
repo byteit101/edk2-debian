@@ -12,6 +12,7 @@ Build-Depends: bc,
  gcc-arm-linux-gnueabi,
  gcc-multilib [i386],
  gcc-riscv64-linux-gnu,
+ gcc-loongarch64-linux-gnu,
  iasl,
  lsb-release,
  mtools,
@@ -77,6 +78,14 @@ Multi-Arch: foreign
 Description: UEFI firmware for RISCV64 virtual machines
  qemu-efi-riscv64 is a build of EDK II for RISCV64 virtual machines.
 
+Package: qemu-efi-loongarch64
+Architecture: all
+Depends: ${misc:Depends}
+Suggests: qemu-system-misc
+Multi-Arch: foreign
+Description: UEFI firmware for LoongArch64 virtual machines
+ qemu-efi-loongarch64 is a build of EDK II for LoongArch64 virtual machines.
+
 Package: efi-shell-ia32
 Architecture: all
 Depends: ${misc:Depends}
@@ -125,4 +134,14 @@ Description: UEFI Shell for 64-bit RISC-V architecture
  It can be used to execute EFI binaries, to manage EFI variables and boot
  options, or to display details of installed devices, drivers, and protocols.
  This package contains the shellriscv64.efi binary for the 64-bit RISC-V
+ architecture.
+
+Package: efi-shell-loongarch64
+Architecture: all
+Depends: ${misc:Depends}
+Description: UEFI Shell for 64-bit LoongArch architecture
+ The UEFI Shell provides a command line interface running on top of the EFI API.
+ It can be used to execute EFI binaries, to manage EFI variables and boot
+ options, or to display details of installed devices, drivers, and protocols.
+ This package contains the shellloongarch64.efi binary for the 64-bit LoongArch
  architecture.
