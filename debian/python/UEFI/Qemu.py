@@ -56,7 +56,7 @@ class QemuCommand:
         '-machine', 'virt', '-device', 'virtio-serial-device',
     ]
     LoongArch_Common_Params = Qemu_Common_Params + [
-        '-machine', 'virt', '-device', 'virtio-serial-device',
+        '-machine', 'virt',
     ]
     Ovmf_Common_Params = Qemu_Common_Params + [
         '-chardev', 'pty,id=charserial1',

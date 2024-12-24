@@ -14,6 +14,8 @@ edk2 (2024.11-3) UNRELEASED; urgency=medium
     - d/p/0001-UefiCpuPkg-Adjust-the-exception-handler-logic-on-Loo.patch
     - d/p/0002-UefiCpuPkg-Add-dump-interrupt-type-on-LoongArch64.patch
     - d/p/0003-OvmfPkg-LoongArch-Enabling-some-base-libraries.patch
+  * debian/python/UEFI/Qemu: Drop virtio-serial-device from loongarch.
+    QEMU does not currently seem to support it.
 
  -- Dandan Zhang <zhangdandan@loongson.cn>  Mon, 16 Dec 2024 18:44:12 +0800
 
