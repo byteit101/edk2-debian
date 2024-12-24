@@ -1,4 +1,4 @@
-edk2 (2024.11-3) UNRELEASED; urgency=medium
+edk2 (2024.11-3) unstable; urgency=medium
 
   [ Dandan Zhang ]
   * Add loongarch64 support. (Closes: #1091191)
@@ -17,7 +17,7 @@ edk2 (2024.11-3) UNRELEASED; urgency=medium
   * debian/python/UEFI/Qemu: Drop virtio-serial-device from loongarch.
     QEMU does not currently seem to support it.
 
- -- Dandan Zhang <zhangdandan@loongson.cn>  Mon, 16 Dec 2024 18:44:12 +0800
+ -- dann frazier <dannf@debian.org>  Tue, 24 Dec 2024 14:19:55 -0700
 
 edk2 (2024.11-2) unstable; urgency=medium
 
