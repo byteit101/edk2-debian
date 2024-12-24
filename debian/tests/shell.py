@@ -180,6 +180,10 @@ class BootToShellTest(unittest.TestCase):
         q = Qemu.QemuCommand(QemuEfiMachine.AAVMF32)
         self.run_cmd_check_shell(q.command)
 
+    def test_loongarch64(self):
+        q = Qemu.QemuCommand(QemuEfiMachine.LOONGARCH64)
+        self.run_cmd_check_shell(q.command)
+
     def test_ovmf_4m_pc(self):
         q = Qemu.QemuCommand(
             QemuEfiMachine.OVMF_PC,
@@ -271,10 +275,6 @@ class BootToShellTest(unittest.TestCase):
 
     def test_riscv64(self):
         q = Qemu.QemuCommand(QemuEfiMachine.RISCV64)
-        self.run_cmd_check_shell(q.command)
-
-    def test_loongarch64(self):
-        q = Qemu.QemuCommand(QemuEfiMachine.LOONGARCH64)
         self.run_cmd_check_shell(q.command)
 
 if __name__ == '__main__':

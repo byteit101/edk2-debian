@@ -52,17 +52,17 @@ class QemuCommand:
         '-display', 'none',
         '-serial', 'stdio',
     ]
+    Aavmf_Common_Params = Qemu_Common_Params + [
+        '-machine', 'virt', '-device', 'virtio-serial-device',
+    ]
+    LoongArch_Common_Params = Qemu_Common_Params + [
+        '-machine', 'virt', '-device', 'virtio-serial-device',
+    ]
     Ovmf_Common_Params = Qemu_Common_Params + [
         '-chardev', 'pty,id=charserial1',
         '-device', 'isa-serial,chardev=charserial1,id=serial1',
     ]
-    Aavmf_Common_Params = Qemu_Common_Params + [
-        '-machine', 'virt', '-device', 'virtio-serial-device',
-    ]
     RiscV_Common_Params = Qemu_Common_Params + [
-        '-machine', 'virt', '-device', 'virtio-serial-device',
-    ]
-    LoongArch_Common_Params = Qemu_Common_Params + [
         '-machine', 'virt', '-device', 'virtio-serial-device',
     ]
     Machine_Base_Command = {
@@ -72,6 +72,9 @@ class QemuCommand:
         QemuEfiMachine.AAVMF32: [
             'qemu-system-aarch64', '-cpu', 'cortex-a15',
         ] + Aavmf_Common_Params,
+        QemuEfiMachine.LOONGARCH64: [
+            'qemu-system-loongarch64',
+        ] + LoongArch_Common_Params,
         QemuEfiMachine.OVMF_PC: [
             'qemu-system-x86_64', '-machine', 'pc,accel=tcg',
         ] + Ovmf_Common_Params,
@@ -87,9 +90,6 @@ class QemuCommand:
         QemuEfiMachine.RISCV64: [
             'qemu-system-riscv64',
         ] + RiscV_Common_Params,
-        QemuEfiMachine.LOONGARCH64: [
-            'qemu-system-loongarch64',
-        ] + LoongArch_Common_Params,
     }
 
     def _get_default_flash_paths(self, machine, variant, flash_size):
@@ -123,19 +123,19 @@ class QemuCommand:
                 '/usr/share/AAVMF/AAVMF32_CODE.fd',
                 '/usr/share/AAVMF/AAVMF32_VARS.fd'
             )
-        if machine == QemuEfiMachine.RISCV64:
-            assert(variant is None)
-            assert(flash_size == QemuEfiFlashSize.DEFAULT)
-            return (
-                '/usr/share/qemu-efi-riscv64/RISCV_VIRT_CODE.fd',
-                '/usr/share/qemu-efi-riscv64/RISCV_VIRT_VARS.fd',
-            )
         if machine == QemuEfiMachine.LOONGARCH64:
             assert(variant is None)
             assert(flash_size == QemuEfiFlashSize.DEFAULT)
             return (
                 '/usr/share/qemu-efi-loongarch64/QEMU_EFI.fd',
                 '/usr/share/qemu-efi-loongarch64/QEMU_VARS.fd',
+            )
+        if machine == QemuEfiMachine.RISCV64:
+            assert(variant is None)
+            assert(flash_size == QemuEfiFlashSize.DEFAULT)
+            return (
+                '/usr/share/qemu-efi-riscv64/RISCV_VIRT_CODE.fd',
+                '/usr/share/qemu-efi-riscv64/RISCV_VIRT_VARS.fd',
             )
         # Remaining possibilities are OVMF variants
         assert(
