@@ -1,5 +1,6 @@
 edk2 (2024.11-3) UNRELEASED; urgency=medium
 
+  [ Dandan Zhang ]
   * Add loongarch64 support.
     - Add qemu-efi-loongarch64 package.
       + qemu-efi-loongarch64/QEMU_EFI.fd
@@ -7,6 +8,12 @@ edk2 (2024.11-3) UNRELEASED; urgency=medium
       + qemu/firmware/60-edk2-loongarch64.json
     - Add efi-shell-loongarch64 package.
       + efi-shell-loongarch64/shellloongarch64.efi
+
+  [ dann frazier ]
+  * Cherry-pick upstream loongarch64 patches recommended by Dandan Zhang:
+    - d/p/0001-UefiCpuPkg-Adjust-the-exception-handler-logic-on-Loo.patch
+    - d/p/0002-UefiCpuPkg-Add-dump-interrupt-type-on-LoongArch64.patch
+    - d/p/0003-OvmfPkg-LoongArch-Enabling-some-base-libraries.patch
 
  -- Dandan Zhang <zhangdandan@loongson.cn>  Mon, 16 Dec 2024 18:44:12 +0800
 
