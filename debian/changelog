@@ -1,9 +1,9 @@
-edk2 (2024.11-4) UNRELEASED; urgency=medium
+edk2 (2024.11-4) unstable; urgency=medium
 
   * debian/python/UEFI/Qemu: Fix FTBFS w/ python 3.13 caused by a typo
     in the QemuEfiFlashSize class. (Closes: #1092541)
 
- -- dann frazier <dannf@debian.org>  Thu, 16 Jan 2025 21:47:00 -0700
+ -- dann frazier <dannf@debian.org>  Thu, 16 Jan 2025 21:50:24 -0700
 
 edk2 (2024.11-3) unstable; urgency=medium
 
