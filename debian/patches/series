@@ -6,3 +6,4 @@ ArmVirtPkg-disable-the-EFI_MEMORY_ATTRIBUTE-protocol.patch
 0001-UefiCpuPkg-Adjust-the-exception-handler-logic-on-Loo.patch
 0002-UefiCpuPkg-Add-dump-interrupt-type-on-LoongArch64.patch
 0003-OvmfPkg-LoongArch-Enabling-some-base-libraries.patch
+OvmfPkg-RiscVVirtQemu.dsc-enable-VGA-support.patch
