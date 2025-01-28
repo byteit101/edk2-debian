@@ -1,9 +1,9 @@
-edk2 (2024.11-5) UNRELEASED; urgency=medium
+edk2 (2024.11-5) unstable; urgency=medium
 
   * qemu-efi-riscv64: enable VGA support. Thanks to Heinrich Schuchardt,
     LP: #2096703.
 
- -- dann frazier <dannf@debian.org>  Mon, 27 Jan 2025 17:52:36 -0700
+ -- dann frazier <dannf@debian.org>  Mon, 27 Jan 2025 17:55:52 -0700
 
 edk2 (2024.11-4) unstable; urgency=medium
 
