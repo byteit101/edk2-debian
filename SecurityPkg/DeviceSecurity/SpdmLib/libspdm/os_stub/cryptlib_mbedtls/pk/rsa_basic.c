@@ -1,6 +1,6 @@
 /**
  *  Copyright Notice:
- *  Copyright 2021-2022 DMTF. All rights reserved.
+ *  Copyright 2021-2024 DMTF. All rights reserved.
  *  License: BSD 3-Clause License. For full text see link: https://github.com/DMTF/libspdm/blob/main/LICENSE.md
  **/
 
@@ -37,7 +37,8 @@ void *libspdm_rsa_new(void)
         return rsa_context;
     }
 
-    mbedtls_rsa_init(rsa_context, MBEDTLS_RSA_PKCS_V15, MBEDTLS_MD_NONE);
+    mbedtls_rsa_init(rsa_context);
+
     return rsa_context;
 }
 
@@ -201,6 +202,27 @@ bool libspdm_rsa_pkcs1_verify_with_nid(void *rsa_context, size_t hash_nid,
         }
         break;
 
+    case LIBSPDM_CRYPTO_NID_SHA3_256:
+        md_alg = MBEDTLS_MD_SHA3_256;
+        if (hash_size != LIBSPDM_SHA3_256_DIGEST_SIZE) {
+            return false;
+        }
+        break;
+
+    case LIBSPDM_CRYPTO_NID_SHA3_384:
+        md_alg = MBEDTLS_MD_SHA3_384;
+        if (hash_size != LIBSPDM_SHA3_384_DIGEST_SIZE) {
+            return false;
+        }
+        break;
+
+    case LIBSPDM_CRYPTO_NID_SHA3_512:
+        md_alg = MBEDTLS_MD_SHA3_512;
+        if (hash_size != LIBSPDM_SHA3_512_DIGEST_SIZE) {
+            return false;
+        }
+        break;
+
     default:
         return false;
     }
@@ -211,8 +233,7 @@ bool libspdm_rsa_pkcs1_verify_with_nid(void *rsa_context, size_t hash_nid,
 
     mbedtls_rsa_set_padding(rsa_context, MBEDTLS_RSA_PKCS_V15, md_alg);
 
-    ret = mbedtls_rsa_pkcs1_verify(rsa_context, NULL, NULL,
-                                   MBEDTLS_RSA_PUBLIC, md_alg,
+    ret = mbedtls_rsa_pkcs1_verify(rsa_context, md_alg,
                                    (uint32_t)hash_size, message_hash,
                                    signature);
     if (ret != 0) {
@@ -288,6 +309,27 @@ bool libspdm_rsa_pss_verify(void *rsa_context, size_t hash_nid,
         }
         break;
 
+    case LIBSPDM_CRYPTO_NID_SHA3_256:
+        md_alg = MBEDTLS_MD_SHA3_256;
+        if (hash_size != LIBSPDM_SHA3_256_DIGEST_SIZE) {
+            return false;
+        }
+        break;
+
+    case LIBSPDM_CRYPTO_NID_SHA3_384:
+        md_alg = MBEDTLS_MD_SHA3_384;
+        if (hash_size != LIBSPDM_SHA3_384_DIGEST_SIZE) {
+            return false;
+        }
+        break;
+
+    case LIBSPDM_CRYPTO_NID_SHA3_512:
+        md_alg = MBEDTLS_MD_SHA3_512;
+        if (hash_size != LIBSPDM_SHA3_512_DIGEST_SIZE) {
+            return false;
+        }
+        break;
+
     default:
         return false;
     }
@@ -298,8 +340,7 @@ bool libspdm_rsa_pss_verify(void *rsa_context, size_t hash_nid,
 
     mbedtls_rsa_set_padding(rsa_context, MBEDTLS_RSA_PKCS_V21, md_alg);
 
-    ret = mbedtls_rsa_rsassa_pss_verify(rsa_context, NULL, NULL,
-                                        MBEDTLS_RSA_PUBLIC, md_alg,
+    ret = mbedtls_rsa_rsassa_pss_verify(rsa_context, md_alg,
                                         (uint32_t)hash_size, message_hash,
                                         signature);
     if (ret != 0) {
@@ -375,6 +416,27 @@ bool libspdm_rsa_pss_verify_fips(void *rsa_context, size_t hash_nid,
         }
         break;
 
+    case LIBSPDM_CRYPTO_NID_SHA3_256:
+        md_alg = MBEDTLS_MD_SHA3_256;
+        if (hash_size != LIBSPDM_SHA3_256_DIGEST_SIZE) {
+            return false;
+        }
+        break;
+
+    case LIBSPDM_CRYPTO_NID_SHA3_384:
+        md_alg = MBEDTLS_MD_SHA3_384;
+        if (hash_size != LIBSPDM_SHA3_384_DIGEST_SIZE) {
+            return false;
+        }
+        break;
+
+    case LIBSPDM_CRYPTO_NID_SHA3_512:
+        md_alg = MBEDTLS_MD_SHA3_512;
+        if (hash_size != LIBSPDM_SHA3_512_DIGEST_SIZE) {
+            return false;
+        }
+        break;
+
     default:
         return false;
     }
@@ -385,12 +447,11 @@ bool libspdm_rsa_pss_verify_fips(void *rsa_context, size_t hash_nid,
 
     mbedtls_rsa_set_padding(rsa_context, MBEDTLS_RSA_PKCS_V21, md_alg);
 
-    mgf1_hash_id = (rsa_key->hash_id != MBEDTLS_MD_NONE) ?
-                   (mbedtls_md_type_t) rsa_key->hash_id : md_alg;
+    mgf1_hash_id = (rsa_key->MBEDTLS_PRIVATE(hash_id) != MBEDTLS_MD_NONE) ?
+                   (mbedtls_md_type_t) rsa_key->MBEDTLS_PRIVATE(hash_id) : md_alg;
 
     /*salt len is 0*/
-    ret = mbedtls_rsa_rsassa_pss_verify_ext(rsa_context, NULL, NULL,
-                                            MBEDTLS_RSA_PUBLIC, md_alg,
+    ret = mbedtls_rsa_rsassa_pss_verify_ext(rsa_context, md_alg,
                                             (uint32_t)hash_size, message_hash,
                                             mgf1_hash_id,
                                             0,

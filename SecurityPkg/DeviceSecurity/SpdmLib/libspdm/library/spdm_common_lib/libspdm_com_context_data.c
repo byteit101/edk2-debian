@@ -261,6 +261,10 @@ libspdm_return_t libspdm_set_data(void *spdm_context, libspdm_data_type_t data_t
             LIBSPDM_ASSERT((data32 & SPDM_GET_CAPABILITIES_RESPONSE_FLAGS_MEAS_CAP) == 0);
             #endif /* !LIBSPDM_ENABLE_CAPABILITY_MEAS_CAP */
 
+            #if !(LIBSPDM_ENABLE_CAPABILITY_MEL_CAP)
+            LIBSPDM_ASSERT((data32 & SPDM_GET_CAPABILITIES_RESPONSE_FLAGS_MEL_CAP) == 0);
+            #endif /* !LIBSPDM_ENABLE_CAPABILITY_MEL_CAP */
+
             #if !(LIBSPDM_ENABLE_CAPABILITY_KEY_EX_CAP)
             LIBSPDM_ASSERT((data32 & SPDM_GET_CAPABILITIES_RESPONSE_FLAGS_KEY_EX_CAP) == 0);
             #endif /* !LIBSPDM_ENABLE_CAPABILITY_KEY_EX_CAP */
@@ -481,7 +485,6 @@ libspdm_return_t libspdm_set_data(void *spdm_context, libspdm_data_type_t data_t
         if (parameter->location != LIBSPDM_DATA_LOCATION_LOCAL) {
             return LIBSPDM_STATUS_INVALID_PARAMETER;
         }
-        slot_id = parameter->additional_data[0];
         if (data_size != sizeof(uint8_t)) {
             return LIBSPDM_STATUS_INVALID_PARAMETER;
         }
@@ -785,6 +788,15 @@ libspdm_return_t libspdm_set_data(void *spdm_context, libspdm_data_type_t data_t
             return LIBSPDM_STATUS_INVALID_PARAMETER;
         }
         context->connection_info.multi_key_conn_rsp = *(bool *)data;
+        break;
+    case LIBSPDM_DATA_TOTAL_KEY_PAIRS:
+        if (data_size != sizeof(uint8_t)) {
+            return LIBSPDM_STATUS_INVALID_PARAMETER;
+        }
+        if (parameter->location != LIBSPDM_DATA_LOCATION_LOCAL) {
+            return LIBSPDM_STATUS_INVALID_PARAMETER;
+        }
+        context->local_context.total_key_pairs = *(uint8_t *)data;
         break;
     default:
         return LIBSPDM_STATUS_UNSUPPORTED_CAP;
@@ -1116,6 +1128,10 @@ libspdm_return_t libspdm_get_data(void *spdm_context, libspdm_data_type_t data_t
         target_data_size = context->transcript.message_a.buffer_size;
         target_data = context->transcript.message_a.buffer;
         break;
+    case LIBSPDM_DATA_REQUEST_AND_SIZE:
+        target_data_size = context->last_spdm_request_size;
+        target_data = context->last_spdm_request;
+        break;
     case LIBSPDM_DATA_SPDM_VERSION_10_11_VERIFY_SIGNATURE_ENDIAN:
         target_data_size = sizeof(uint8_t);
         target_data = &context->spdm_10_11_verify_signature_endian;
@@ -1141,6 +1157,13 @@ libspdm_return_t libspdm_get_data(void *spdm_context, libspdm_data_type_t data_t
         }
         target_data_size = sizeof(bool);
         target_data = &context->connection_info.multi_key_conn_rsp;
+        break;
+    case LIBSPDM_DATA_TOTAL_KEY_PAIRS:
+        if (parameter->location != LIBSPDM_DATA_LOCATION_LOCAL) {
+            return LIBSPDM_STATUS_INVALID_PARAMETER;
+        }
+        target_data_size = sizeof(uint8_t);
+        target_data = &context->local_context.total_key_pairs;
         break;
     default:
         return LIBSPDM_STATUS_UNSUPPORTED_CAP;
@@ -1444,7 +1467,7 @@ void libspdm_reset_message_buffer_via_request_code(void *context, void *session_
     /**
      * If the Requester issued GET_MEASUREMENTS or KEY_EXCHANGE or FINISH or PSK_EXCHANGE
      * or PSK_FINISH or KEY_UPDATE or HEARTBEAT or GET_ENCAPSULATED_REQUEST or DELIVER_ENCAPSULATED_RESPONSE
-     * or END_SESSION request(s) and skipped CHALLENGE completion, M1 and M2 are reset to null.
+     * or END_SESSION request(s) or SPDM_GET_MEASUREMENT_EXTENSION_LOG and skipped CHALLENGE completion, M1 and M2 are reset to null.
      */
     switch (request_code)
     {
@@ -1457,6 +1480,7 @@ void libspdm_reset_message_buffer_via_request_code(void *context, void *session_
     case SPDM_HEARTBEAT:
     case SPDM_GET_ENCAPSULATED_REQUEST:
     case SPDM_END_SESSION:
+    case SPDM_GET_MEASUREMENT_EXTENSION_LOG:
         if (spdm_context->connection_info.connection_state <
             LIBSPDM_CONNECTION_STATE_AUTHENTICATED) {
             libspdm_reset_message_b(spdm_context);
@@ -2643,7 +2667,7 @@ libspdm_return_t libspdm_acquire_sender_buffer (
     *max_msg_size = spdm_context->sender_buffer_size;
     #if LIBSPDM_ENABLE_CAPABILITY_CHUNK_CAP
     /* it return scratch buffer, because the requester need build message there.*/
-    *msg_buf_ptr = spdm_context->scratch_buffer +
+    *msg_buf_ptr = (uint8_t *)spdm_context->scratch_buffer +
                    libspdm_get_scratch_buffer_large_sender_receiver_offset(spdm_context);
     *max_msg_size = libspdm_get_scratch_buffer_large_sender_receiver_capacity(spdm_context);
     #endif
@@ -2707,7 +2731,7 @@ libspdm_return_t libspdm_acquire_receiver_buffer (
     *max_msg_size = spdm_context->receiver_buffer_size;
     #if LIBSPDM_ENABLE_CAPABILITY_CHUNK_CAP
     /* it return scratch buffer, because the requester need build message there.*/
-    *msg_buf_ptr = spdm_context->scratch_buffer +
+    *msg_buf_ptr = (uint8_t *)spdm_context->scratch_buffer +
                    libspdm_get_scratch_buffer_large_sender_receiver_offset(spdm_context);
     *max_msg_size = libspdm_get_scratch_buffer_large_sender_receiver_capacity(spdm_context);
     #endif
@@ -2793,9 +2817,9 @@ libspdm_return_t libspdm_init_fips_selftest_context(void *fips_selftest_context)
 
     context = fips_selftest_context;
 
-    /*No tested for every uesd algo*/
+    /*No tested for every used algo*/
     context->tested_algo = 0;
-    /*self_test reuslt is false for every uesd algo*/
+    /*self_test result is false for every used algo*/
     context->self_test_result = 0;
 
     return LIBSPDM_STATUS_SUCCESS;
@@ -2942,11 +2966,14 @@ libspdm_return_t libspdm_init_context_with_secured_context(void *spdm_context,
                                                      SPDM_VERSION_NUMBER_SHIFT_BIT;
     context->local_context.version.spdm_version[3] = SPDM_MESSAGE_VERSION_13 <<
                                                      SPDM_VERSION_NUMBER_SHIFT_BIT;
-    context->local_context.secured_message_version.spdm_version_count = 2;
+    context->local_context.secured_message_version.spdm_version_count =
+        SECURED_SPDM_MAX_VERSION_COUNT;
     context->local_context.secured_message_version.spdm_version[0] =
-        SPDM_MESSAGE_VERSION_10 << SPDM_VERSION_NUMBER_SHIFT_BIT;
+        SECURED_SPDM_VERSION_10 << SPDM_VERSION_NUMBER_SHIFT_BIT;
     context->local_context.secured_message_version.spdm_version[1] =
-        SPDM_MESSAGE_VERSION_11 << SPDM_VERSION_NUMBER_SHIFT_BIT;
+        SECURED_SPDM_VERSION_11 << SPDM_VERSION_NUMBER_SHIFT_BIT;
+    context->local_context.secured_message_version.spdm_version[2] =
+        SECURED_SPDM_VERSION_12 << SPDM_VERSION_NUMBER_SHIFT_BIT;
     context->local_context.capability.st1 = SPDM_ST1_VALUE_US;
 
     context->mut_auth_cert_chain_buffer_size = 0;
@@ -3094,9 +3121,7 @@ void libspdm_deinit_context(void *spdm_context)
                     context->connection_info.algorithm.req_base_asym_alg, pubkey_context);
             }
 
-            pubkey_context = NULL;
-            context->connection_info.peer_used_cert_chain[slot_index].
-            leaf_cert_public_key = NULL;
+            context->connection_info.peer_used_cert_chain[slot_index].leaf_cert_public_key = NULL;
         }
     }
 #endif

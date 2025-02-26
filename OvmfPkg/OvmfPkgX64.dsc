@@ -49,6 +49,7 @@
   DEFINE NETWORK_HTTP_BOOT_ENABLE       = FALSE
   DEFINE NETWORK_ALLOW_HTTP_CONNECTIONS = TRUE
   DEFINE NETWORK_ISCSI_ENABLE           = TRUE
+  DEFINE NETWORK_PXE_BOOT_ENABLE        = TRUE
 
 !include NetworkPkg/NetworkDefines.dsc.inc
 
@@ -296,6 +297,7 @@
   CcExitLib|OvmfPkg/Library/CcExitLib/SecCcExitLib.inf
   MemEncryptSevLib|OvmfPkg/Library/BaseMemEncryptSevLib/SecMemEncryptSevLib.inf
   CcProbeLib|OvmfPkg/Library/CcProbeLib/SecPeiCcProbeLib.inf
+  TdxMeasurementLib|OvmfPkg/IntelTdx/TdxMeasurementLib/SecPeiTdxMeasurementLib.inf
 
 [LibraryClasses.common.PEI_CORE]
   HobLib|MdePkg/Library/PeiHobLib/PeiHobLib.inf
@@ -343,6 +345,9 @@
 
   MemEncryptSevLib|OvmfPkg/Library/BaseMemEncryptSevLib/PeiMemEncryptSevLib.inf
   CcProbeLib|OvmfPkg/Library/CcProbeLib/SecPeiCcProbeLib.inf
+  BaseCryptLib|CryptoPkg/Library/BaseCryptLib/PeiCryptLib.inf
+  TdxMeasurementLib|OvmfPkg/IntelTdx/TdxMeasurementLib/SecPeiTdxMeasurementLib.inf
+  TdxHelperLib|OvmfPkg/IntelTdx/TdxHelperLib/PeiTdxHelperLib.inf
 
 [LibraryClasses.common.DXE_CORE]
   HobLib|MdePkg/Library/DxeCoreHobLib/DxeCoreHobLib.inf
@@ -430,6 +435,7 @@
   NestedInterruptTplLib|OvmfPkg/Library/NestedInterruptTplLib/NestedInterruptTplLib.inf
   QemuFwCfgS3Lib|OvmfPkg/Library/QemuFwCfgS3Lib/DxeQemuFwCfgS3LibFwCfg.inf
   QemuLoadImageLib|OvmfPkg/Library/X86QemuLoadImageLib/X86QemuLoadImageLib.inf
+  TdxMeasurementLib|OvmfPkg/IntelTdx/TdxMeasurementLib/DxeTdxMeasurementLib.inf
 
 [LibraryClasses.common.UEFI_APPLICATION]
   PcdLib|MdePkg/Library/DxePcdLib/DxePcdLib.inf
@@ -636,12 +642,7 @@
   gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageFtwWorkingBase|0
   gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageFtwSpareBase|0
 !endif
-  gEfiMdeModulePkgTokenSpaceGuid.PcdVideoHorizontalResolution|1280
-  gEfiMdeModulePkgTokenSpaceGuid.PcdVideoVerticalResolution|800
-  gEfiMdeModulePkgTokenSpaceGuid.PcdConOutRow|0
-  gEfiMdeModulePkgTokenSpaceGuid.PcdConOutColumn|0
   gEfiMdeModulePkgTokenSpaceGuid.PcdAcpiS3Enable|FALSE
-  gUefiOvmfPkgTokenSpaceGuid.PcdVideoResolutionSource|0
   gUefiOvmfPkgTokenSpaceGuid.PcdOvmfHostBridgePciDevId|0
   gUefiOvmfPkgTokenSpaceGuid.PcdPciIoBase|0x0
   gUefiOvmfPkgTokenSpaceGuid.PcdPciIoSize|0x0
@@ -689,6 +690,7 @@
   gEfiSecurityPkgTokenSpaceGuid.PcdOptionRomImageVerificationPolicy|0x00
 
 !include OvmfPkg/Include/Dsc/OvmfTpmPcds.dsc.inc
+!include OvmfPkg/Include/Dsc/OvmfDisplayPcds.dsc.inc
 
 !include NetworkPkg/NetworkDynamicPcds.dsc.inc
 
@@ -736,10 +738,8 @@
   }
   MdeModulePkg/Core/DxeIplPeim/DxeIpl.inf
 
-  OvmfPkg/PlatformPei/PlatformPei.inf {
-    <LibraryClasses>
-      NULL|OvmfPkg/IntelTdx/TdxHelperLib/PeiTdxHelperLib.inf
-  }
+  OvmfPkg/PlatformPei/PlatformPei.inf
+
   UefiCpuPkg/Universal/Acpi/S3Resume2Pei/S3Resume2Pei.inf {
     <LibraryClasses>
 !if $(SMM_REQUIRE) == TRUE
@@ -774,6 +774,13 @@
       MpInitLib|UefiCpuPkg/Library/MpInitLibUp/MpInitLibUp.inf
       NULL|OvmfPkg/Library/MpInitLibDepLib/PeiMpInitLibUpDepLib.inf
   }
+
+  #
+  # Cc Measurement PPI for Td guest
+  #
+!if $(CC_MEASUREMENT_ENABLE) == TRUE
+  OvmfPkg/Tcg/TdTcg2Pei/TdTcg2Pei.inf
+!endif
 
 !include OvmfPkg/Include/Dsc/OvmfTpmComponentsPei.dsc.inc
 
@@ -866,6 +873,7 @@
   OvmfPkg/VirtioBlkDxe/VirtioBlk.inf
   OvmfPkg/VirtioScsiDxe/VirtioScsi.inf
   OvmfPkg/VirtioSerialDxe/VirtioSerial.inf
+  OvmfPkg/VirtioKeyboardDxe/VirtioKeyboard.inf
 !if $(PVSCSI_ENABLE) == TRUE
   OvmfPkg/PvScsiDxe/PvScsiDxe.inf
 !endif
@@ -947,19 +955,7 @@
   #
 !include NetworkPkg/NetworkComponents.dsc.inc
 !include OvmfPkg/Include/Dsc/NetworkComponents.dsc.inc
-
-  OvmfPkg/VirtioNetDxe/VirtioNet.inf
-
-  #
-  # Usb Support
-  #
-  MdeModulePkg/Bus/Pci/UhciDxe/UhciDxe.inf
-  MdeModulePkg/Bus/Pci/EhciDxe/EhciDxe.inf
-  MdeModulePkg/Bus/Pci/XhciDxe/XhciDxe.inf
-  MdeModulePkg/Bus/Usb/UsbBusDxe/UsbBusDxe.inf
-  MdeModulePkg/Bus/Usb/UsbKbDxe/UsbKbDxe.inf
-  MdeModulePkg/Bus/Usb/UsbMassStorageDxe/UsbMassStorageDxe.inf
-
+!include OvmfPkg/Include/Dsc/UsbComponents.dsc.inc
 !include OvmfPkg/Include/Dsc/ShellComponents.dsc.inc
 !include OvmfPkg/Include/Dsc/MorLock.dsc.inc
 !include OvmfPkg/Include/Dsc/OvmfRngComponents.dsc.inc

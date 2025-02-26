@@ -1,84 +1,91 @@
-cmake_minimum_required(VERSION 2.8.12)
+cmake_minimum_required(VERSION 3.5)
 
 if(LIB_INSTALL_DIR)
 else()
     set(LIB_INSTALL_DIR lib)
 endif()
 
-ADD_SUBDIRECTORY(${CMAKE_CURRENT_LIST_DIR}/mbedtls/library)
+# Starting Mbed TLS 3.x release, mbedtls/library/CMakeLists.txt has dependency on
+# link_to_source() function that is in mbedtls/CMakeLists.txt, so define
+# link_to_source here. This shall be later expanded to add a link to the mbedtls
+# source file from the build directory if required by libspdm.
+function(link_to_source base_name)
+endfunction(link_to_source)
+
+add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/mbedtls/library)
 
 # mbedtls
 
 if(MBEDTLS_CONFIG_FILE)
 else()
-    TARGET_COMPILE_DEFINITIONS(mbedtls PRIVATE -DMBEDTLS_CONFIG_FILE=<config.h>)
+    target_compile_definitions(mbedtls PRIVATE -DMBEDTLS_CONFIG_FILE=<libspdm_mbedtls_config.h>)
 endif()
-TARGET_INCLUDE_DIRECTORIES(mbedtls PRIVATE
+target_include_directories(mbedtls PRIVATE
     ${CMAKE_CURRENT_LIST_DIR}/include/mbedtls
     ${CMAKE_CURRENT_LIST_DIR}/mbedtls/include
     ${CMAKE_CURRENT_LIST_DIR}/mbedtls/library
 )
 if(CMAKE_SYSTEM_NAME MATCHES "Windows")
     if((TOOLCHAIN STREQUAL "CBMC") OR (TOOLCHAIN STREQUAL "VS2015") OR (TOOLCHAIN STREQUAL "VS2019") OR (TOOLCHAIN STREQUAL "VS2022"))
-        TARGET_COMPILE_OPTIONS(mbedtls PRIVATE /wd4090 /wd4244 /wd4132 /wd4245 /wd4310 /wd4701 /wd4127 /wd4204 /wd4702)
+        target_compile_options(mbedtls PRIVATE /wd4090 /wd4244 /wd4132 /wd4245 /wd4310 /wd4701 /wd4127 /wd4204 /wd4702 /wd4200 /wd4389)
     endif()
 else()
-    TARGET_COMPILE_OPTIONS(mbedtls PRIVATE -Wno-cast-qual ${MBEDTLS_FLAGS})
+    target_compile_options(mbedtls PRIVATE -Wno-cast-qual ${MBEDTLS_FLAGS})
 endif()
 if(ARCH STREQUAL "x64")
-    TARGET_COMPILE_DEFINITIONS(mbedtls PRIVATE -DEFIx64)
+    target_compile_definitions(mbedtls PRIVATE -DEFIx64)
 elseif(ARCH STREQUAL "ia32")
-    TARGET_COMPILE_DEFINITIONS(mbedtls PRIVATE -DEFI32)
+    target_compile_definitions(mbedtls PRIVATE -DEFI32)
 endif()
 
 # mbedx509
 if(MBEDTLS_CONFIG_FILE)
 else()
-    TARGET_COMPILE_DEFINITIONS(mbedx509 PRIVATE -DMBEDTLS_CONFIG_FILE=<config.h>)
+    target_compile_definitions(mbedx509 PRIVATE -DMBEDTLS_CONFIG_FILE=<libspdm_mbedtls_config.h>)
 endif()
-TARGET_INCLUDE_DIRECTORIES(mbedx509 PRIVATE
+target_include_directories(mbedx509 PRIVATE
     ${CMAKE_CURRENT_LIST_DIR}/include/mbedtls
     ${CMAKE_CURRENT_LIST_DIR}/mbedtls/include
     ${CMAKE_CURRENT_LIST_DIR}/mbedtls/library
 )
 if(CMAKE_SYSTEM_NAME MATCHES "Windows")
     if((TOOLCHAIN STREQUAL "CBMC") OR (TOOLCHAIN STREQUAL "VS2015") OR (TOOLCHAIN STREQUAL "VS2019") OR (TOOLCHAIN STREQUAL "VS2022"))
-        TARGET_COMPILE_OPTIONS(mbedx509 PRIVATE /wd4090 /wd4244 /wd4132 /wd4245 /wd4310 /wd4701 /wd4127 /wd4204 /wd4702)
+        target_compile_options(mbedx509 PRIVATE /wd4090 /wd4244 /wd4132 /wd4245 /wd4310 /wd4701 /wd4127 /wd4204 /wd4702 /wd4200 /wd4389)
     endif()
 else()
-    TARGET_COMPILE_OPTIONS(mbedx509 PRIVATE -Wno-cast-qual ${MBEDTLS_FLAGS})
+    target_compile_options(mbedx509 PRIVATE -Wno-cast-qual ${MBEDTLS_FLAGS})
 endif()
 if(ARCH STREQUAL "x64")
-    TARGET_COMPILE_DEFINITIONS(mbedx509 PRIVATE -DEFIx64)
+    target_compile_definitions(mbedx509 PRIVATE -DEFIx64)
 elseif(ARCH STREQUAL "ia32")
-    TARGET_COMPILE_DEFINITIONS(mbedx509 PRIVATE -DEFI32)
+    target_compile_definitions(mbedx509 PRIVATE -DEFI32)
 endif()
 
 # mbedcrypto
 if(MBEDTLS_CONFIG_FILE)
 else()
-    TARGET_COMPILE_DEFINITIONS(mbedcrypto PRIVATE -DMBEDTLS_CONFIG_FILE=<config.h>)
+    target_compile_definitions(mbedcrypto PRIVATE -DMBEDTLS_CONFIG_FILE=<libspdm_mbedtls_config.h>)
 endif()
-TARGET_INCLUDE_DIRECTORIES(mbedcrypto PRIVATE
+target_include_directories(mbedcrypto PRIVATE
     ${CMAKE_CURRENT_LIST_DIR}/include/mbedtls
     ${CMAKE_CURRENT_LIST_DIR}/mbedtls/include
     ${CMAKE_CURRENT_LIST_DIR}/mbedtls/library
 )
 if(CMAKE_SYSTEM_NAME MATCHES "Windows")
     if((TOOLCHAIN STREQUAL "CBMC") OR (TOOLCHAIN STREQUAL "VS2015") OR (TOOLCHAIN STREQUAL "VS2019") OR (TOOLCHAIN STREQUAL "VS2022"))
-        TARGET_COMPILE_OPTIONS(mbedcrypto PRIVATE /wd4090 /wd4244 /wd4132 /wd4245 /wd4310 /wd4701 /wd4127 /wd4204 /wd4702)
+        target_compile_options(mbedcrypto PRIVATE /wd4090 /wd4244 /wd4132 /wd4245 /wd4310 /wd4701 /wd4127 /wd4204 /wd4702 /wd4200 /wd4389)
     endif()
 else()
-    TARGET_COMPILE_OPTIONS(mbedcrypto PRIVATE -Wno-cast-qual ${MBEDTLS_FLAGS})
+    target_compile_options(mbedcrypto PRIVATE -Wno-cast-qual ${MBEDTLS_FLAGS})
 endif()
 if(ARCH STREQUAL "x64")
-    TARGET_COMPILE_DEFINITIONS(mbedcrypto PRIVATE -DEFIx64)
+    target_compile_definitions(mbedcrypto PRIVATE -DEFIx64)
 elseif(ARCH STREQUAL "ia32")
-    TARGET_COMPILE_DEFINITIONS(mbedcrypto PRIVATE -DEFI32)
+    target_compile_definitions(mbedcrypto PRIVATE -DEFI32)
 endif()
 
-ADD_LIBRARY(mbedtlslib INTERFACE)
-TARGET_LINK_LIBRARIES(mbedtlslib INTERFACE
+add_library(mbedtlslib INTERFACE)
+target_link_libraries(mbedtlslib INTERFACE
     mbedx509
     mbedcrypto
 )

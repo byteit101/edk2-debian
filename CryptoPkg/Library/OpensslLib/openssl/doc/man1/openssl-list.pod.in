@@ -12,6 +12,7 @@ B<openssl list>
 [B<-verbose>]
 [B<-select> I<name>]
 [B<-1>]
+[B<-all-algorithms>]
 [B<-commands>]
 [B<-standard-commands>]
 [B<-digest-algorithms>]
@@ -32,6 +33,7 @@ B<openssl list>
 [B<-key-exchange-algorithms>]
 [B<-kem-algorithms>]
 [B<-signature-algorithms>]
+[B<-tls-signature-algorithms>]
 [B<-asymcipher-algorithms>]
 [B<-public-key-algorithms>]
 [B<-public-key-methods>]
@@ -71,6 +73,40 @@ Only list algorithms that match this name.
 
 List the commands, digest-commands, or cipher-commands in a single column.
 If used, this option must be given first.
+
+=item B<-all-algorithms>
+
+Display lists of all algorithms.  These include:
+
+=over 4
+
+=item Asymmetric ciphers
+
+=item Decoders
+
+=item Digests
+
+=item Encoders
+
+=item Key derivation algorithms (KDF)
+
+=item Key encapsulation methods (KEM)
+
+=item Key exchange algorithms (KEX)
+
+=item Key managers
+
+=item Message authentication code algorithms (MAC)
+
+=item Random number generators (RNG, DRBG)
+
+=item Signature algorithms
+
+=item Store loaders
+
+=item Symmetric ciphers
+
+=back
 
 =item B<-commands>
 
@@ -159,6 +195,13 @@ Display a list of key encapsulation algorithms.
 
 Display a list of signature algorithms.
 
+=item B<-tls-signature-algorithms>
+
+Display the list of signature algorithms available for TLS handshakes
+made available by all currently active providers.
+The output format is colon delimited in a form directly usable in
+L<SSL_CONF_cmd(3)> specifying SignatureAlgorithms.
+
 =item B<-asymcipher-algorithms>
 
 Display a list of asymmetric cipher algorithms.
@@ -237,7 +280,7 @@ were deprecated in OpenSSL 3.0.
 
 =head1 COPYRIGHT
 
-Copyright 2016-2022 The OpenSSL Project Authors. All Rights Reserved.
+Copyright 2016-2024 The OpenSSL Project Authors. All Rights Reserved.
 
 Licensed under the Apache License 2.0 (the "License").  You may not use
 this file except in compliance with the License.  You can obtain a copy

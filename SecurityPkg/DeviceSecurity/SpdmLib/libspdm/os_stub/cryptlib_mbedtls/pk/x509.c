@@ -260,10 +260,10 @@ bool libspdm_asn1_get_tag(uint8_t **ptr, const uint8_t *end, size_t *length,
  * If cert is NULL, then return false.
  * If subject_size is NULL, then return false.
  *
- * @retval  true   The certificate subject retrieved successfully.
- * @retval  false  Invalid certificate, or the subject_size is too small for the result.
- *                The subject_size will be updated with the required size.
- *
+ * @retval  true   If the subject_size is not equal 0. The certificate subject retrieved successfully.
+ * @retval  true   If the subject_size is equal 0. The certificate parse successful. But the cert doesn't have subject.
+ * @retval  false  If the subject_size is not equal 0. The certificate subject retrieved successfully.But the subject_size is too small for the result.
+ * @retval  false  If the subject_size is equal 0. Invalid certificate.
  **/
 bool libspdm_x509_get_subject_name(const uint8_t *cert, size_t cert_size,
                                    uint8_t *cert_subject,
@@ -273,7 +273,11 @@ bool libspdm_x509_get_subject_name(const uint8_t *cert, size_t cert_size,
     int ret;
     bool status;
 
-    if (cert == NULL) {
+    /* Check input parameters.*/
+    if (cert == NULL || cert == 0 || subject_size == NULL) {
+        if (subject_size != NULL) {
+            *subject_size = 0;
+        }
         return false;
     }
 
@@ -295,6 +299,8 @@ bool libspdm_x509_get_subject_name(const uint8_t *cert, size_t cert_size,
         }
         *subject_size = crt.subject_raw.len;
         status = true;
+    } else {
+        *subject_size = 0;
     }
 
 cleanup:
@@ -308,9 +314,9 @@ libspdm_internal_x509_get_nid_name(mbedtls_x509_name *name, const uint8_t *oid,
                                    size_t oid_size, char *common_name,
                                    size_t *common_name_size)
 {
-    mbedtls_asn1_named_data *data;
+    const mbedtls_asn1_named_data *data;
 
-    data = mbedtls_asn1_find_named_data(name, oid, oid_size);
+    data = mbedtls_asn1_find_named_data(name, (const char *)oid, oid_size);
     if (data != NULL) {
         if (*common_name_size <= data->val.len) {
             *common_name_size = data->val.len + 1;
@@ -692,8 +698,8 @@ bool libspdm_x509_verify_cert_chain(const uint8_t *root_cert, size_t root_cert_l
     size_t preceding_cert_len;
     const uint8_t *preceding_cert;
     size_t current_cert_len;
-    const uint8_t *current_cert;
-    const uint8_t *tmp_ptr;
+    const unsigned char *current_cert;
+    const unsigned char *tmp_ptr;
     int ret;
     bool verify_flag;
 
@@ -701,7 +707,7 @@ bool libspdm_x509_verify_cert_chain(const uint8_t *root_cert, size_t root_cert_l
     preceding_cert = root_cert;
     preceding_cert_len = root_cert_length;
 
-    current_cert = cert_chain;
+    current_cert = (const unsigned char *)cert_chain;
 
 
     /* Get Current certificate from certificates buffer and Verify with preciding cert*/
@@ -712,10 +718,18 @@ bool libspdm_x509_verify_cert_chain(const uint8_t *root_cert, size_t root_cert_l
             &tmp_ptr, cert_chain + cert_chain_length, &asn1_len,
             MBEDTLS_ASN1_CONSTRUCTED | MBEDTLS_ASN1_SEQUENCE);
         if (ret != 0) {
+            if (current_cert < cert_chain + cert_chain_length) {
+                verify_flag = false;
+            }
             break;
         }
 
         current_cert_len = asn1_len + (tmp_ptr - current_cert);
+
+        if (current_cert + current_cert_len > cert_chain + cert_chain_length) {
+            verify_flag = false;
+            break;
+        }
 
         if (libspdm_x509_verify_cert(current_cert, current_cert_len,
                                      preceding_cert,
@@ -767,8 +781,8 @@ bool libspdm_x509_get_cert_from_cert_chain(const uint8_t *cert_chain,
     size_t asn1_len;
     int32_t current_index;
     size_t current_cert_len;
-    const uint8_t *current_cert;
-    const uint8_t *tmp_ptr;
+    const unsigned char *current_cert;
+    const unsigned char *tmp_ptr;
     int ret;
 
     current_cert_len = 0;
@@ -780,7 +794,7 @@ bool libspdm_x509_get_cert_from_cert_chain(const uint8_t *cert_chain,
         return false;
     }
 
-    current_cert = cert_chain;
+    current_cert = (const unsigned char *)cert_chain;
     current_index = -1;
 
 
@@ -799,6 +813,10 @@ bool libspdm_x509_get_cert_from_cert_chain(const uint8_t *cert_chain,
         }
 
         current_cert_len = asn1_len + (tmp_ptr - current_cert);
+        if (current_cert + current_cert_len > cert_chain + cert_chain_length) {
+            return false;
+        }
+
         current_index++;
 
         if (current_index == cert_index) {
@@ -963,10 +981,10 @@ cleanup:
  * @param[in, out] issuer_size  The size in bytes of the cert_issuer buffer on input,
  *                             and the size of buffer returned cert_issuer on output.
  *
- * @retval  true   The certificate issuer retrieved successfully.
- * @retval  false  Invalid certificate, or the issuer_size is too small for the result.
- *                The issuer_size will be updated with the required size.
- * @retval  false  This interface is not supported.
+ * @retval  true   If the issuer_size is not equal 0. The certificate issuer retrieved successfully.
+ * @retval  true   If the issuer_size is equal 0. The certificate parse successful. But the cert doesn't have issuer.
+ * @retval  false  If the issuer_size is not equal 0. The certificate issuer retrieved successfully. But the issuer_size is too small for the result.
+ * @retval  false  If the issuer_size is equal 0. Invalid certificate.
  *
  **/
 bool libspdm_x509_get_issuer_name(const uint8_t *cert, size_t cert_size,
@@ -977,7 +995,11 @@ bool libspdm_x509_get_issuer_name(const uint8_t *cert, size_t cert_size,
     int ret;
     bool status;
 
-    if (cert == NULL) {
+    /* Check input parameters.*/
+    if (cert == NULL || cert_size == 0 || issuer_size == NULL) {
+        if (issuer_size != NULL) {
+            *issuer_size = 0;
+        }
         return false;
     }
 
@@ -998,6 +1020,8 @@ bool libspdm_x509_get_issuer_name(const uint8_t *cert, size_t cert_size,
         }
         *issuer_size = crt.issuer_raw.len;
         status = true;
+    } else {
+        *issuer_size = 0;
     }
 
 cleanup:
@@ -1079,6 +1103,7 @@ libspdm_x509_get_issuer_orgnization_name(const uint8_t *cert, size_t cert_size,
         sizeof(m_libspdm_oid_organization_name), name_buffer, name_buffer_size);
 }
 
+#if LIBSPDM_ADDITIONAL_CHECK_CERT
 /**
  * Retrieve the signature algorithm from one X.509 certificate.
  *
@@ -1087,15 +1112,10 @@ libspdm_x509_get_issuer_orgnization_name(const uint8_t *cert, size_t cert_size,
  * @param[out]     oid              signature algorithm Object identifier buffer.
  * @param[in,out]  oid_size          signature algorithm Object identifier buffer size
  *
- * @retval RETURN_SUCCESS           The certificate Extension data retrieved successfully.
- * @retval RETURN_INVALID_PARAMETER If cert is NULL.
- *                                 If oid_size is NULL.
- *                                 If oid is not NULL and *oid_size is 0.
- *                                 If Certificate is invalid.
- * @retval RETURN_NOT_FOUND         If no SignatureType.
- * @retval RETURN_BUFFER_TOO_SMALL  If the oid is NULL. The required buffer size
- *                                 is returned in the oid_size.
- * @retval RETURN_UNSUPPORTED       The operation is not supported.
+ * @retval  true    if the oid_size is equal 0, the cert parse successfully, but cert doesn't have signature algo.
+ * @retval  true    if the oid_size is not equal 0, the cert parse and get signature algo successfully.
+ * @retval  false   if the oid_size is equal 0, the cert parse failed.
+ * @retval  false   if the oid_size is not equal 0, the cert parse and get signature algo successfully, but the input buffer size is small.
  **/
 bool libspdm_x509_get_signature_algorithm(const uint8_t *cert,
                                           size_t cert_size, uint8_t *oid,
@@ -1105,7 +1125,11 @@ bool libspdm_x509_get_signature_algorithm(const uint8_t *cert,
     int ret;
     bool status;
 
+    /* Check input parameters.*/
     if (cert == NULL || cert_size == 0 || oid_size == NULL) {
+        if (oid_size != NULL) {
+            *oid_size = 0;
+        }
         return false;
     }
 
@@ -1126,6 +1150,8 @@ bool libspdm_x509_get_signature_algorithm(const uint8_t *cert,
         }
         *oid_size = crt.sig_oid.len;
         status = true;
+    } else {
+        *oid_size = 0;
     }
 
 cleanup:
@@ -1133,6 +1159,7 @@ cleanup:
 
     return status;
 }
+#endif /* LIBSPDM_ADDITIONAL_CHECK_CERT */
 
 /**
  * Find first Extension data match with given OID
@@ -1329,19 +1356,37 @@ bool libspdm_x509_get_validity(const uint8_t *cert, size_t cert_size,
     bool status;
     size_t t_size;
     size_t f_size;
+    mbedtls_x509_time zero_time;
 
-    if (cert == NULL) {
+    /* Check input parameters.*/
+    if (cert == NULL || from_size == NULL || to_size == NULL ||
+        cert_size == 0) {
+        if (from_size != NULL) {
+            *from_size = 0;
+        }
+        if (to_size != NULL) {
+            *to_size = 0;
+        }
         return false;
     }
 
     status = false;
 
     mbedtls_x509_crt_init(&crt);
+    libspdm_zero_mem(&zero_time, sizeof(mbedtls_x509_time));
 
     ret = mbedtls_x509_crt_parse_der(&crt, cert, cert_size);
 
     if (ret == 0) {
         f_size = sizeof(mbedtls_x509_time);
+        if ((libspdm_consttime_is_mem_equal(&zero_time, &(crt.valid_from), f_size)) &&
+            (libspdm_consttime_is_mem_equal(&zero_time, &(crt.valid_to), f_size))) {
+            *from_size = 0;
+            *to_size = 0;
+            status = true;
+            goto done;
+        }
+
         if (*from_size < f_size) {
             *from_size = f_size;
             goto done;
@@ -1362,6 +1407,9 @@ bool libspdm_x509_get_validity(const uint8_t *cert, size_t cert_size,
         }
         *to_size = t_size;
         status = true;
+    } else {
+        *from_size = 0;
+        *to_size = 0;
     }
 
 done:
@@ -1377,9 +1425,9 @@ done:
  * @param[in]      cert_size         size of the X509 certificate in bytes.
  * @param[out]     usage            key usage (LIBSPDM_CRYPTO_X509_KU_*)
  *
- * @retval  true   The certificate key usage retrieved successfully.
- * @retval  false  Invalid certificate, or usage is NULL
- * @retval  false  This interface is not supported.
+ * @retval  true   if the usage is no equal 0. The certificate key usage retrieved successfully.
+ * @retval  true   if the usage is equal 0. The certificate parse successfully, but the cert doesn't have key usage.
+ * @retval  false  Invalid certificate, or usage is NULL.
  **/
 bool libspdm_x509_get_key_usage(const uint8_t *cert, size_t cert_size,
                                 size_t *usage)
@@ -1388,7 +1436,11 @@ bool libspdm_x509_get_key_usage(const uint8_t *cert, size_t cert_size,
     int ret;
     bool status;
 
-    if (cert == NULL) {
+    /* Check input parameters.*/
+    if (cert == NULL || cert_size == 0 || usage == NULL) {
+        if (usage != NULL) {
+            *usage = 0;
+        }
         return false;
     }
 
@@ -1399,8 +1451,10 @@ bool libspdm_x509_get_key_usage(const uint8_t *cert, size_t cert_size,
     ret = mbedtls_x509_crt_parse_der(&crt, cert, cert_size);
 
     if (ret == 0) {
-        *usage = crt.key_usage;
+        *usage = crt.MBEDTLS_PRIVATE(key_usage);
         status = true;
+    } else {
+        *usage = 0;
     }
     mbedtls_x509_crt_free(&crt);
 
@@ -1817,7 +1871,7 @@ bool libspdm_set_attribute_for_req(mbedtls_x509write_csr *req,
     }
 
     /*set subject name*/
-    ret = mbedtls_x509write_csr_set_subject_name(req, buffer);
+    ret = mbedtls_x509write_csr_set_subject_name(req, (const char *)buffer);
     if (ret != 0) {
         return false;
     }
@@ -1884,7 +1938,9 @@ bool libspdm_set_attribute_for_req(mbedtls_x509write_csr *req,
             val_len = obj_len;
 
             /*set attributes*/
-            ret = mbedtls_x509write_csr_set_extension(req, oid, oid_len, val, val_len);
+            ret = mbedtls_x509write_csr_set_extension(req, (const char *)oid, oid_len, 0, val,
+                                                      val_len);
+
             if (ret) {
                 return false;
             }
@@ -2027,6 +2083,15 @@ bool libspdm_gen_x509_csr(size_t hash_nid, size_t asym_nid,
     case LIBSPDM_CRYPTO_NID_SHA512:
         md_alg = MBEDTLS_MD_SHA512;
         break;
+    case LIBSPDM_CRYPTO_NID_SHA3_256:
+        md_alg = MBEDTLS_MD_SHA3_256;
+        break;
+    case LIBSPDM_CRYPTO_NID_SHA3_384:
+        md_alg = MBEDTLS_MD_SHA3_384;
+        break;
+    case LIBSPDM_CRYPTO_NID_SHA3_512:
+        md_alg = MBEDTLS_MD_SHA3_512;
+        break;
     default:
         ret = 1;
         goto free_all;
@@ -2073,6 +2138,7 @@ bool libspdm_gen_x509_csr(size_t hash_nid, size_t asym_nid,
     /*set basicConstraints*/
     if (mbedtls_x509write_csr_set_extension(&req, MBEDTLS_OID_BASIC_CONSTRAINTS,
                                             MBEDTLS_OID_SIZE(MBEDTLS_OID_BASIC_CONSTRAINTS),
+                                            0,
                                             is_ca ? basic_constraints_true : basic_constraints_false,
                                             is_ca ?
                                             sizeof(basic_constraints_true) :
@@ -2118,8 +2184,8 @@ bool libspdm_gen_x509_csr(size_t hash_nid, size_t asym_nid,
             continue;
         }
 
-        if (mbedtls_x509write_csr_set_extension(&req, next_oid->buf.p,
-                                                oid_tag_len,
+        if (mbedtls_x509write_csr_set_extension(&req, (const char *)next_oid->buf.p,
+                                                oid_tag_len, 0,
                                                 next_oid->buf.p + oid_tag_len,
                                                 next_oid->buf.len - oid_tag_len
                                                 ) != 0) {

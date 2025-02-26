@@ -90,8 +90,6 @@
   MemLibWrapper|SecurityPkg/DeviceSecurity/OsStub/MemLibWrapper/MemLibWrapper.inf
 
 [LibraryClasses.ARM, LibraryClasses.AARCH64]
-  ArmSoftFloatLib|ArmPkg/Library/ArmSoftFloatLib/ArmSoftFloatLib.inf
-
   ArmTrngLib|MdePkg/Library/BaseArmTrngLibNull/BaseArmTrngLibNull.inf
 
 [LibraryClasses.ARM]
@@ -288,6 +286,7 @@
   #
   # Random Number Generator
   #
+  SecurityPkg/RandomNumberGenerator/RngPei/RngPei.inf
   SecurityPkg/RandomNumberGenerator/RngDxe/RngDxe.inf
 
   #
@@ -410,5 +409,6 @@
 
 [BuildOptions]
    MSFT:*_*_IA32_DLINK_FLAGS = /ALIGN:256
+   MSFT:*_*_IA32_DLINK_XIPFLAGS = /ALIGN:256
   INTEL:*_*_IA32_DLINK_FLAGS = /ALIGN:256
         *_*_*_CC_FLAGS       = -D DISABLE_NEW_DEPRECATED_INTERFACES

@@ -67,6 +67,7 @@ libspdm_return_t my_test_get_response_func2(
  **/
 void libspdm_test_responder_receive_send_rsp_case1(void** state)
 {
+#if LIBSPDM_ENABLE_CAPABILITY_MEAS_CAP
     /* This test case is partially copied from test_requester_get_measurement_case4 */
     libspdm_return_t status;
     libspdm_test_context_t* spdm_test_context;
@@ -191,6 +192,7 @@ void libspdm_test_responder_receive_send_rsp_case1(void** state)
     libspdm_asym_free(spdm_context->connection_info.algorithm.base_asym_algo,
                       spdm_context->connection_info.peer_used_cert_chain[0].leaf_cert_public_key);
     #endif
+#endif /* LIBSPDM_ENABLE_CAPABILITY_MEAS_CAP */
 }
 
 /**
@@ -363,6 +365,7 @@ void libspdm_test_responder_receive_send_rsp_case3(void** state)
  **/
 void libspdm_test_responder_receive_send_rsp_case4(void** state)
 {
+#if LIBSPDM_ENABLE_CAPABILITY_MEAS_CAP
     /* This test case is partially copied from test_requester_get_measurement_case4 */
     libspdm_return_t status;
     libspdm_test_context_t* spdm_test_context;
@@ -485,12 +488,8 @@ void libspdm_test_responder_receive_send_rsp_case4(void** state)
     libspdm_asym_free(spdm_context->connection_info.algorithm.base_asym_algo,
                       spdm_context->connection_info.peer_used_cert_chain[0].leaf_cert_public_key);
     #endif
+#endif /* LIBSPDM_ENABLE_CAPABILITY_MEAS_CAP */
 }
-
-libspdm_test_context_t m_libspdm_responder_receive_send_test_context = {
-    LIBSPDM_TEST_CONTEXT_VERSION,
-    false,
-};
 
 int libspdm_responder_receive_send_test_main(void)
 {
@@ -509,7 +508,12 @@ int libspdm_responder_receive_send_test_main(void)
                                libspdm_unit_test_group_setup),
     };
 
-    libspdm_setup_test_context(&m_libspdm_responder_receive_send_test_context);
+    libspdm_test_context_t test_context = {
+        LIBSPDM_TEST_CONTEXT_VERSION,
+        false,
+    };
+
+    libspdm_setup_test_context(&test_context);
 
     return cmocka_run_group_tests(spdm_responder_receive_send_tests,
                                   libspdm_unit_test_group_setup,

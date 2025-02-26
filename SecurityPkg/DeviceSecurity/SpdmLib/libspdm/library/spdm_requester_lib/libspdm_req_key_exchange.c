@@ -305,6 +305,11 @@ static libspdm_return_t libspdm_try_send_receive_key_exchange(
     LIBSPDM_ASSERT(measurement_hash_type == SPDM_KEY_EXCHANGE_REQUEST_NO_MEASUREMENT_SUMMARY_HASH ||
                    measurement_hash_type == SPDM_KEY_EXCHANGE_REQUEST_TCB_COMPONENT_MEASUREMENT_HASH ||
                    measurement_hash_type == SPDM_KEY_EXCHANGE_REQUEST_ALL_MEASUREMENTS_HASH);
+    LIBSPDM_ASSERT((libspdm_get_connection_version(spdm_context) < SPDM_MESSAGE_VERSION_13) ||
+                   ((session_policy & SPDM_KEY_EXCHANGE_REQUEST_SESSION_POLICY_EVENT_ALL_POLICY)
+                    == 0) ||
+                   libspdm_is_capabilities_flag_supported(
+                       spdm_context, true, 0, SPDM_GET_CAPABILITIES_RESPONSE_FLAGS_EVENT_CAP));
 
     /* -=[Verify State Phase]=- */
     if (libspdm_get_connection_version(spdm_context) < SPDM_MESSAGE_VERSION_11) {
@@ -347,6 +352,7 @@ static libspdm_return_t libspdm_try_send_receive_key_exchange(
     spdm_request_size = message_size - transport_header_size -
                         spdm_context->local_context.capability.transport_tail_size;
 
+    LIBSPDM_ASSERT (spdm_request_size >= sizeof(spdm_key_exchange_request_t));
     spdm_request->header.spdm_version = libspdm_get_connection_version (spdm_context);
     spdm_request->header.request_response_code = SPDM_KEY_EXCHANGE;
     spdm_request->header.param1 = measurement_hash_type;
@@ -388,6 +394,7 @@ static libspdm_return_t libspdm_try_send_receive_key_exchange(
         return LIBSPDM_STATUS_CRYPTO_ERROR;
     }
 
+    LIBSPDM_ASSERT (spdm_request_size >= sizeof(spdm_key_exchange_request_t) + dhe_key_size);
     result = libspdm_secured_message_dhe_generate_key(
         spdm_context->connection_info.algorithm.dhe_named_group,
         dhe_context, ptr, &dhe_key_size);
@@ -404,6 +411,9 @@ static libspdm_return_t libspdm_try_send_receive_key_exchange(
     if (requester_opaque_data != NULL) {
         LIBSPDM_ASSERT(requester_opaque_data_size <= SPDM_MAX_OPAQUE_DATA_SIZE);
 
+        LIBSPDM_ASSERT (spdm_request_size >= sizeof(spdm_key_exchange_request_t) + dhe_key_size +
+                        sizeof(uint16_t) + requester_opaque_data_size);
+
         libspdm_write_uint16(ptr, (uint16_t)requester_opaque_data_size);
         ptr += sizeof(uint16_t);
 
@@ -414,6 +424,9 @@ static libspdm_return_t libspdm_try_send_receive_key_exchange(
     } else {
         opaque_key_exchange_req_size =
             libspdm_get_opaque_data_supported_version_data_size(spdm_context);
+        LIBSPDM_ASSERT (spdm_request_size >= sizeof(spdm_key_exchange_request_t) + dhe_key_size +
+                        sizeof(uint16_t) + opaque_key_exchange_req_size);
+
         libspdm_write_uint16(ptr, (uint16_t)opaque_key_exchange_req_size);
         ptr += sizeof(uint16_t);
 
@@ -446,7 +459,6 @@ static libspdm_return_t libspdm_try_send_receive_key_exchange(
     spdm_response = (void *)(message);
     spdm_response_size = message_size;
 
-    libspdm_zero_mem(spdm_response, spdm_response_size);
     status = libspdm_receive_spdm_response(
         spdm_context, NULL, &spdm_response_size, (void **)&spdm_response);
     if (LIBSPDM_STATUS_IS_ERROR(status)) {
@@ -510,10 +522,24 @@ static libspdm_return_t libspdm_try_send_receive_key_exchange(
     mut_auth_requested = spdm_response->mut_auth_requested & 0x7;
 
     if (mut_auth_requested != 0) {
-        if (!libspdm_is_capabilities_flag_supported(
-                spdm_context, true,
-                SPDM_GET_CAPABILITIES_REQUEST_FLAGS_MUT_AUTH_CAP,
-                SPDM_GET_CAPABILITIES_RESPONSE_FLAGS_MUT_AUTH_CAP)) {
+        const bool mut_auth_cap_both = libspdm_is_capabilities_flag_supported(
+            spdm_context, true,
+            SPDM_GET_CAPABILITIES_REQUEST_FLAGS_MUT_AUTH_CAP,
+            SPDM_GET_CAPABILITIES_RESPONSE_FLAGS_MUT_AUTH_CAP);
+        const bool encap_cap_both = libspdm_is_capabilities_flag_supported(
+            spdm_context, true,
+            SPDM_GET_CAPABILITIES_REQUEST_FLAGS_ENCAP_CAP,
+            SPDM_GET_CAPABILITIES_RESPONSE_FLAGS_ENCAP_CAP);
+        const bool cert_cap = libspdm_is_capabilities_flag_supported(
+            spdm_context, true,
+            SPDM_GET_CAPABILITIES_REQUEST_FLAGS_CERT_CAP,
+            0);
+        const bool pub_key_id_cap = libspdm_is_capabilities_flag_supported(
+            spdm_context, true,
+            SPDM_GET_CAPABILITIES_REQUEST_FLAGS_PUB_KEY_ID_CAP,
+            0);
+
+        if (!mut_auth_cap_both) {
             libspdm_secured_message_dhe_free(
                 spdm_context->connection_info.algorithm.dhe_named_group, dhe_context);
             status = LIBSPDM_STATUS_INVALID_MSG_FIELD;
@@ -529,16 +555,21 @@ static libspdm_return_t libspdm_try_send_receive_key_exchange(
             status = LIBSPDM_STATUS_INVALID_MSG_FIELD;
             goto receive_done;
         }
+
         if (mut_auth_requested == SPDM_KEY_EXCHANGE_RESPONSE_MUT_AUTH_REQUESTED) {
-            if ((*req_slot_id_param != 0xF) && (*req_slot_id_param >= SPDM_MAX_SLOT_COUNT)) {
+            /* Non-encapsulated flow.
+             * Requester has either CERT_CAP or PUB_KEY_ID_CAP set. */
+
+            if ((cert_cap && (*req_slot_id_param >= SPDM_MAX_SLOT_COUNT)) ||
+                (pub_key_id_cap && (*req_slot_id_param != 0xf))) {
                 libspdm_secured_message_dhe_free(
                     spdm_context->connection_info.algorithm.dhe_named_group, dhe_context);
                 status = LIBSPDM_STATUS_INVALID_MSG_FIELD;
                 goto receive_done;
             }
-
             if ((spdm_request->header.spdm_version >= SPDM_MESSAGE_VERSION_13) &&
-                spdm_context->connection_info.multi_key_conn_req) {
+                spdm_context->connection_info.multi_key_conn_req &&
+                (*req_slot_id_param != 0xf)) {
                 if ((spdm_context->local_context.local_key_usage_bit_mask[*req_slot_id_param] &
                      SPDM_KEY_USAGE_BIT_MASK_KEY_EX_USE) == 0) {
                     libspdm_secured_message_dhe_free(
@@ -546,6 +577,23 @@ static libspdm_return_t libspdm_try_send_receive_key_exchange(
                     status = LIBSPDM_STATUS_INVALID_MSG_FIELD;
                     goto receive_done;
                 }
+            }
+        } else {
+            /* Encapsulated flow. */
+
+            /* If Responder has Requester's public key then it cannot use the encapsulated flow. */
+            if (pub_key_id_cap) {
+                libspdm_secured_message_dhe_free(
+                    spdm_context->connection_info.algorithm.dhe_named_group, dhe_context);
+                status = LIBSPDM_STATUS_INVALID_MSG_FIELD;
+                goto receive_done;
+            }
+            /* Encapsulated flow requires ENCAP_CAP for both endpoints. */
+            if (!encap_cap_both) {
+                libspdm_secured_message_dhe_free(
+                    spdm_context->connection_info.algorithm.dhe_named_group, dhe_context);
+                status = LIBSPDM_STATUS_INVALID_MSG_FIELD;
+                goto receive_done;
             }
         }
     }
@@ -792,7 +840,7 @@ libspdm_return_t libspdm_send_receive_key_exchange(
             session_id, heartbeat_period, req_slot_id_param,
             measurement_hash,
             NULL, NULL, NULL, NULL, 0, NULL, NULL);
-        if ((status != LIBSPDM_STATUS_BUSY_PEER) || (retry == 0)) {
+        if (status != LIBSPDM_STATUS_BUSY_PEER) {
             return status;
         }
 
@@ -829,7 +877,7 @@ libspdm_return_t libspdm_send_receive_key_exchange_ex(
             requester_random, responder_random,
             requester_opaque_data, requester_opaque_data_size,
             responder_opaque_data, responder_opaque_data_size);
-        if ((status != LIBSPDM_STATUS_BUSY_PEER) || (retry == 0)) {
+        if (status != LIBSPDM_STATUS_BUSY_PEER) {
             return status;
         }
 

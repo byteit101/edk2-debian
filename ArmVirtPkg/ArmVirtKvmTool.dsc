@@ -30,6 +30,8 @@
 [Defines.AARCH64]
   DEFINE ACPIVIEW_ENABLE         = TRUE
 
+
+# This comes before MdeLibs to ensure stack cookie configuration is chosen
 !include ArmVirtPkg/ArmVirt.dsc.inc
 
 !if $(ARCH) == AARCH64
@@ -84,7 +86,7 @@
   HwInfoParserLib|DynamicTablesPkg/Library/FdtHwInfoParserLib/FdtHwInfoParserLib.inf
   DynamicPlatRepoLib|DynamicTablesPkg/Library/Common/DynamicPlatRepoLib/DynamicPlatRepoLib.inf
 
-  ArmMonitorLib|ArmPkg/Library/ArmMonitorLib/ArmMonitorLib.inf
+  ArmMonitorLib|ArmVirtPkg/Library/ArmVirtMonitorLib/ArmVirtMonitorLib.inf
   ArmTrngLib|ArmPkg/Library/ArmTrngLib/ArmTrngLib.inf
 
 [LibraryClasses.common.SEC, LibraryClasses.common.PEI_CORE, LibraryClasses.common.PEIM]
@@ -299,7 +301,10 @@
 
   MdeModulePkg/Universal/HiiDatabaseDxe/HiiDatabaseDxe.inf
 
-  ArmPkg/Drivers/ArmGic/ArmGicDxe.inf
+  ArmPkg/Drivers/ArmGicDxe/ArmGicDxe.inf {
+    <LibraryClasses>
+      NULL|ArmVirtPkg/Library/ArmVirtGicArchLib/ArmVirtGicArchLib.inf
+  }
   ArmPkg/Drivers/TimerDxe/TimerDxe.inf {
     <LibraryClasses>
       NULL|ArmVirtPkg/Library/ArmVirtTimerFdtClientLib/ArmVirtTimerFdtClientLib.inf

@@ -44,6 +44,10 @@ const char *libspdm_get_code_str(uint8_t request_code)
         { SPDM_CHUNK_RESPONSE, "SPDM_CHUNK_RESPONSE" },
         /* SPDM response code (1.3 )*/
         { SPDM_SUPPORTED_EVENT_TYPES, "SPDM_SUPPORTED_EVENT_TYPES" },
+        { SPDM_SUBSCRIBE_EVENT_TYPES_ACK, "SPDM_SUBSCRIBE_EVENT_TYPES_ACK" },
+        { SPDM_MEASUREMENT_EXTENSION_LOG, "SPDM_MEASUREMENT_EXTENSION_LOG" },
+        { SPDM_KEY_PAIR_INFO, "SPDM_KEY_PAIR_INFO" },
+        { SPDM_SET_KEY_PAIR_INFO_ACK, "SPDM_SET_KEY_PAIR_INFO_ACK" },
         /* SPDM request code (1.0) */
         { SPDM_GET_DIGESTS, "SPDM_GET_DIGESTS" },
         { SPDM_GET_CERTIFICATE, "SPDM_GET_CERTIFICATE" },
@@ -70,7 +74,11 @@ const char *libspdm_get_code_str(uint8_t request_code)
         { SPDM_CHUNK_SEND, "SPDM_CHUNK_SEND" },
         { SPDM_CHUNK_GET, "SPDM_CHUNK_GET" },
         /* SPDM request code (1.3) */
-        { SPDM_GET_SUPPORTED_EVENT_TYPES, "SPDM_GET_SUPPORTED_EVENT_TYPES" }
+        { SPDM_GET_SUPPORTED_EVENT_TYPES, "SPDM_GET_SUPPORTED_EVENT_TYPES" },
+        { SPDM_SUBSCRIBE_EVENT_TYPES, "SPDM_SUBSCRIBE_EVENT_TYPES" },
+        { SPDM_GET_MEASUREMENT_EXTENSION_LOG, "SPDM_GET_MEASUREMENT_EXTENSION_LOG" },
+        { SPDM_GET_KEY_PAIR_INFO, "SPDM_GET_KEY_PAIR_INFO" },
+        { SPDM_GET_SUPPORTED_EVENT_TYPES, "SPDM_SET_KEY_PAIR_INFO" },
     };
 
     for (index = 0; index < LIBSPDM_ARRAY_SIZE(code_str_struct); index++) {
@@ -330,4 +338,39 @@ bool libspdm_get_fips_mode(void)
 #else
     return false;
 #endif
+}
+
+uint32_t libspdm_mask_capability_flags(libspdm_context_t *spdm_context,
+                                       bool is_request_flags, uint32_t flags)
+{
+    switch (libspdm_get_connection_version(spdm_context)) {
+    case SPDM_MESSAGE_VERSION_10:
+        if (is_request_flags) {
+            /* A 1.0 Requester does not have any capability flags. */
+            return 0;
+        } else {
+            return (flags & SPDM_GET_CAPABILITIES_RESPONSE_FLAGS_10_MASK);
+        }
+    case SPDM_MESSAGE_VERSION_11:
+        if (is_request_flags) {
+            return (flags & SPDM_GET_CAPABILITIES_REQUEST_FLAGS_11_MASK);
+        } else {
+            return (flags & SPDM_GET_CAPABILITIES_RESPONSE_FLAGS_11_MASK);
+        }
+    case SPDM_MESSAGE_VERSION_12:
+        if (is_request_flags) {
+            return (flags & SPDM_GET_CAPABILITIES_REQUEST_FLAGS_12_MASK);
+        } else {
+            return (flags & SPDM_GET_CAPABILITIES_RESPONSE_FLAGS_12_MASK);
+        }
+    case SPDM_MESSAGE_VERSION_13:
+        if (is_request_flags) {
+            return (flags & SPDM_GET_CAPABILITIES_REQUEST_FLAGS_13_MASK);
+        } else {
+            return (flags & SPDM_GET_CAPABILITIES_RESPONSE_FLAGS_13_MASK);
+        }
+    default:
+        LIBSPDM_ASSERT(false);
+        return 0;
+    }
 }

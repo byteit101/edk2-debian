@@ -7,15 +7,19 @@
 #ifndef SPDM_COMMON_LIB_H
 #define SPDM_COMMON_LIB_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include "internal/libspdm_lib_config.h"
 #include "hal/base.h"
 #include "library/spdm_secured_message_lib.h"
 #include "library/spdm_return_status.h"
 
 #define LIBSPDM_MAJOR_VERSION 0x03
-#define LIBSPDM_MINOR_VERSION 0x04
+#define LIBSPDM_MINOR_VERSION 0x06
 #define LIBSPDM_PATCH_VERSION 0x00
-#define LIBSPDM_ALPHA         0xff
+#define LIBSPDM_ALPHA         0xFF
 
 /* Connection: When a host sends messages to a device, they create a connection.
  *             The host can and only can create one connection with one device.
@@ -103,6 +107,9 @@ typedef enum {
     /* VCA cached for CACHE_CAP in 1.2 for transcript. */
     LIBSPDM_DATA_VCA_CACHE,
 
+    /* Raw request buffer and size */
+    LIBSPDM_DATA_REQUEST_AND_SIZE,
+
     /* if the context is for a requester. It only needs to be set in VCA cache.
      * In normal flow, the value is set in GET_VERSION or VERSION automatically.
      * false means responder
@@ -149,6 +156,8 @@ typedef enum {
 
     LIBSPDM_DATA_MULTI_KEY_CONN_REQ,
     LIBSPDM_DATA_MULTI_KEY_CONN_RSP,
+
+    LIBSPDM_DATA_TOTAL_KEY_PAIRS,
 
     /* MAX */
     LIBSPDM_DATA_MAX
@@ -804,7 +813,7 @@ void libspdm_get_scratch_buffer (
  * @param  trust_anchor_size  A buffer to hold the trust_anchor_size, if not NULL.
  *
  * @retval RETURN_SUCCESS                The cert chain verification pass.
- * @retval RETURN_SECURIY_VIOLATION      The cert chain verification fail.
+ * @retval RETURN_SECURITY_VIOLATION      The cert chain verification fail.
  **/
 typedef bool (*libspdm_verify_spdm_cert_chain_func)(
     void *spdm_context, uint8_t slot_id,
@@ -1001,5 +1010,9 @@ typedef libspdm_return_t (*libspdm_vendor_response_callback_func)(
     void *resp_data);
 
 #endif /* LIBSPDM_ENABLE_VENDOR_DEFINED_MESSAGES */
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* SPDM_COMMON_LIB_H */

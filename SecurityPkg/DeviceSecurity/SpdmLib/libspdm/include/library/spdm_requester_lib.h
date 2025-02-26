@@ -7,6 +7,10 @@
 #ifndef SPDM_REQUESTER_LIB_H
 #define SPDM_REQUESTER_LIB_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include "library/spdm_common_lib.h"
 
 /**
@@ -348,6 +352,81 @@ libspdm_return_t libspdm_get_measurement_ex2(void *spdm_context, const uint32_t 
                                              size_t *opaque_data_size);
 #endif /* LIBSPDM_ENABLE_CAPABILITY_MEAS_CAP*/
 
+#if LIBSPDM_ENABLE_CAPABILITY_MEL_CAP
+/**
+ * This function sends GET_MEASUREMENT_EXTENSION_LOG to get MEL from device.
+ *
+ * @param  spdm_context               A pointer to the SPDM context.
+ * @param  session_id                 Indicates if it is a secured message protected via SPDM session.
+ *                                    If session_id is NULL, it is a normal message.
+ *                                    If session_id is not NULL, it is a secured message.
+ * @param  mel_size                   On input, indicate the size in bytes of the destination buffer to store.
+ *                                    On output, indicate the size in bytes of the MEL.
+ * @param  measure_exten_log          A pointer to a destination buffer to store the MEL.
+ **/
+libspdm_return_t libspdm_get_measurement_extension_log(void *spdm_context,
+                                                       const uint32_t *session_id,
+                                                       size_t *mel_size,
+                                                       void *measure_exten_log);
+#endif /* LIBSPDM_ENABLE_CAPABILITY_MEL_CAP */
+
+#if LIBSPDM_ENABLE_CAPABILITY_GET_KEY_PAIR_INFO_CAP
+/**
+ * This function sends GET_KEY_PAIR_INFO to get key pair info from device.
+ *
+ * @param  spdm_context               A pointer to the SPDM context.
+ * @param  session_id                 Indicates if it is a secured message protected via SPDM session.
+ *                                    If session_id is NULL, it is a normal message.
+ *                                    If session_id is not NULL, it is a secured message.
+ * @param  key_pair_id                Indicate which key pair ID's information to retrieve.
+ *
+ * @param  total_key_pairs            Indicate the total number of key pairs on the responder.
+ * @param  capabilities               Indicate the capabilities of the requested key pairs.
+ * @param  key_usage_capabilities     Indicate the key usages the responder allows.
+ * @param  current_key_usage          Indicate the currently configured key usage for the requested key pairs ID.
+ * @param  asym_algo_capabilities     Indicate the asymmetric algorithms the Responder supports for this key pair ID.
+ * @param  current_asym_algo          Indicate the currently configured asymmetric algorithm for this key pair ID.
+ * @param  assoc_cert_slot_mask       This field is a bit mask representing the currently associated certificate slots.
+ * @param  public_key_info_len        On input, indicate the size in bytes of the destination buffer to store.
+ *                                    On output, indicate the size in bytes of the public_key_info.
+ * @param  public_key_info            A pointer to a destination buffer to store the public_key_info.
+ **/
+libspdm_return_t libspdm_get_key_pair_info(void *spdm_context, const uint32_t *session_id,
+                                           uint8_t key_pair_id, uint8_t *total_key_pairs,
+                                           uint16_t *capabilities,
+                                           uint16_t *key_usage_capabilities,
+                                           uint16_t *current_key_usage,
+                                           uint32_t *asym_algo_capabilities,
+                                           uint32_t *current_asym_algo,
+                                           uint8_t *assoc_cert_slot_mask,
+                                           uint16_t *public_key_info_len,
+                                           void *public_key_info
+                                           );
+#endif /* LIBSPDM_ENABLE_CAPABILITY_GET_KEY_PAIR_INFO_CAP */
+
+#if LIBSPDM_ENABLE_CAPABILITY_SET_KEY_PAIR_INFO_CAP
+/**
+ * This function sends GET_KEY_PAIR_INFO to get key pair info from device.
+ *
+ * @param  spdm_context                 A pointer to the SPDM context.
+ * @param  session_id                   Indicates if it is a secured message protected via SPDM session.
+ *                                      If session_id is NULL, it is a normal message.
+ *                                      If session_id is not NULL, it is a secured message.
+ * @param  key_pair_id                  Indicate which key pair ID's information to retrieve.
+ * @param  operation                    Set key pair info operation: change/erase/generate.
+ * @param  desired_key_usage            Indicate the desired key usage for the requested key pair ID.
+ * @param  desired_asym_algo            Indicate the desired asymmetric algorithm for the requested key pair ID.
+ * @param  desired_assoc_cert_slot_mask Indicate the desired certificate slot association for the requested key pair ID.
+ **/
+libspdm_return_t libspdm_set_key_pair_info(void *spdm_context, const uint32_t *session_id,
+                                           uint8_t key_pair_id,
+                                           uint8_t operation,
+                                           uint16_t desired_key_usage,
+                                           uint32_t desired_asym_algo,
+                                           uint8_t desired_assoc_cert_slot_mask
+                                           );
+#endif /* LIBSPDM_ENABLE_CAPABILITY_SET_KEY_PAIR_INFO_CAP */
+
 #if (LIBSPDM_ENABLE_CAPABILITY_KEY_EX_CAP) || (LIBSPDM_ENABLE_CAPABILITY_PSK_CAP)
 /**
  * This function sends KEY_EXCHANGE/FINISH or PSK_EXCHANGE/PSK_FINISH
@@ -684,9 +763,9 @@ libspdm_return_t libspdm_get_csr(void *spdm_context,
                                  void *opaque_data, uint16_t opaque_data_length,
                                  void *csr, size_t *csr_len);
 
+#if LIBSPDM_ENABLE_CAPABILITY_CSR_CAP_EX
 /**
- * This function sends GET_CSR for SPDM 1.3
- * to get csr from the device.
+ * This function sends GET_CSR for SPDM 1.3 to get CSR from the device.
  *
  * @param[in]  context                A pointer to the SPDM context.
  * @param[in]  session_id             Indicates if it is a secured message protected via SPDM session.
@@ -699,14 +778,13 @@ libspdm_return_t libspdm_get_csr(void *spdm_context,
  * @param[out] csr                    Address to store CSR.
  * @param[in, out] csr_len            On input, *csr_len indicates the max csr buffer size.
  *                                    On output, *csr_len indicates the actual csr buffer size.
- * @param[in]  request_attribute      Set certificate request attributes. This field is only used for SPDM 1.3 and above.
+ * @param[in]  request_attribute      GET_CSR request attributes that includes the CSRCertModel,
+ *                                    CSRTrackingTag, and Overwrite fields.
+ *                                    This field is only used for SPDM 1.3 and above.
  * @param[in]  key_pair_id            The value of this field shall be the unique key pair number identifying the desired
  *                                    asymmetric key pair to associate with SlotID.
- * @param[out] available_csr_tracking_tag   available CSRTrackingTag when the Responder sends a ResetRequired error messag
- *
+ * @param[out] available_csr_tracking_tag   available CSRTrackingTag when the Responder sends a ResetRequired error message
  **/
-
-#if LIBSPDM_ENABLE_CAPABILITY_CSR_CAP_EX
 libspdm_return_t libspdm_get_csr_ex(void * spdm_context,
                                     const uint32_t *session_id,
                                     void * requester_info, uint16_t requester_info_length,
@@ -792,6 +870,25 @@ libspdm_return_t libspdm_get_event_types(void *spdm_context,
                                          uint8_t *event_group_count,
                                          uint32_t *supported_event_groups_list_len,
                                          void *supported_event_groups_list);
+
+/** This function subscribes to the specified event types.
+ *
+ *  This function can only be called after a secure session has been established with the device.
+ *
+ *  @param  spdm_context       A pointer to the SPDM context.
+ *  @param  session_id         The session ID of the session.
+ *  @param  subscribe_event_group_count The number of event groups in subscribe_list. If this value
+ *                                      is 0 then subscription to all events will be cleared and
+ *                                      subscribe_list_len must be 0 and subscribe_list must be
+ *                                      NULL.
+ *  @param  subscribe_list_len The size, in bytes, of subscribe_list.
+ *  @param  subscribe_list     List of event types and event groups.
+ **/
+libspdm_return_t libspdm_subscribe_event_types(void *spdm_context,
+                                               uint32_t session_id,
+                                               uint8_t subscribe_event_group_count,
+                                               uint32_t subscribe_list_len,
+                                               void *subscribe_list);
 #endif /* LIBSPDM_EVENT_RECIPIENT_SUPPORT */
 
 #if LIBSPDM_ENABLE_MSG_LOG
@@ -899,5 +996,9 @@ libspdm_return_t libspdm_vendor_send_request_receive_response(
     void *resp_data);
 
 #endif /* LIBSPDM_ENABLE_VENDOR_DEFINED_MESSAGES */
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* SPDM_REQUESTER_LIB_H */

@@ -1,12 +1,16 @@
-cmake_minimum_required(VERSION 2.8.12)
+cmake_minimum_required(VERSION 3.5)
 
-INCLUDE_DIRECTORIES(${LIBSPDM_DIR}/include)
+add_library(spdm_secured_message_lib STATIC "")
 
-SET(src_spdm_secured_message_lib
-    libspdm_secmes_context_data.c
-    libspdm_secmes_encode_decode.c
-    libspdm_secmes_key_exchange.c
-    libspdm_secmes_session.c
+target_include_directories(spdm_secured_message_lib
+    PRIVATE
+        ${LIBSPDM_DIR}/include
 )
 
-ADD_LIBRARY(spdm_secured_message_lib STATIC ${src_spdm_secured_message_lib})
+target_sources(spdm_secured_message_lib
+    PRIVATE
+        libspdm_secmes_context_data.c
+        libspdm_secmes_encode_decode.c
+        libspdm_secmes_key_exchange.c
+        libspdm_secmes_session.c
+)

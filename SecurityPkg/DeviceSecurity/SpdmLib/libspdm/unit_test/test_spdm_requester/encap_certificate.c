@@ -124,7 +124,7 @@ void libspdm_test_requester_encap_certificate_case3(void **state)
     size_t data_size;
 
     /* Testing Lengths at the boundary of maximum integer values*/
-    uint16_t test_lenghts[] = {
+    uint16_t test_lengths[] = {
         0,
         0x7F,
         (uint16_t)(0x7F + 1),
@@ -153,10 +153,10 @@ void libspdm_test_requester_encap_certificate_case3(void **state)
     /* This tests considers only offset = 0, other tests vary offset value*/
     m_spdm_get_certificate_request3.offset = 0;
 
-    for (int i = 0; i < sizeof(test_lenghts) / sizeof(test_lenghts[0]); i++)
+    for (int i = 0; i < sizeof(test_lengths) / sizeof(test_lengths[0]); i++)
     {
-        TEST_DEBUG_PRINT("i:%d test_lenghts[i]:%u\n", i, test_lenghts[i]);
-        m_spdm_get_certificate_request3.length = test_lenghts[i];
+        TEST_DEBUG_PRINT("i:%d test_lengths[i]:%u\n", i, test_lengths[i]);
+        m_spdm_get_certificate_request3.length = test_lengths[i];
         /* Expected received length is limited by LIBSPDM_MAX_CERT_CHAIN_BLOCK_LEN
          * (implementation specific?)*/
         expected_chunk_size = LIBSPDM_MIN(m_spdm_get_certificate_request3.length,
@@ -528,11 +528,6 @@ void libspdm_test_requester_encap_certificate_case7(void **state)
     free(data);
 }
 
-libspdm_test_context_t m_libspdm_requester_encap_certificate_test_context = {
-    LIBSPDM_TEST_CONTEXT_VERSION,
-    false,
-};
-
 int libspdm_requester_encap_certificate_test_main(void)
 {
     const struct CMUnitTest spdm_requester_encap_certificate_tests[] = {
@@ -550,7 +545,12 @@ int libspdm_requester_encap_certificate_test_main(void)
         cmocka_unit_test(libspdm_test_requester_encap_certificate_case7),
     };
 
-    libspdm_setup_test_context(&m_libspdm_requester_encap_certificate_test_context);
+    libspdm_test_context_t test_context = {
+        LIBSPDM_TEST_CONTEXT_VERSION,
+        false,
+    };
+
+    libspdm_setup_test_context(&test_context);
 
     return cmocka_run_group_tests(spdm_requester_encap_certificate_tests,
                                   libspdm_unit_test_group_setup,

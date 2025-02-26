@@ -2,7 +2,7 @@
   Configuration Manager Object parser.
 
   Copyright (c) 2021 - 2023, ARM Limited. All rights reserved.<BR>
-  Copyright (C) 2024 Advanced Micro Devices, Inc. All rights reserved.
+  Copyright (C) 2024 - 2025 Advanced Micro Devices, Inc. All rights reserved.
   Copyright (c) 2024, NVIDIA CORPORATION & AFFILIATES. All rights reserved.<BR>
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
@@ -682,7 +682,7 @@ STATIC CONST CM_OBJ_PARSER  CmArchCommonTpm2InterfaceInfo[] = {
 STATIC CONST CM_OBJ_PARSER  CmArchCommonSpmiInterfaceInfoParser[] = {
   { "InterfaceType", sizeof (UINT8),                                  "0x%x", NULL },
   { "BaseAddress",   sizeof (EFI_ACPI_6_5_GENERIC_ADDRESS_STRUCTURE),
-    NULL, NULL, AcpiGenericAddressParser }
+    NULL, NULL, AcpiGenericAddressParser, ARRAY_SIZE (AcpiGenericAddressParser) },
 };
 
 /** A parser for EArchCommonObjSpmiInterruptDeviceInfo.
@@ -884,21 +884,88 @@ STATIC CONST CM_OBJ_PARSER  CmX64ObjHpetInfoParser[] = {
   { "PageProtectionAndOemAttribute",             1, "0x%x", NULL }
 };
 
+/** A parser for EX64ObjMadtInfo.
+*/
+STATIC CONST CM_OBJ_PARSER  CmX64ObjMadtInfoParser[] = {
+  { "LocalApicAddress", 4,                        "0x%x", NULL },
+  { "Flags",            4,                        "0x%x", NULL },
+  { "ApicMode",         sizeof (LOCAL_APIC_MODE), "0x%x", NULL }
+};
+
+/** A parser for CmArchCommonLocalApicX2ApicInfoParser.
+*/
+STATIC CONST CM_OBJ_PARSER  CmX64ObjLocalApicX2ApicInfoParser[] = {
+  { "ApicId",           4, "0x%x", NULL },
+  { "Flags",            4, "0x%x", NULL },
+  { "AcpiProcessorUid", 4, "0x%x", NULL }
+};
+
+/** A parser for CmX64IoApicInfoParser.
+*/
+STATIC CONST CM_OBJ_PARSER  CmX64IoApicInfoParser[] = {
+  { "IoApicId",                  1, "0x%x", NULL },
+  { "IoApicAddress",             4, "0x%x", NULL },
+  { "GlobalSystemInterruptBase", 4, "0x%x", NULL }
+};
+
+/** A parser for CmX64IntrSourceOverrideInfoParser.
+*/
+STATIC CONST CM_OBJ_PARSER  CmX64IntrSourceOverrideInfoParser[] = {
+  { "Bus",                   1, "0x%x", NULL },
+  { "Source",                1, "0x%x", NULL },
+  { "GlobalSystemInterrupt", 4, "0x%x", NULL },
+  { "Flags",                 2, "0x%x", NULL }
+};
+
+/** A parser for CmX64LocalApicNmiInfo.
+*/
+STATIC CONST CM_OBJ_PARSER  CmX64LocalApicNmiInfo[] = {
+  { "Flags",            2, "0x%x", NULL },
+  { "AcpiProcessorUid", 4, "0x%x", NULL },
+  { "LocalApicLint",    1, "0x%x", NULL }
+};
+
+/** A parser for EX64ObjFacsInfo.
+*/
+STATIC CONST CM_OBJ_PARSER  CmX64ObjFacsInfoParser[] = {
+  { "FirmwareWakingVector",  4, "0x%x",   NULL },
+  { "Flags",                 4, "0x%x",   NULL },
+  { "XFirmwareWakingVector", 8, "0x%llx", NULL },
+  { "OspmFlags",             4, "0x%x",   NULL }
+};
+
+/** A parser for CmX64LocalApicX2ApicAffinityInfo.
+*/
+STATIC CONST CM_OBJ_PARSER  CmX64LocalApicX2ApicAffinityInfo[] = {
+  { "ApicMode",        sizeof (LOCAL_APIC_MODE), "0x%x", NULL },
+  { "ApicId",          4,                        "0x%x", NULL },
+  { "ProximityDomain", 4,                        "0x%x", NULL },
+  { "Flags",           4,                        "0x%x", NULL },
+  { "ClockDomain",     4,                        "0x%x", NULL }
+};
+
 /** A parser for X64 namespace objects.
 */
 STATIC CONST CM_OBJ_PARSER_ARRAY  X64NamespaceObjectParser[] = {
   CM_PARSER_ADD_OBJECT_RESERVED (EX64ObjReserved),
-  CM_PARSER_ADD_OBJECT (EX64ObjFadtSciInterrupt,  CmX64ObjFadtSciInterruptParser),
-  CM_PARSER_ADD_OBJECT (EX64ObjFadtSciCmdInfo,    CmX64ObjFadtSciCmdInfoParser),
-  CM_PARSER_ADD_OBJECT (EX64ObjFadtPmBlockInfo,   CmX64ObjFadtPmBlockInfoParser),
-  CM_PARSER_ADD_OBJECT (EX64ObjFadtGpeBlockInfo,  CmX64ObjFadtGpeBlockInfoParser),
-  CM_PARSER_ADD_OBJECT (EX64ObjFadtXpmBlockInfo,  CmX64ObjFadtXpmBlockInfoParser),
-  CM_PARSER_ADD_OBJECT (EX64ObjFadtXgpeBlockInfo, CmX64ObjFadtXgpeBlockInfoParser),
-  CM_PARSER_ADD_OBJECT (EX64ObjFadtSleepBlockInfo,CmX64ObjFadtSleepBlockInfoParser),
-  CM_PARSER_ADD_OBJECT (EX64ObjFadtResetBlockInfo,CmX64ObjFadtResetBlockInfoParser),
-  CM_PARSER_ADD_OBJECT (EX64ObjFadtMiscInfo,      CmX64ObjFadtMiscInfoParser),
-  CM_PARSER_ADD_OBJECT (EX64ObjWsmtFlagsInfo,     CmX64ObjWsmtFlagsInfoParser),
-  CM_PARSER_ADD_OBJECT (EX64ObjHpetInfo,          CmX64ObjHpetInfoParser),
+  CM_PARSER_ADD_OBJECT (EX64ObjFadtSciInterrupt,           CmX64ObjFadtSciInterruptParser),
+  CM_PARSER_ADD_OBJECT (EX64ObjFadtSciCmdInfo,             CmX64ObjFadtSciCmdInfoParser),
+  CM_PARSER_ADD_OBJECT (EX64ObjFadtPmBlockInfo,            CmX64ObjFadtPmBlockInfoParser),
+  CM_PARSER_ADD_OBJECT (EX64ObjFadtGpeBlockInfo,           CmX64ObjFadtGpeBlockInfoParser),
+  CM_PARSER_ADD_OBJECT (EX64ObjFadtXpmBlockInfo,           CmX64ObjFadtXpmBlockInfoParser),
+  CM_PARSER_ADD_OBJECT (EX64ObjFadtXgpeBlockInfo,          CmX64ObjFadtXgpeBlockInfoParser),
+  CM_PARSER_ADD_OBJECT (EX64ObjFadtSleepBlockInfo,         CmX64ObjFadtSleepBlockInfoParser),
+  CM_PARSER_ADD_OBJECT (EX64ObjFadtResetBlockInfo,         CmX64ObjFadtResetBlockInfoParser),
+  CM_PARSER_ADD_OBJECT (EX64ObjFadtMiscInfo,               CmX64ObjFadtMiscInfoParser),
+  CM_PARSER_ADD_OBJECT (EX64ObjWsmtFlagsInfo,              CmX64ObjWsmtFlagsInfoParser),
+  CM_PARSER_ADD_OBJECT (EX64ObjHpetInfo,                   CmX64ObjHpetInfoParser),
+  CM_PARSER_ADD_OBJECT (EX64ObjMadtInfo,                   CmX64ObjMadtInfoParser),
+  CM_PARSER_ADD_OBJECT (EX64ObjLocalApicX2ApicInfo,        CmX64ObjLocalApicX2ApicInfoParser),
+  CM_PARSER_ADD_OBJECT (EX64ObjIoApicInfo,                 CmX64IoApicInfoParser),
+  CM_PARSER_ADD_OBJECT (EX64ObjIntrSourceOverrideInfo,     CmX64IntrSourceOverrideInfoParser),
+  CM_PARSER_ADD_OBJECT (EX64ObjLocalApicX2ApicNmiInfo,     CmX64LocalApicNmiInfo),
+  CM_PARSER_ADD_OBJECT (EX64ObjFacsInfo,                   CmX64ObjFacsInfoParser),
+  CM_PARSER_ADD_OBJECT (EX64ObjLocalApicX2ApicAffinityInfo,CmX64LocalApicX2ApicAffinityInfo),
   CM_PARSER_ADD_OBJECT_RESERVED (EX64ObjMax)
 };
 

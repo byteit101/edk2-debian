@@ -242,6 +242,26 @@ libspdm_return_t libspdm_get_response_measurements(libspdm_context_t *spdm_conte
                                                    void *response);
 #endif /* LIBSPDM_ENABLE_CAPABILITY_MEAS_CAP */
 
+#if LIBSPDM_ENABLE_CAPABILITY_MEL_CAP
+/**
+ * Process the SPDM GET_MEASUREMENT_EXTENSION_LOG request and return the response.
+ *
+ * @param  spdm_context                  A pointer to the SPDM context.
+ * @param  request_size                  size in bytes of the request data.
+ * @param  request                      A pointer to the request data.
+ * @param  response_size                 size in bytes of the response data.
+ *                                     On input, it means the size in bytes of response data buffer.
+ *                                     On output, it means the size in bytes of copied response data buffer if RETURN_SUCCESS is returned,
+ *                                     and means the size in bytes of desired response data buffer if RETURN_BUFFER_TOO_SMALL is returned.
+ * @param  response                     A pointer to the response data.
+ **/
+libspdm_return_t libspdm_get_response_measurement_extension_log(libspdm_context_t *spdm_context,
+                                                                size_t request_size,
+                                                                const void *request,
+                                                                size_t *response_size,
+                                                                void *response);
+#endif /* LIBSPDM_ENABLE_CAPABILITY_MEL_CAP */
+
 #if LIBSPDM_ENABLE_CAPABILITY_KEY_EX_CAP
 /**
  * Process the SPDM KEY_EXCHANGE request and return the response.
@@ -758,14 +778,19 @@ libspdm_return_t libspdm_get_response_chunk_send(libspdm_context_t *spdm_context
 #endif /* LIBSPDM_ENABLE_CAPABILITY_CHUNK_CAP */
 
 #if LIBSPDM_ENABLE_CAPABILITY_EVENT_CAP
-/**
- * Process the SPDM GET_SUPPORTED_EVENT_TYPES request and return the response.
- **/
+/* Process the SPDM GET_SUPPORTED_EVENT_TYPES request and return the response. */
 libspdm_return_t libspdm_get_response_supported_event_types(libspdm_context_t *spdm_context,
                                                             size_t request_size,
                                                             const void *request,
                                                             size_t *response_size,
                                                             void *response);
+
+/* Process the SPDM SUBSCRIBE_EVENT_TYPES request and return the response. */
+libspdm_return_t libspdm_get_response_subscribe_event_types_ack(libspdm_context_t *spdm_context,
+                                                                size_t request_size,
+                                                                const void *request,
+                                                                size_t *response_size,
+                                                                void *response);
 #endif /* LIBSPDM_ENABLE_CAPABILITY_EVENT_CAP */
 
 #if LIBSPDM_ENABLE_VENDOR_DEFINED_MESSAGES
@@ -917,5 +942,19 @@ bool libspdm_generate_measurement_signature(libspdm_context_t *spdm_context,
                                             libspdm_session_info_t *session_info,
                                             uint8_t *signature);
 #endif /* LIBSPDM_ENABLE_CAPABILITY_MEAS_CAP*/
+
+#if LIBSPDM_ENABLE_CAPABILITY_GET_KEY_PAIR_INFO_CAP
+libspdm_return_t libspdm_get_response_key_pair_info(libspdm_context_t *spdm_context,
+                                                    size_t request_size, const void *request,
+                                                    size_t *response_size, void *response);
+#endif /* LIBSPDM_ENABLE_CAPABILITY_GET_KEY_PAIR_INFO_CAP */
+
+#if LIBSPDM_ENABLE_CAPABILITY_SET_KEY_PAIR_INFO_CAP
+libspdm_return_t libspdm_get_response_set_key_pair_info_ack(libspdm_context_t *spdm_context,
+                                                            size_t request_size,
+                                                            const void *request,
+                                                            size_t *response_size,
+                                                            void *response);
+#endif /* LIBSPDM_ENABLE_CAPABILITY_SET_KEY_PAIR_INFO_CAP */
 
 #endif /* SPDM_RESPONDER_LIB_INTERNAL_H */

@@ -1,6 +1,6 @@
 /**
  *  Copyright Notice:
- *  Copyright 2021-2022 DMTF. All rights reserved.
+ *  Copyright 2021-2024 DMTF. All rights reserved.
  *  License: BSD 3-Clause License. For full text see link: https://github.com/DMTF/libspdm/blob/main/LICENSE.md
  **/
 
@@ -72,6 +72,7 @@ static libspdm_return_t libspdm_try_get_version(libspdm_context_t *spdm_context,
     spdm_request_size = message_size - transport_header_size -
                         spdm_context->local_context.capability.transport_tail_size;
 
+    LIBSPDM_ASSERT (spdm_request_size >= sizeof(spdm_get_version_request_t));
     spdm_request->header.spdm_version = SPDM_MESSAGE_VERSION_10;
     spdm_request->header.request_response_code = SPDM_GET_VERSION;
     spdm_request->header.param1 = 0;
@@ -96,7 +97,6 @@ static libspdm_return_t libspdm_try_get_version(libspdm_context_t *spdm_context,
     spdm_response = (void *)(message);
     spdm_response_size = message_size;
 
-    libspdm_zero_mem(spdm_response, spdm_response_size);
     status = libspdm_receive_spdm_response(spdm_context, NULL, &spdm_response_size,
                                            (void **)&spdm_response);
     if (LIBSPDM_STATUS_IS_ERROR(status)) {
@@ -224,7 +224,7 @@ libspdm_return_t libspdm_get_version(libspdm_context_t *spdm_context,
     do {
         status = libspdm_try_get_version(spdm_context,
                                          version_number_entry_count, version_number_entry);
-        if ((status != LIBSPDM_STATUS_BUSY_PEER) || (retry == 0)) {
+        if (status != LIBSPDM_STATUS_BUSY_PEER) {
             return status;
         }
 

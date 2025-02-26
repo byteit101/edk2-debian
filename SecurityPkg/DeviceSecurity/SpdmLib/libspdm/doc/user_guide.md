@@ -302,7 +302,7 @@ Refer to spdm_server_init() in [spdm_responder.c](https://github.com/DMTF/spdm-e
 
    0.5, implement required SPDM device IO functions - `libspdm_device_send_message_func` and `libspdm_device_receive_message_func` according to [spdm_common_lib](https://github.com/DMTF/libspdm/blob/main/include/library/spdm_common_lib.h).
 
-   0.6, if the device does not have access to a real-time clock and if the device uses OpenSSL or Mbed TLS then undefine `OPENSSL_CHECK_TIME` or `MBEDTLS_HAVE_TIME_DATE`.
+   0.6, if the device does not have access to a real-time clock and if the device uses OpenSSL or MbedTLS then undefine `OPENSSL_CHECK_TIME` or `MBEDTLS_HAVE_TIME_DATE`.
 
 0. Implement a proper spdm_device_secret_lib.
 
@@ -420,6 +420,12 @@ Refer to spdm_server_init() in [spdm_responder.c](https://github.com/DMTF/spdm-e
    ```
 
    1.7, if PSK is required, optionally deploy PSK Hint in the call to libspdm_start_session().
+
+   1.8, if Responder sets GET_KEY_PAIR_INFO_CAP then LIBSPDM_DATA_TOTAL_KEY_PAIRS must be set.
+   ```
+   parameter.location = LIBSPDM_DATA_LOCATION_LOCAL;
+   libspdm_set_data (spdm_context, LIBSPDM_DATA_TOTAL_KEY_PAIRS, &parameter, total_key_pairs, total_key_pairs_size);
+   ```
 
 2. Dispatch SPDM messages.
 
