@@ -1,29 +1,29 @@
-cmake_minimum_required(VERSION 2.8.12)
+cmake_minimum_required(VERSION 3.5)
 
-if(CMAKE_SYSTEM_NAME MATCHES "Linux")
-    ADD_COMPILE_OPTIONS(${CMOCKA_FLAGS} -DHAVE_SIGNAL_H)
-elseif(CMAKE_SYSTEM_NAME MATCHES "Windows")
-    ADD_COMPILE_OPTIONS(${CMOCKA_FLAGS} -DHAVE_VSNPRINTF -DHAVE_SNPRINTF)
-    if((TOOLCHAIN STREQUAL "VS2015") OR (TOOLCHAIN STREQUAL "VS2019") OR (TOOLCHAIN STREQUAL "VS2022"))
-        ADD_COMPILE_OPTIONS(/wd4819)
-    endif()
-endif()
+add_library(cmockalib STATIC "")
 
-INCLUDE_DIRECTORIES(${LIBSPDM_DIR}/unit_test/cmockalib
-                    ${LIBSPDM_DIR}/include
-                    ${LIBSPDM_DIR}/unit_test/cmockalib/cmocka/include
-                    ${LIBSPDM_DIR}/unit_test/cmockalib/cmocka/include/cmockery
+target_include_directories(cmockalib
+    PRIVATE
+        ${LIBSPDM_DIR}/unit_test/cmockalib
+        ${LIBSPDM_DIR}/include
+        ${LIBSPDM_DIR}/unit_test/cmockalib/cmocka/include
+        ${LIBSPDM_DIR}/unit_test/cmockalib/cmocka/include/cmockery
+)
+
+target_sources(cmockalib
+    PRIVATE
+        cmocka/src/cmocka.c
 )
 
 if(TOOLCHAIN STREQUAL "ARM_DS2022")
-    SET(src_CmockaLib
-        cmocka/src/cmocka.c
-        strdup.c
-    )
-else()
-    SET(src_CmockaLib
-        cmocka/src/cmocka.c
-    )
+    target_sources(cmockalib PRIVATE strdup.c)
 endif()
 
-ADD_LIBRARY(cmockalib STATIC ${src_CmockaLib})
+if(CMAKE_SYSTEM_NAME MATCHES "Linux")
+    target_compile_options(cmockalib PRIVATE ${CMOCKA_FLAGS} -DHAVE_SIGNAL_H)
+elseif(CMAKE_SYSTEM_NAME MATCHES "Windows")
+    target_compile_options(cmockalib PRIVATE ${CMOCKA_FLAGS} -DHAVE_VSNPRINTF -DHAVE_SNPRINTF)
+    if((TOOLCHAIN STREQUAL "VS2015") OR (TOOLCHAIN STREQUAL "VS2019") OR (TOOLCHAIN STREQUAL "VS2022"))
+        target_compile_options(cmockalib PRIVATE /wd4819)
+    endif()
+endif()

@@ -4,19 +4,19 @@ Description: ArmVirtPkg: Disable the EFI memory attributes protocol
 Author: dann frazier <dannf@debian.org>
 Bug-Debian: https://bugs.debian.org/1042438
 Bug-Ubuntu: https://launchpad.net/bugs/2036604
-Last-Update: 2023-09-23
+Last-Update: 2025-03-01
 
 --- a/ArmPkg/Drivers/CpuDxe/CpuDxe.c
 +++ b/ArmPkg/Drivers/CpuDxe/CpuDxe.c
-@@ -331,8 +331,6 @@
-                   &mCpuHandle,
+@@ -429,8 +429,6 @@
+                   &CpuHandle,
                    &gEfiCpuArchProtocolGuid,
                    &mCpu,
 -                  &gEfiMemoryAttributeProtocolGuid,
 -                  &mMemoryAttribute,
                    NULL
                    );
- 
+   if (EFI_ERROR (Status)) {
 --- a/ArmPkg/Drivers/CpuDxe/CpuDxe.h
 +++ b/ArmPkg/Drivers/CpuDxe/CpuDxe.h
 @@ -30,12 +30,9 @@
@@ -47,6 +47,6 @@ Last-Update: 2023-09-23
  [Protocols]
    gEfiCpuArchProtocolGuid
 -  gEfiMemoryAttributeProtocolGuid
+   gHardwareInterruptProtocolGuid
  
  [Guids]
-   gEfiDebugImageInfoTableGuid

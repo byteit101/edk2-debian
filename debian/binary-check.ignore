@@ -4,6 +4,7 @@
 **/*.aslc
 **/*.asm
 **/*.asm16
+contrib/*.github-issues
 BaseTools/Bin/GnuNoteBti.bin
 BaseTools/BinWrappers/PosixLike/AmlToC
 BaseTools/BinWrappers/PosixLike/BPDG
@@ -80,6 +81,8 @@ CryptoPkg/Library/MbedTlsLib/mbedtls/scripts/find-mem-leak.cocci
 CryptoPkg/Library/MbedTlsLib/mbedtls/scripts/data_files/**
 CryptoPkg/Library/MbedTlsLib/mbedtls/doxygen/mbedtls.doxyfile
 CryptoPkg/Library/MbedTlsLib/mbedtls/tests/**
+CryptoPkg/Library/OpensslLib/openssl/.ctags.d/*.ctags
+CryptoPkg/Library/OpensslLib/openssl/.ctags.d/**/*.ctags
 CryptoPkg/Library/OpensslLib/openssl/apps/demoSRP/srp_verifier.txt.attr
 CryptoPkg/Library/OpensslLib/openssl/apps/*.srl
 CryptoPkg/Library/OpensslLib/openssl/config
@@ -106,20 +109,11 @@ CryptoPkg/Library/OpensslLib/openssl/Configure
 CryptoPkg/Library/OpensslLib/openssl/crypto/des/asm/des_enc.m4
 CryptoPkg/Library/OpensslLib/openssl/crypto/err/openssl.ec
 CryptoPkg/Library/OpensslLib/openssl/crypto/objects/obj_mac.num
-CryptoPkg/Library/OpensslLib/openssl/crypto/perlasm/s390x.pm
+CryptoPkg/Library/OpensslLib/openssl/crypto/perlasm/*.pm
 CryptoPkg/Library/OpensslLib/openssl/demos/bio/descrip.mms
 CryptoPkg/Library/OpensslLib/openssl/demos/bio/shared.opt
 CryptoPkg/Library/OpensslLib/openssl/demos/bio/static.opt
-CryptoPkg/Library/OpensslLib/openssl/doc/images/openssl.svg
-CryptoPkg/Library/OpensslLib/openssl/doc/images/openssl-square.svg
-CryptoPkg/Library/OpensslLib/openssl/doc/life-cycles/cipher.dot
-CryptoPkg/Library/OpensslLib/openssl/doc/life-cycles/digest.dot
-CryptoPkg/Library/OpensslLib/openssl/doc/life-cycles/kdf.dot
-CryptoPkg/Library/OpensslLib/openssl/doc/life-cycles/lifecycles.ods
-CryptoPkg/Library/OpensslLib/openssl/doc/life-cycles/mac.dot
-CryptoPkg/Library/OpensslLib/openssl/doc/life-cycles/pkey.dot
-CryptoPkg/Library/OpensslLib/openssl/doc/life-cycles/rand.dot
-CryptoPkg/Library/OpensslLib/openssl/doc/perlvars.pm
+CryptoPkg/Library/OpensslLib/openssl/doc/**
 CryptoPkg/Library/OpensslLib/openssl/engines/e_afalg.ec
 CryptoPkg/Library/OpensslLib/openssl/engines/e_capi.ec
 CryptoPkg/Library/OpensslLib/openssl/engines/e_dasync.ec
@@ -132,6 +126,8 @@ CryptoPkg/Library/OpensslLib/openssl/external/perl/Text-Template-1.56/lib/Text/T
 CryptoPkg/Library/OpensslLib/openssl/external/perl/Text-Template-1.56/Makefile.PL
 CryptoPkg/Library/OpensslLib/openssl/external/perl/Text-Template-1.56/MANIFEST
 CryptoPkg/Library/OpensslLib/openssl/external/perl/Text-Template-1.56/SIGNATURE
+CryptoPkg/Library/OpensslLib/openssl/fuzz/fuzz_introspector_exclusion.config
+CryptoPkg/Library/OpensslLib/openssl/include/crypto/riscv_arch.def
 CryptoPkg/Library/OpensslLib/openssl/os-dep/Apple/PrivacyInfo.xcprivacy
 CryptoPkg/Library/OpensslLib/openssl/providers/common/der/DIGESTS.asn1
 CryptoPkg/Library/OpensslLib/openssl/providers/common/der/DSA.asn1
@@ -257,6 +253,7 @@ RedfishPkg/Documents/Media/EmualtorPlatformLibrary.svg
 RedfishPkg/Documents/Media/PlatformWihtBmcLibrary.svg
 RedfishPkg/Documents/Media/RedfishDriverStack.svg
 RedfishPkg/Library/JsonLib/Readme.rst
+SecurityPkg/DeviceSecurity/SpdmLib/libspdm/.github/CODEOWNERS
 SecurityPkg/DeviceSecurity/SpdmLib/libspdm/unit_test/**
 **/*.gitmodules
 **/*.rtf

@@ -3,7 +3,3 @@ brotlicompress-disable.diff
 x64-baseline-abi.patch
 Revert-ArmVirtPkg-make-EFI_LOADER_DATA-non-executabl.patch
 ArmVirtPkg-disable-the-EFI_MEMORY_ATTRIBUTE-protocol.patch
-0001-UefiCpuPkg-Adjust-the-exception-handler-logic-on-Loo.patch
-0002-UefiCpuPkg-Add-dump-interrupt-type-on-LoongArch64.patch
-0003-OvmfPkg-LoongArch-Enabling-some-base-libraries.patch
-OvmfPkg-RiscVVirtQemu.dsc-enable-VGA-support.patch

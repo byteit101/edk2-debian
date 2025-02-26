@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2021 The OpenSSL Project Authors. All Rights Reserved.
+ * Copyright 2015-2024 The OpenSSL Project Authors. All Rights Reserved.
  *
  * Licensed under the Apache License 2.0 (the "License").  You may not use
  * this file except in compliance with the License.  You can obtain a copy
@@ -91,7 +91,7 @@ static int test_client_hello(int currtest)
     if (!TEST_true(SSL_CTX_set_max_proto_version(ctx, 0)))
         goto end;
 
-    switch(currtest) {
+    switch (currtest) {
     case TEST_SET_SESSION_TICK_DATA_VER_NEG:
 #if !defined(OPENSSL_NO_TLS1_3) && defined(OPENSSL_NO_TLS1_2)
         /* TLSv1.3 is enabled and TLSv1.2 is disabled so can't do this test */
@@ -164,7 +164,7 @@ static int test_client_hello(int currtest)
          * We reset the creation time so that we don't discard the session as
          * too old.
          */
-        if (!TEST_true(SSL_SESSION_set_time(sess, (long)time(NULL)))
+        if (!TEST_true(SSL_SESSION_set_time_ex(sess, time(NULL)))
                 || !TEST_true(SSL_set_session(con, sess)))
             goto end;
     }

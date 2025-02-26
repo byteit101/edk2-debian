@@ -1,10 +1,14 @@
-cmake_minimum_required(VERSION 2.8.12)
+cmake_minimum_required(VERSION 3.5)
 
-INCLUDE_DIRECTORIES(${LIBSPDM_DIR}/include
-                    ${LIBSPDM_DIR}/include/hal)
+add_library(malloclib STATIC "")
 
-SET(src_malloclib
-    malloclib.c
+target_include_directories(malloclib
+    PRIVATE
+        ${LIBSPDM_DIR}/include
+        ${LIBSPDM_DIR}/include/hal
 )
 
-ADD_LIBRARY(malloclib STATIC ${src_malloclib})
+target_sources(malloclib
+    PRIVATE
+        malloclib.c
+)

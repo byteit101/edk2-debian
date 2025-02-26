@@ -42,6 +42,7 @@
   DEFINE NETWORK_TLS_ENABLE              = FALSE
   DEFINE NETWORK_ALLOW_HTTP_CONNECTIONS  = TRUE
   DEFINE NETWORK_ISCSI_ENABLE            = FALSE
+  DEFINE NETWORK_PXE_BOOT_ENABLE         = TRUE
 
 !if $(NETWORK_SNP_ENABLE) == TRUE
   !error "NETWORK_SNP_ENABLE is IA32/X64/EBC only"
@@ -49,9 +50,10 @@
 
 !include NetworkPkg/NetworkDefines.dsc.inc
 
-!include MdePkg/MdeLibs.dsc.inc
-
+# This comes before MdeLibs to ensure stack cookie configuration is chosen
 !include ArmVirtPkg/ArmVirt.dsc.inc
+
+!include MdePkg/MdeLibs.dsc.inc
 
 [LibraryClasses.common]
   ArmLib|ArmPkg/Library/ArmLib/ArmBaseLib.inf
@@ -92,7 +94,7 @@
   TpmPlatformHierarchyLib|SecurityPkg/Library/PeiDxeTpmPlatformHierarchyLibNull/PeiDxeTpmPlatformHierarchyLib.inf
 !endif
 
-  ArmMonitorLib|ArmVirtPkg/Library/ArmVirtQemuMonitorLib/ArmVirtQemuMonitorLib.inf
+  ArmMonitorLib|ArmVirtPkg/Library/ArmVirtMonitorLib/ArmVirtMonitorLib.inf
 
 [LibraryClasses.AARCH64]
   ArmPlatformLib|ArmVirtPkg/Library/ArmPlatformLibQemu/ArmPlatformLibQemu.inf
@@ -102,7 +104,7 @@
 
 [LibraryClasses.common.PEIM]
   ArmVirtMemInfoLib|ArmVirtPkg/Library/QemuVirtMemInfoLib/QemuVirtMemInfoPeiLib.inf
-  ArmMonitorLib|ArmVirtPkg/Library/ArmVirtQemuMonitorPeiLib/ArmVirtQemuMonitorPeiLib.inf
+  ArmMonitorLib|ArmVirtPkg/Library/ArmVirtMonitorPeiLib/ArmVirtMonitorPeiLib.inf
   FdtLib|MdePkg/Library/BaseFdtLib/BaseFdtLib.inf
   Tpm2DeviceLib|SecurityPkg/Library/Tpm2DeviceLibDTpm/Tpm2DeviceLibDTpm.inf
 
@@ -280,22 +282,13 @@
   gEfiMdePkgTokenSpaceGuid.PcdPciIoTranslation|0x0
 
   #
-  # Set video resolution for boot options and for text setup.
-  # PlatformDxe can set the former at runtime.
-  #
-  gEfiMdeModulePkgTokenSpaceGuid.PcdVideoHorizontalResolution|1280
-  gEfiMdeModulePkgTokenSpaceGuid.PcdVideoVerticalResolution|800
-  gEfiMdeModulePkgTokenSpaceGuid.PcdSetupVideoHorizontalResolution|640
-  gEfiMdeModulePkgTokenSpaceGuid.PcdSetupVideoVerticalResolution|480
-  gEfiMdeModulePkgTokenSpaceGuid.PcdConOutRow|0
-  gEfiMdeModulePkgTokenSpaceGuid.PcdConOutColumn|0
-
-  #
   # SMBIOS entry point version
   #
   gEfiMdeModulePkgTokenSpaceGuid.PcdSmbiosVersion|0x0300
   gEfiMdeModulePkgTokenSpaceGuid.PcdSmbiosDocRev|0x0
   gUefiOvmfPkgTokenSpaceGuid.PcdQemuSmbiosValidated|FALSE
+
+!include OvmfPkg/Include/Dsc/OvmfDisplayPcds.dsc.inc
 
 !include NetworkPkg/NetworkDynamicPcds.dsc.inc
 
@@ -427,7 +420,10 @@
 
   MdeModulePkg/Universal/HiiDatabaseDxe/HiiDatabaseDxe.inf
 
-  ArmPkg/Drivers/ArmGic/ArmGicDxe.inf
+  ArmPkg/Drivers/ArmGicDxe/ArmGicDxe.inf {
+    <LibraryClasses>
+      NULL|ArmVirtPkg/Library/ArmVirtGicArchLib/ArmVirtGicArchLib.inf
+  }
   ArmPkg/Drivers/TimerDxe/TimerDxe.inf {
     <LibraryClasses>
       NULL|ArmVirtPkg/Library/ArmVirtTimerFdtClientLib/ArmVirtTimerFdtClientLib.inf
@@ -455,7 +451,11 @@
   OvmfPkg/VirtioScsiDxe/VirtioScsi.inf
   OvmfPkg/VirtioNetDxe/VirtioNet.inf
   OvmfPkg/VirtioRngDxe/VirtioRng.inf
-  OvmfPkg/VirtioSerialDxe/VirtioSerial.inf
+  OvmfPkg/VirtioSerialDxe/VirtioSerial.inf {
+    <PcdsFixedAtBuild>
+      gEfiMdePkgTokenSpaceGuid.PcdDebugPrintErrorLevel|0
+  }
+  OvmfPkg/VirtioKeyboardDxe/VirtioKeyboard.inf
 
   #
   # FAT filesystem + GPT/MBR partitioning + UDF filesystem + virtio-fs
@@ -496,16 +496,20 @@
   #
 !include NetworkPkg/NetworkComponents.dsc.inc
 
+!if $(NETWORK_ENABLE) == TRUE
+!if $(NETWORK_PXE_BOOT_ENABLE) == TRUE
   NetworkPkg/UefiPxeBcDxe/UefiPxeBcDxe.inf {
     <LibraryClasses>
       NULL|OvmfPkg/Library/PxeBcPcdProducerLib/PxeBcPcdProducerLib.inf
   }
+!endif
 
 !if $(NETWORK_TLS_ENABLE) == TRUE
   NetworkPkg/TlsAuthConfigDxe/TlsAuthConfigDxe.inf {
     <LibraryClasses>
       NULL|OvmfPkg/Library/TlsAuthConfigLib/TlsAuthConfigLib.inf
   }
+!endif
 !endif
 
   #

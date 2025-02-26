@@ -1,6 +1,6 @@
 /**
  *  Copyright Notice:
- *  Copyright 2021-2022 DMTF. All rights reserved.
+ *  Copyright 2021-2024 DMTF. All rights reserved.
  *  License: BSD 3-Clause License. For full text see link: https://github.com/DMTF/libspdm/blob/main/LICENSE.md
  **/
 
@@ -236,7 +236,6 @@ libspdm_return_t libspdm_encapsulated_request(libspdm_context_t *spdm_context,
         spdm_response = (void *)(message);
         spdm_response_size = message_size;
 
-        libspdm_zero_mem(spdm_response, spdm_response_size);
         status = libspdm_receive_spdm_response(
             spdm_context, session_id, &spdm_response_size,
             (void **)&spdm_response);
@@ -340,8 +339,6 @@ libspdm_return_t libspdm_encapsulated_request(libspdm_context_t *spdm_context,
         spdm_response = (void *)(message);
         spdm_response_size = message_size;
 
-        libspdm_zero_mem(spdm_response, spdm_response_size);
-
         status = libspdm_receive_spdm_response(
             spdm_context, session_id, &spdm_response_size,
             (void **)&spdm_response);
@@ -383,14 +380,8 @@ libspdm_return_t libspdm_encapsulated_request(libspdm_context_t *spdm_context,
 
         switch (spdm_encapsulated_response_ack_response->header.param2) {
         case SPDM_ENCAPSULATED_RESPONSE_ACK_RESPONSE_PAYLOAD_TYPE_ABSENT:
-            if (spdm_response_size == ack_header_size) {
-                libspdm_release_receiver_buffer (spdm_context);
-                return LIBSPDM_STATUS_SUCCESS;
-            } else {
-                libspdm_release_receiver_buffer (spdm_context);
-                return LIBSPDM_STATUS_INVALID_MSG_SIZE;
-            }
-            break;
+            libspdm_release_receiver_buffer (spdm_context);
+            return LIBSPDM_STATUS_SUCCESS;
         case SPDM_ENCAPSULATED_RESPONSE_ACK_RESPONSE_PAYLOAD_TYPE_PRESENT:
             break;
         case SPDM_ENCAPSULATED_RESPONSE_ACK_RESPONSE_PAYLOAD_TYPE_REQ_SLOT_NUMBER:

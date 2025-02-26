@@ -1,6 +1,6 @@
 /**
  *  Copyright Notice:
- *  Copyright 2021-2022 DMTF. All rights reserved.
+ *  Copyright 2021-2024 DMTF. All rights reserved.
  *  License: BSD 3-Clause License. For full text see link: https://github.com/DMTF/libspdm/blob/main/LICENSE.md
  **/
 
@@ -18,23 +18,32 @@
 #include "hal/library/responder/asymsignlib.h"
 #include "hal/library/responder/csrlib.h"
 #include "hal/library/responder/measlib.h"
+#include "hal/library/responder/key_pair_info.h"
 #include "hal/library/responder/psklib.h"
 #include "hal/library/responder/setcertlib.h"
 #include "hal/library/requester/reqasymsignlib.h"
 #include "hal/library/requester/psklib.h"
 #include "hal/library/debuglib.h"
 #include "hal/library/cryptlib.h"
+#include "industry_standard/cxl_tsp.h"
 
 #define LIBSPDM_MEASUREMENT_BLOCK_HASH_NUMBER 4
 #define LIBSPDM_MEASUREMENT_BLOCK_NUMBER (LIBSPDM_MEASUREMENT_BLOCK_HASH_NUMBER /*Index - 1~4*/ + \
                                           1 /*SVN - 0x10*/ + \
+                                          1 /*HEM - 0x11*/ + \
                                           1 /*Manifest - 0xFD*/ + 1 /*DEVICE_MODE - 0xFE*/)
 #define LIBSPDM_MEASUREMENT_RAW_DATA_SIZE 72
 #define LIBSPDM_MEASUREMENT_MANIFEST_SIZE 128
 #define LIBSPDM_MEASUREMENT_INDEX_SVN 0x10
+#define LIBSPDM_MEASUREMENT_INDEX_HEM 0x11
 
 #define LIBSPDM_TEST_PSK_DATA_STRING "TestPskData"
 #define LIBSPDM_TEST_PSK_HINT_STRING "TestPskHint"
+
+#define LIBSPDM_CXL_TSP_2ND_SESSION_0_PSK_DATA_STRING "CxlTsp_2ndSess0_Psk"
+#define LIBSPDM_CXL_TSP_2ND_SESSION_1_PSK_DATA_STRING "CxlTsp_2ndSess1_Psk"
+#define LIBSPDM_CXL_TSP_2ND_SESSION_2_PSK_DATA_STRING "CxlTsp_2ndSess2_Psk"
+#define LIBSPDM_CXL_TSP_2ND_SESSION_3_PSK_DATA_STRING "CxlTsp_2ndSess3_Psk"
 
 #define LIBSPDM_TEST_CERT_MAXINT16 1
 #define LIBSPDM_TEST_CERT_MAXUINT16 2

@@ -144,6 +144,7 @@ static libspdm_return_t libspdm_try_get_certificate(libspdm_context_t *spdm_cont
         spdm_request_size = message_size - transport_header_size -
                             spdm_context->local_context.capability.transport_tail_size;
 
+        LIBSPDM_ASSERT (spdm_request_size >= sizeof(spdm_get_certificate_request_t));
         spdm_request->header.spdm_version = libspdm_get_connection_version (spdm_context);
         spdm_request->header.request_response_code = SPDM_GET_CERTIFICATE;
         spdm_request->header.param1 = slot_id;
@@ -178,7 +179,6 @@ static libspdm_return_t libspdm_try_get_certificate(libspdm_context_t *spdm_cont
         spdm_response = (void *)(message);
         spdm_response_size = message_size;
 
-        libspdm_zero_mem(spdm_response, spdm_response_size);
         status = libspdm_receive_spdm_response(spdm_context, session_id,
                                                &spdm_response_size,
                                                (void **)&spdm_response);
@@ -458,7 +458,7 @@ libspdm_return_t libspdm_get_certificate_choose_length(void *spdm_context,
     do {
         status = libspdm_try_get_certificate(context, session_id, slot_id, length,
                                              cert_chain_size, cert_chain, NULL, NULL);
-        if ((status != LIBSPDM_STATUS_BUSY_PEER) || (retry == 0)) {
+        if (status != LIBSPDM_STATUS_BUSY_PEER) {
             return status;
         }
 
@@ -490,7 +490,7 @@ libspdm_return_t libspdm_get_certificate_choose_length_ex(void *spdm_context,
         status = libspdm_try_get_certificate(context, session_id, slot_id, length,
                                              cert_chain_size, cert_chain, trust_anchor,
                                              trust_anchor_size);
-        if ((status != LIBSPDM_STATUS_BUSY_PEER) || (retry == 0)) {
+        if (status != LIBSPDM_STATUS_BUSY_PEER) {
             return status;
         }
 

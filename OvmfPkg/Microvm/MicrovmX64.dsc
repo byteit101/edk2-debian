@@ -46,6 +46,7 @@
   DEFINE NETWORK_HTTP_BOOT_ENABLE       = FALSE
   DEFINE NETWORK_ALLOW_HTTP_CONNECTIONS = TRUE
   DEFINE NETWORK_ISCSI_ENABLE           = TRUE
+  DEFINE NETWORK_PXE_BOOT_ENABLE        = TRUE
 
 !include NetworkPkg/NetworkDefines.dsc.inc
 
@@ -162,7 +163,6 @@
   PciCapLib|OvmfPkg/Library/BasePciCapLib/BasePciCapLib.inf
   PciCapPciSegmentLib|OvmfPkg/Library/BasePciCapPciSegmentLib/BasePciCapPciSegmentLib.inf
   PciCapPciIoLib|OvmfPkg/Library/UefiPciCapPciIoLib/UefiPciCapPciIoLib.inf
-  CcProbeLib|MdePkg/Library/CcProbeLibNull/CcProbeLibNull.inf
   IoLib|MdePkg/Library/BaseIoLibIntrinsic/BaseIoLibIntrinsicSev.inf
   OemHookStatusCodeLib|MdeModulePkg/Library/OemHookStatusCodeLibNull/OemHookStatusCodeLibNull.inf
   SerialPortLib|PcAtChipsetPkg/Library/SerialIoLib/SerialIoLib.inf
@@ -185,6 +185,7 @@
   VirtioLib|OvmfPkg/Library/VirtioLib/VirtioLib.inf
   LoadLinuxLib|OvmfPkg/Library/LoadLinuxLib/LoadLinuxLib.inf
   MemEncryptSevLib|OvmfPkg/Library/BaseMemEncryptSevLib/DxeMemEncryptSevLib.inf
+  CcProbeLib|OvmfPkg/Library/CcProbeLib/DxeCcProbeLib.inf
   LockBoxLib|OvmfPkg/Library/LockBoxLib/LockBoxBaseLib.inf
   CustomizedDisplayLib|MdeModulePkg/Library/CustomizedDisplayLib/CustomizedDisplayLib.inf
   FrameBufferBltLib|MdeModulePkg/Library/FrameBufferBltLib/FrameBufferBltLib.inf
@@ -256,6 +257,7 @@
   VirtioMmioDeviceLib|OvmfPkg/Library/VirtioMmioDeviceLib/VirtioMmioDeviceLib.inf
   TdxLib|MdePkg/Library/TdxLib/TdxLib.inf
   TdxMailboxLib|OvmfPkg/Library/TdxMailboxLib/TdxMailboxLibNull.inf
+  TdxHelperLib|OvmfPkg/IntelTdx/TdxHelperLib/TdxHelperLibNull.inf
 
 [LibraryClasses.common.SEC]
   QemuFwCfgLib|OvmfPkg/Library/QemuFwCfgLib/QemuFwCfgSecLib.inf
@@ -276,6 +278,7 @@
   CpuExceptionHandlerLib|UefiCpuPkg/Library/CpuExceptionHandlerLib/SecPeiCpuExceptionHandlerLib.inf
   CcExitLib|OvmfPkg/Library/CcExitLib/SecCcExitLib.inf
   MemEncryptSevLib|OvmfPkg/Library/BaseMemEncryptSevLib/SecMemEncryptSevLib.inf
+  CcProbeLib|OvmfPkg/Library/CcProbeLib/SecPeiCcProbeLib.inf
 
 [LibraryClasses.common.PEI_CORE]
   HobLib|MdePkg/Library/PeiHobLib/PeiHobLib.inf
@@ -291,7 +294,9 @@
 !else
   DebugLib|OvmfPkg/Library/PlatformDebugLibIoPort/PlatformRomDebugLibIoPort.inf
 !endif
+  PcdLib|MdePkg/Library/PeiPcdLib/PeiPcdLib.inf
   PeCoffLib|MdePkg/Library/BasePeCoffLib/BasePeCoffLib.inf
+  CcProbeLib|OvmfPkg/Library/CcProbeLib/SecPeiCcProbeLib.inf
 
 [LibraryClasses.common.PEIM]
   HobLib|MdePkg/Library/PeiHobLib/PeiHobLib.inf
@@ -320,6 +325,7 @@
   QemuFwCfgLib|OvmfPkg/Library/QemuFwCfgLib/QemuFwCfgPeiLib.inf
 
   MemEncryptSevLib|OvmfPkg/Library/BaseMemEncryptSevLib/PeiMemEncryptSevLib.inf
+  CcProbeLib|OvmfPkg/Library/CcProbeLib/SecPeiCcProbeLib.inf
   PlatformInitLib|OvmfPkg/Library/PlatformInitLib/PlatformInitLib.inf
 
 [LibraryClasses.common.DXE_CORE]
@@ -596,12 +602,7 @@
   gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageFtwSpareBase64|0
   gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageFtwWorkingBase|0
   gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageFtwSpareBase|0
-  gEfiMdeModulePkgTokenSpaceGuid.PcdVideoHorizontalResolution|1280
-  gEfiMdeModulePkgTokenSpaceGuid.PcdVideoVerticalResolution|800
-  gEfiMdeModulePkgTokenSpaceGuid.PcdConOutRow|0
-  gEfiMdeModulePkgTokenSpaceGuid.PcdConOutColumn|0
   gEfiMdeModulePkgTokenSpaceGuid.PcdAcpiS3Enable|FALSE
-  gUefiOvmfPkgTokenSpaceGuid.PcdVideoResolutionSource|0
   gUefiOvmfPkgTokenSpaceGuid.PcdOvmfHostBridgePciDevId|0
   gUefiOvmfPkgTokenSpaceGuid.PcdPciIoBase|0x0
   gUefiOvmfPkgTokenSpaceGuid.PcdPciIoSize|0x0
@@ -647,6 +648,8 @@
 
   gEfiSecurityPkgTokenSpaceGuid.PcdOptionRomImageVerificationPolicy|0x00
 
+!include OvmfPkg/Include/Dsc/OvmfDisplayPcds.dsc.inc
+
 !include NetworkPkg/NetworkDynamicPcds.dsc.inc
 
   # Set ConfidentialComputing defaults
@@ -686,10 +689,8 @@
   }
   MdeModulePkg/Core/DxeIplPeim/DxeIpl.inf
 
-  OvmfPkg/PlatformPei/PlatformPei.inf {
-    <LibraryClasses>
-      NULL|OvmfPkg/IntelTdx/TdxHelperLib/TdxHelperLibNull.inf
-  }
+  OvmfPkg/PlatformPei/PlatformPei.inf
+
   UefiCpuPkg/Universal/Acpi/S3Resume2Pei/S3Resume2Pei.inf
   UefiCpuPkg/CpuMpPei/CpuMpPei.inf
 
@@ -829,8 +830,6 @@
   #
 !include NetworkPkg/NetworkComponents.dsc.inc
 !include OvmfPkg/Include/Dsc/NetworkComponents.dsc.inc
-
-  OvmfPkg/VirtioNetDxe/VirtioNet.inf
 
   #
   # Usb Support

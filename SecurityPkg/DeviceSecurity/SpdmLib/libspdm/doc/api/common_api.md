@@ -233,9 +233,10 @@ Enumeration value used for the `libspdm_set_data` and/or `libspdm_get_data` func
       endpoint, or appended to the partial (without root certificate) certificate chain returned by
       a peer endpoint. The root certificate(s) must be encoded as ASN.1 DER.
 - `LIBSPDM_DATA_LOCAL_PUBLIC_CERT_CHAIN`
-    - Allows multiple pointers to certificate chains to be stored in slots through the
-      `additional_data` field. A certificate chain can then be returned through a `CERTIFICATE`
-      response message. The certificate chain(s) must be encoded as ASN.1 DER.
+    - Allows multiple pointers to SPDM certificate chains to be stored in slots through the
+      `additional_data` field. An SPDM certificate chain can then be returned through a
+      `CERTIFICATE` response message. The structure of the SPDM certificate chain is defined in the
+      `spdm_cert_chain_t` struct in the `spdm.h` header.
 - `LIBSPDM_DATA_PEER_USED_CERT_CHAIN_BUFFER`
     - Allows multiple certificates, or values derived from the certificates, to be stored in the
       `spdm_context`. If `LIBSPDM_RECORD_TRANSCRIPT_DATA_SUPPORT` is `1` then the provided
@@ -336,6 +337,8 @@ Enumeration value used for the `libspdm_set_data` and/or `libspdm_get_data` func
       endianness to the opposite value and try again with session establishment. Once a session has
       been successfully established, the correct endianness can be queried from
       `LIBSPDM_DATA_SESSION_SEQUENCE_NUMBER_ENDIAN`.
+    - When the negotiated secured SPDM version is 1.2 or greater then libspdm unconditionally uses
+      `LIBSPDM_DATA_SESSION_SEQ_NUM_ENC_LITTLE_DEC_LITTLE`.
 - `LIBSPDM_DATA_MULTI_KEY_CONN_REQ`
     - Specifies the Requester's multi-key state for the connection. This is set following
       `NEGOTIATE_ALGORITHMS / ALGORITHMS`.
@@ -343,7 +346,6 @@ Enumeration value used for the `libspdm_set_data` and/or `libspdm_get_data` func
         - If `false` then Requester does not support multi-key capabilities and only supports a
           single asymmetric key during the connection.
     - Only `LIBSPDM_DATA_LOCATION_CONNECTION` is allowed.
-
 - `LIBSPDM_DATA_MULTI_KEY_CONN_RSP`
     - Specifies the Responder's multi-key state for the connection. This is set following
       `NEGOTIATE_ALGORITHMS / ALGORITHMS`.
@@ -351,6 +353,8 @@ Enumeration value used for the `libspdm_set_data` and/or `libspdm_get_data` func
         - If `false` then Responder does not support multi-key capabilities and only supports a
           single asymmetric key during the connection.
     - Only `LIBSPDM_DATA_LOCATION_CONNECTION` is allowed.
+- `LIBSPDM_DATA_TOTAL_KEY_PAIRS`
+    - the total number of key pairs on the responder.
 
 ### Values that can only be `get`.
 
@@ -397,3 +401,8 @@ Enumeration value used for the `libspdm_set_data` and/or `libspdm_get_data` func
             - The endianness of the sequence number is little-endian.
         - `LIBSPDM_DATA_SESSION_SEQ_NUM_ENC_BIG_DEC_BIG`
             - The endianness of the sequence number is big-endian.
+- `LIBSPDM_DATA_REQUEST_AND_SIZE`
+    - Returns a pointer to the raw command buffer and the size of the command in bytes.
+    - This pointer is valid after libspdm_set_scratch_buffer is called, but the command itself is
+      not valid unless the size returned is greater than zero. The command and its size will
+      persist until the next command is received or the libspdm context is reset.

@@ -1,6 +1,6 @@
 /**
  *  Copyright Notice:
- *  Copyright 2021-2022 DMTF. All rights reserved.
+ *  Copyright 2021-2024 DMTF. All rights reserved.
  *  License: BSD 3-Clause License. For full text see link: https://github.com/DMTF/libspdm/blob/main/LICENSE.md
  **/
 
@@ -312,6 +312,27 @@ bool libspdm_rsa_pkcs1_sign_with_nid(void *rsa_context, size_t hash_nid,
         }
         break;
 
+    case LIBSPDM_CRYPTO_NID_SHA3_256:
+        md_alg = MBEDTLS_MD_SHA3_256;
+        if (hash_size != LIBSPDM_SHA3_256_DIGEST_SIZE) {
+            return false;
+        }
+        break;
+
+    case LIBSPDM_CRYPTO_NID_SHA3_384:
+        md_alg = MBEDTLS_MD_SHA3_384;
+        if (hash_size != LIBSPDM_SHA3_384_DIGEST_SIZE) {
+            return false;
+        }
+        break;
+
+    case LIBSPDM_CRYPTO_NID_SHA3_512:
+        md_alg = MBEDTLS_MD_SHA3_512;
+        if (hash_size != LIBSPDM_SHA3_512_DIGEST_SIZE) {
+            return false;
+        }
+        break;
+
     default:
         return false;
     }
@@ -324,7 +345,7 @@ bool libspdm_rsa_pkcs1_sign_with_nid(void *rsa_context, size_t hash_nid,
     mbedtls_rsa_set_padding(rsa_context, MBEDTLS_RSA_PKCS_V15, md_alg);
 
     ret = mbedtls_rsa_pkcs1_sign(rsa_context, libspdm_myrand, NULL,
-                                 MBEDTLS_RSA_PRIVATE, md_alg,
+                                 md_alg,
                                  (uint32_t)hash_size, message_hash,
                                  signature);
     if (ret != 0) {
@@ -404,6 +425,27 @@ bool libspdm_rsa_pss_sign(void *rsa_context, size_t hash_nid,
         }
         break;
 
+    case LIBSPDM_CRYPTO_NID_SHA3_256:
+        md_alg = MBEDTLS_MD_SHA3_256;
+        if (hash_size != LIBSPDM_SHA3_256_DIGEST_SIZE) {
+            return false;
+        }
+        break;
+
+    case LIBSPDM_CRYPTO_NID_SHA3_384:
+        md_alg = MBEDTLS_MD_SHA3_384;
+        if (hash_size != LIBSPDM_SHA3_384_DIGEST_SIZE) {
+            return false;
+        }
+        break;
+
+    case LIBSPDM_CRYPTO_NID_SHA3_512:
+        md_alg = MBEDTLS_MD_SHA3_512;
+        if (hash_size != LIBSPDM_SHA3_512_DIGEST_SIZE) {
+            return false;
+        }
+        break;
+
     default:
         return false;
     }
@@ -419,13 +461,14 @@ bool libspdm_rsa_pss_sign(void *rsa_context, size_t hash_nid,
     mbedtls_rsa_set_padding(rsa_context, MBEDTLS_RSA_PKCS_V21, md_alg);
 
     ret = mbedtls_rsa_rsassa_pss_sign(rsa_context, libspdm_myrand, NULL,
-                                      MBEDTLS_RSA_PRIVATE, md_alg,
+                                      md_alg,
                                       (uint32_t)hash_size, message_hash,
                                       signature);
+
     if (ret != 0) {
         return false;
     }
-    *sig_size = ((mbedtls_rsa_context *)rsa_context)->len;
+    *sig_size = mbedtls_rsa_get_len(rsa_context);
     return true;
 }
 
@@ -517,6 +560,27 @@ bool libspdm_rsa_pss_sign_fips(void *rsa_context, size_t hash_nid,
         }
         break;
 
+    case LIBSPDM_CRYPTO_NID_SHA3_256:
+        md_alg = MBEDTLS_MD_SHA3_256;
+        if (hash_size != LIBSPDM_SHA3_256_DIGEST_SIZE) {
+            return false;
+        }
+        break;
+
+    case LIBSPDM_CRYPTO_NID_SHA3_384:
+        md_alg = MBEDTLS_MD_SHA3_384;
+        if (hash_size != LIBSPDM_SHA3_384_DIGEST_SIZE) {
+            return false;
+        }
+        break;
+
+    case LIBSPDM_CRYPTO_NID_SHA3_512:
+        md_alg = MBEDTLS_MD_SHA3_512;
+        if (hash_size != LIBSPDM_SHA3_512_DIGEST_SIZE) {
+            return false;
+        }
+        break;
+
     default:
         return false;
     }
@@ -538,7 +602,7 @@ bool libspdm_rsa_pss_sign_fips(void *rsa_context, size_t hash_nid,
     if (ret != 0) {
         return false;
     }
-    *sig_size = ((mbedtls_rsa_context *)rsa_context)->len;
+    *sig_size = mbedtls_rsa_get_len(rsa_context);
     return true;
 }
 #endif /*LIBSPDM_FIPS_MODE*/

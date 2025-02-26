@@ -1,3 +1,20 @@
+edk2 (2025.02-1) UNRELEASED; urgency=medium
+
+  * New upstream release, based on edk2-stable202502 tag:
+    - Drop patches merged upstream:
+      + 0001-UefiCpuPkg-Adjust-the-exception-handler-logic-on-Loo.patch
+      + 0002-UefiCpuPkg-Add-dump-interrupt-type-on-LoongArch64.patch
+      + 0003-OvmfPkg-LoongArch-Enabling-some-base-libraries.patch
+      + OvmfPkg-RiscVVirtQemu.dsc-enable-VGA-support.patch
+    - d/binary-check.ignore: Update.
+    - Refresh patches:
+      + no-stack-protector-all-archs.diff
+      + x64-baseline-abi.patch
+      + Revert-ArmVirtPkg-make-EFI_LOADER_DATA-non-executabl.patch
+      + ArmVirtPkg-disable-the-EFI_MEMORY_ATTRIBUTE-protocol.patch
+
+ -- dann frazier <dannf@debian.org>  Wed, 26 Feb 2025 14:09:54 -0700
+
 edk2 (2024.11-5) unstable; urgency=medium
 
   * qemu-efi-riscv64: enable VGA support. Thanks to Heinrich Schuchardt,

@@ -9,7 +9,7 @@ Last-Update: 2023-07-21
 
 --- a/ArmVirtPkg/ArmVirt.dsc.inc
 +++ b/ArmVirtPkg/ArmVirt.dsc.inc
-@@ -383,7 +383,7 @@
+@@ -398,7 +398,7 @@
    # build command line you can allow code execution in EfiLoaderData. This is
    # required when using some outdated GRUB versions.
    #

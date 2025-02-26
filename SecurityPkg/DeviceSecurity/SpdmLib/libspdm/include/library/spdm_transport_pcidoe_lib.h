@@ -1,11 +1,15 @@
 /**
  *  Copyright Notice:
- *  Copyright 2021-2022 DMTF. All rights reserved.
+ *  Copyright 2021-2024 DMTF. All rights reserved.
  *  License: BSD 3-Clause License. For full text see link: https://github.com/DMTF/libspdm/blob/main/LICENSE.md
  **/
 
 #ifndef PCI_DOE_TRANSPORT_LIB_H
 #define PCI_DOE_TRANSPORT_LIB_H
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 #include "library/spdm_common_lib.h"
 #include "library/spdm_crypt_lib.h"
@@ -128,6 +132,22 @@ libspdm_return_t libspdm_transport_pci_doe_decode_message(
 libspdm_return_t libspdm_pci_doe_decode_discovery_request(size_t transport_message_size,
                                                           const void *transport_message,
                                                           uint8_t *index);
+
+/**
+ * Decode a DOE discovery request message to get the DOE Discovery Version field.
+ * DOE Discovery Version is introduced in PCIE Spec 6.1 Section 6.30.1.1.
+ *
+ * @param  transport_message_size               Size in bytes of the transport message data buffer.
+ * @param  transport_message                    A pointer to a source buffer to store the transport message.
+ * @param  version                              A pointer to a destination to store the DOE Discovery Version.
+ *
+ * @retval LIBSPDM_STATUS_SUCCESS               The message is encoded successfully.
+ * @retval LIBSPDM_STATUS_INVALID_PARAMETER     The message is NULL or the message_size is zero.
+ **/
+libspdm_return_t libspdm_pci_doe_decode_discovery_request_version(size_t transport_message_size,
+                                                                  const void *transport_message,
+                                                                  uint8_t *version);
+
 /**
  * Decode a DOE discovery response message.
  *
@@ -197,5 +217,9 @@ uint32_t libspdm_pci_doe_get_max_random_number_count(void);
  */
 spdm_version_number_t libspdm_pci_doe_get_secured_spdm_version(
     spdm_version_number_t secured_message_version);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* PCI_DOE_TRANSPORT_LIB_H */

@@ -56,8 +56,7 @@ libspdm_return_t libspdm_try_vendor_send_request_receive_response(
         resp_size == NULL ||
         (*resp_size != 0 && resp_data == NULL)
         ) {
-        status = LIBSPDM_STATUS_INVALID_PARAMETER;
-        goto done;
+        return LIBSPDM_STATUS_INVALID_PARAMETER;
     }
 
     if (spdm_context->connection_info.connection_state < LIBSPDM_CONNECTION_STATE_NEGOTIATED) {
@@ -89,7 +88,11 @@ libspdm_return_t libspdm_try_vendor_send_request_receive_response(
     }
 
     spdm_request = (void *)(message + transport_header_size);
+    spdm_request_size = message_size - transport_header_size -
+                        spdm_context->local_context.capability.transport_tail_size;
 
+    LIBSPDM_ASSERT(spdm_request_size >= sizeof(spdm_vendor_defined_request_msg_t) +
+                   req_vendor_id_len + sizeof(uint16_t) + req_size);
     spdm_request->header.spdm_version = libspdm_get_connection_version (spdm_context);
     spdm_request->header.request_response_code = SPDM_VENDOR_DEFINED_REQUEST;
     spdm_request->header.param1 = 0;
@@ -122,8 +125,7 @@ libspdm_return_t libspdm_try_vendor_send_request_receive_response(
         libspdm_send_spdm_request(spdm_context, session_id, spdm_request_size, spdm_request);
     if (LIBSPDM_STATUS_IS_ERROR(status)) {
         libspdm_release_sender_buffer (spdm_context);
-        status = LIBSPDM_STATUS_SEND_FAIL;
-        goto done;
+        return LIBSPDM_STATUS_SEND_FAIL;
     }
     libspdm_release_sender_buffer (spdm_context);
     spdm_request = (void *)spdm_context->last_spdm_request;
@@ -137,7 +139,6 @@ libspdm_return_t libspdm_try_vendor_send_request_receive_response(
     spdm_response = (void *)(message);
     spdm_response_size = message_size;
 
-    libspdm_zero_mem(spdm_response, spdm_response_size);
     status = libspdm_receive_spdm_response(spdm_context, session_id,
                                            &spdm_response_size,
                                            (void **)&spdm_response);
@@ -258,7 +259,7 @@ libspdm_return_t libspdm_vendor_send_request_receive_response(
             resp_vendor_id,
             resp_size,
             resp_data);
-        if ((status != LIBSPDM_STATUS_BUSY_PEER) || (retry == 0)) {
+        if (status != LIBSPDM_STATUS_BUSY_PEER) {
             return status;
         }
 

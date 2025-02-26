@@ -13,6 +13,7 @@ B<openssl> B<pkeyutl>
 [B<-rawin>]
 [B<-digest> I<algorithm>]
 [B<-out> I<file>]
+[B<-secret> I<file>]
 [B<-sigfile> I<file>]
 [B<-inkey> I<filename>|I<uri>]
 [B<-keyform> B<DER>|B<PEM>|B<P12>|B<ENGINE>]
@@ -28,8 +29,11 @@ B<openssl> B<pkeyutl>
 [B<-encrypt>]
 [B<-decrypt>]
 [B<-derive>]
+[B<-encap>]
+[B<-decap>]
 [B<-kdf> I<algorithm>]
 [B<-kdflen> I<length>]
+[B<-kemop> I<operation>]
 [B<-pkeyopt> I<opt>:I<value>]
 [B<-pkeyopt_passin> I<opt>[:I<passarg>]]
 [B<-hexdump>]
@@ -79,6 +83,10 @@ then the B<-rawin> option must be also specified.
 Specifies the output filename to write to or standard output by
 default.
 
+=item B<-secret> I<filename>
+
+Specifies the output filename to write the secret to on I<-encap>.
+
 =item B<-sigfile> I<file>
 
 Signature file, required for B<-verify> operations only
@@ -108,7 +116,9 @@ See L<openssl-format-options(1)> for details.
 
 =item B<-pubin>
 
-The input file is a public key.
+By default a private key is read from the key input.
+With this option a public key is read instead.
+If the input contains no public key but a private key, its public part is used.
 
 =item B<-certin>
 
@@ -144,6 +154,31 @@ Decrypt the input data using a private key.
 =item B<-derive>
 
 Derive a shared secret using the peer key.
+
+=item B<-encap>
+
+Encapsulate a generated secret using a private key.
+The encapsulated result (binary data) is written to standard output by default,
+or else to the file specified with I<-out>.
+The I<-secret> option must also be provided to specify the output file for the
+secret value generated in the encapsulation process.
+
+=item B<-decap>
+
+Decapsulate the secret using a private key.
+The result (binary data) is written to standard output by default, or else to
+the file specified with I<-out>.
+
+=item B<-kemop> I<operation>
+
+This option is used for I<-encap>/I<-decap> commands and specifies the KEM
+operation specific for the key algorithm when there is no default KEM
+operation.
+If the algorithm has the default KEM operation, this option can be omitted.
+
+See L<EVP_PKEY_CTX_set_kem_op(3)> and algorithm-specific KEM documentation e.g.
+L<EVP_KEM-RSA(7)>, L<EVP_KEM-EC(7)>, L<EVP_KEM-X25519(7)>, and
+L<EVP_KEM-X448(7)>.
 
 =item B<-kdf> I<algorithm>
 
@@ -240,6 +275,11 @@ signed or verified directly instead of using a B<DigestInfo> structure. If a
 digest is set, then the B<DigestInfo> structure is used and its length
 must correspond to the digest type.
 
+Note, for B<pkcs1> padding, as a protection against the Bleichenbacher attack,
+the decryption will not fail in case of padding check failures. Use B<none>
+and manual inspection of the decrypted message to verify if the decrypted
+value has correct PKCS#1 v1.5 padding.
+
 For B<oaep> mode only encryption and decryption is supported.
 
 For B<x931> if the digest type is set it is used to format the block data
@@ -267,6 +307,16 @@ explicitly set in PSS mode then the signing digest is used.
 Sets the digest used for the OAEP hash function. If not explicitly set then
 SHA1 is used.
 
+=item B<rsa_pkcs1_implicit_rejection:>I<flag>
+
+Disables (when set to 0) or enables (when set to 1) the use of implicit
+rejection with PKCS#1 v1.5 decryption. When enabled (the default), as a
+protection against Bleichenbacher attack, the library will generate a
+deterministic random plaintext that it will return to the caller in case
+of padding check failure.
+When disabled, it's the callers' responsibility to handle the returned
+errors in a side-channel free manner.
+
 =back
 
 =head1 RSA-PSS ALGORITHM
@@ -284,7 +334,7 @@ These have the same meaning as the B<RSA> algorithm with some additional
 restrictions. The padding mode can only be set to B<pss> which is the
 default value.
 
-If the key has parameter restrictions than the digest, MGF1
+If the key has parameter restrictions then the digest, MGF1
 digest and salt length are set to the values specified in the parameters.
 The digest and MG cannot be changed and the salt length cannot be set to a
 value less than the minimum restriction.
@@ -420,7 +470,7 @@ The B<-engine> option was deprecated in OpenSSL 3.0.
 
 =head1 COPYRIGHT
 
-Copyright 2006-2021 The OpenSSL Project Authors. All Rights Reserved.
+Copyright 2006-2024 The OpenSSL Project Authors. All Rights Reserved.
 
 Licensed under the Apache License 2.0 (the "License").  You may not use
 this file except in compliance with the License.  You can obtain a copy

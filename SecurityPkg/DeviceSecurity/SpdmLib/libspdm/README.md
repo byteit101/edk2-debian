@@ -1,4 +1,4 @@
-# libspdm is a sample implementation that follows the DMTF [SPDM](https://www.dmtf.org/standards/spdm) specifications
+# DMTF's Reference Implementation of [SPDM](https://www.dmtf.org/standards/spdm)
 
 ## Features
 
@@ -6,9 +6,9 @@
 
    The SPDM and secured message libraries follow :
 
-   [DSP0274](https://www.dmtf.org/dsp/DSP0274)  Security Protocol and Data Model (SPDM) Specification (version [1.0.2](https://www.dmtf.org/sites/default/files/standards/documents/DSP0274_1.0.2.pdf), version [1.1.3](https://www.dmtf.org/sites/default/files/standards/documents/DSP0274_1.1.3.pdf), version [1.2.2](https://www.dmtf.org/sites/default/files/standards/documents/DSP0274_1.2.2.pdf) and version [1.3.0](https://www.dmtf.org/sites/default/files/standards/documents/DSP0274_1.3.0.pdf))
+   [DSP0274](https://www.dmtf.org/dsp/DSP0274)  Security Protocol and Data Model (SPDM) Specification (version [1.0.2](https://www.dmtf.org/sites/default/files/standards/documents/DSP0274_1.0.2.pdf), version [1.1.3](https://www.dmtf.org/sites/default/files/standards/documents/DSP0274_1.1.3.pdf), version [1.2.2](https://www.dmtf.org/sites/default/files/standards/documents/DSP0274_1.2.2.pdf) and version [1.3.1](https://www.dmtf.org/sites/default/files/standards/documents/DSP0274_1.3.1.pdf))
 
-   [DSP0277](https://www.dmtf.org/dsp/DSP0277)  Secured Messages using SPDM Specification (version [1.1.0](https://www.dmtf.org/sites/default/files/standards/documents/DSP0277_1.1.0.pdf))
+   [DSP0277](https://www.dmtf.org/dsp/DSP0277)  Secured Messages using SPDM Specification (version [1.0.1](https://www.dmtf.org/sites/default/files/standards/documents/DSP0277_1.0.1.pdf), version [1.1.1](https://www.dmtf.org/sites/default/files/standards/documents/DSP0277_1.1.1.pdf), version [1.2.0](https://www.dmtf.org/sites/default/files/standards/documents/DSP0277_1.2.0.pdf))
 
    MCTP and secured MCTP follow :
 
@@ -18,7 +18,11 @@
 
    PCIE follows :
 
-   PCI Express Base Specification Revision 6.0 (version [1.0](https://members.pcisig.com/wg/PCI-SIG/document/16609))
+   PCI Express Base Specification [Revision 6.2](https://members.pcisig.com/wg/PCI-SIG/document/20590)
+
+   CXL follows :
+
+   Compute Express Link Specification [Revision 3.1](https://computeexpresslink.org/cxl-specification)
 
 2) Includes libraries that can be used to construct an SPDM Requester and an SPDM Responder.
 
@@ -32,13 +36,13 @@
 
 4) Implemented Requests and Responses
 
-   SPDM 1.0: `GET_VERSION`, `GET_CAPABILITIES`, `NEGOTIATE_ALGORITHMS`, `GET_DIGESTS`, `GET_CERTIFICATE`, `CHALLENGE`, and `GET_MEASUREMENTS`.
+   SPDM 1.0: `GET_VERSION`, `GET_CAPABILITIES`, `NEGOTIATE_ALGORITHMS`, `GET_DIGESTS`, `GET_CERTIFICATE`, `CHALLENGE`, `GET_MEASUREMENTS`, and `VENDOR_DEFINED_REQUEST`.
 
    SPDM 1.1: `KEY_EXCHANGE`, `FINISH`, `PSK_EXCHANGE`, `PSK_FINISH`, `END_SESSION`, `HEARTBEAT`, `KEY_UPDATE`, and `ENCAPSULATED` messages.
 
    SPDM 1.2: `GET_CSR`, `SET_CERTIFICATE`, `CHUNK_SEND`, and `CHUNK_GET`.
 
-   SPDM 1.3: `GET_SUPPORTED_EVENT_TYPES`. Additional SPDM 1.3 messages will be implemented in future releases.
+   SPDM 1.3: `GET_KEY_PAIR_INFO`, `SET_KEY_PAIR_INFO`, `SUBSCRIBE_EVENT_TYPE`, `GET_SUPPORTED_EVENT_TYPES` and `GET_MEASUREMENT_EXTENSION_LOG`. Additional SPDM 1.3 messages will be implemented in future releases.
 
 5) Cryptography Support
 
@@ -61,9 +65,15 @@
 
 6) Execution Context
 
-   Support to build an OS application for spdm_requester_emu and spdm_responder_emu to trace communication between Requester and Responder.
+   Support to build an OS application for spdm_requester_emu and spdm_responder_emu to trace communication between Requester and Responder in [spdm-emu](https://github.com/DMTF/spdm-emu).
 
-   Support to be included in UEFI host environment [EDKII](https://github.com/tianocore/edk2), such as [edkii_spdm_requester](https://github.com/jyao1/edk2/tree/DeviceSecurity/DeviceSecurityPkg)
+   Support to build an OS application for SPDM validation in [SPDM-Responder-Validator](https://github.com/DMTF/SPDM-Responder-Validator) and TEE-IO validation in [tee-io-validator](https://github.com/intel/tee-io-validator).
+
+   Support to build as part of the NVIDIA Linux kernel module driver in [open-gpu-kernel-modules](https://github.com/NVIDIA/open-gpu-kernel-modules).
+
+   Support to build as backend server for [qemu](https://gitlab.com/alistair23/qemu/-/blob/mainline/alistair/spdm-socket.next/docs/specs/spdm.rst).
+
+   Support is included in UEFI host environment [EDKII](https://github.com/tianocore/edk2/tree/master/SecurityPkg/DeviceSecurity).
 
    Support to be included in [OpenBMC](https://github.com/openbmc). It is in planning, see [SPDM Integration](https://www.youtube.com/watch?v=PmgXkLJYI-E).
 
@@ -71,7 +81,7 @@
 
    Support interoperability testing with other SPDM implementations. For example, [intel-server-prot-spdm](https://github.com/intel/intel-server-prot-spdm) and [spdm-rs](https://github.com/ccc-spdm-tools/spdm-rs).
 
-7) Supported Architecture and Cross-Compiler based on X64 platform.
+7) Supported architecture and cross-compiler based on X64 platform.
 
 | Windows System  | ia32 | x64 | arm | aarch64 | riscv32 | riscv64 |
 | --------------- | ---- | --- | --- | ------- | ------- | ------- |
@@ -96,6 +106,12 @@
 | [RISCV_XPACK](https://github.com/xpack-dev-tools/riscv-none-elf-gcc-xpack) |  -   |  -  |  -  |    -    | riscv-none-elf-gcc | riscv-none-elf-gcc |
 | [RISCV_NONE](https://archlinux.org/packages/extra/x86_64/riscv64-elf-gcc/) |  -   |  -  |  -  |    -    | riscv64-elf-gcc | riscv64-elf-gcc |
 
+8) Static Analysis
+
+Support [Coverity](https://scan.coverity.com/) scan tool.
+
+Support [CodeQL](https://codeql.github.com/) tool.
+
 ## Documents
 
 1) Presentation
@@ -106,7 +122,7 @@
 
 2) Library Threat Model
 
-   The user guide can be found at [threat_model](https://github.com/DMTF/libspdm/blob/main/doc/threat_model.md).
+   The threat model can be found at [threat_model](https://github.com/DMTF/libspdm/blob/main/doc/threat_model.md).
 
 3) Library Design
 
@@ -151,7 +167,7 @@ For other architectures, refer to [build](https://github.com/DMTF/libspdm/blob/m
 
 ### Cryptography Library
 
-1) [Mbed TLS](https://tls.mbed.org) as cryptography library. Version 2.28.1.
+1) [Mbed TLS](https://tls.mbed.org) as cryptography library. Version 3.6.2.
 
 2) [OpenSSL](https://www.openssl.org) as cryptography library. Version 3.0.9.
 
@@ -300,7 +316,3 @@ For other architectures, refer to [build](https://github.com/DMTF/libspdm/blob/m
 ## Features not implemented yet
 
 1) Refer to [issues](https://github.com/DMTF/libspdm/issues) for more details.
-
-## Known limitations
-This package is only the sample code to show the concept of SPDM and should not be considered fit for production.
-Any code including the API definition is subject to change.

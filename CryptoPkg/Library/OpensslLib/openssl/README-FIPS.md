@@ -78,7 +78,7 @@ The FIPS module must have the self tests run, and the FIPS module config file
 output generated on every machine that it is to be used on. For OpenSSL 3.0,
 you must not copy the FIPS module config file output data from one machine to another.
 
-On Unix the `openssl fipsinstall` command will be invoked as follows by default:
+On Unix, the `openssl fipsinstall` command will be invoked as follows by default:
 
     $ openssl fipsinstall -out /usr/local/ssl/fipsmodule.cnf -module /usr/local/lib/ossl-modules/fips.so
 
@@ -165,4 +165,18 @@ Using the FIPS Module in applications
 Documentation about using the FIPS module is available on the [fips_module(7)]
 manual page.
 
- [fips_module(7)]: https://www.openssl.org/docs/man3.0/man7/fips_module.html
+ [fips_module(7)]: https://www.openssl.org/docs/manmaster/man7/fips_module.html
+
+3rd-Party Vendor Builds
+=====================================
+
+Some Vendors choose to patch/modify/build their own FIPS provider,
+test it with a Security Laboratory and submit it under their own CMVP
+certificate, instead of using OpenSSL Project submissions. When doing
+so, FIPS provider should uniquely identify its own name and version
+number. The build infrastructure allows to customize FIPS provider
+build information via changes to strings in `VERSION.dat`.
+
+Setting "PRE_RELEASE_TAG" (dashed suffix), "BUILD_METADATA" (plus
+suffix), and "FIPS_VENDOR" allow to control reported FIPS provider
+name and build version as required for CMVP submission.

@@ -1,5 +1,5 @@
 #! /usr/bin/env perl
-# Copyright 2015-2021 The OpenSSL Project Authors. All Rights Reserved.
+# Copyright 2015-2024 The OpenSSL Project Authors. All Rights Reserved.
 #
 # Licensed under the Apache License 2.0 (the "License").  You may not use
 # this file except in compliance with the License.  You can obtain a copy
@@ -13,6 +13,8 @@ use warnings;
 use File::Compare qw/compare_text/;
 use File::Copy;
 use OpenSSL::Test qw/:DEFAULT/;
+use Time::Piece;
+use POSIX qw(strftime);
 
 my %conversionforms = (
     # Default conversion forms.  Other series may be added with
@@ -116,6 +118,7 @@ sub file_contains {
     open(DATA, $_) or return 0;
     $_= join('', <DATA>);
     close(DATA);
+    s/\s+/ /g; # take multiple whitespace (including newline) as single space
     return m/$pattern/ ? 1 : 0;
 }
 
@@ -127,8 +130,26 @@ sub cert_contains {
     my $out = "cert_contains.out";
     run(app(["openssl", "x509", "-noout", "-text", "-in", $cert, "-out", $out]));
     is(file_contains($out, $pattern), $expected, ($name ? "$name: " : "").
-       "$cert should ".($expected ? "" : "not ")."contain $pattern");
+       "$cert should ".($expected ? "" : "not ")."contain: \"$pattern\"");
     # not unlinking $out
+}
+
+sub has_version {
+    my $cert = shift @_;
+    my $expect = shift @_;
+    cert_contains($cert, "Version: $expect", 1);
+}
+
+sub has_SKID {
+    my $cert = shift @_;
+    my $expect = shift @_;
+    cert_contains($cert, "Subject Key Identifier", $expect);
+}
+
+sub has_AKID {
+    my $cert = shift @_;
+    my $expect = shift @_;
+    cert_contains($cert, "Authority Key Identifier", $expect);
 }
 
 sub uniq (@) {
@@ -155,6 +176,46 @@ sub cert_ext_has_n_different_lines {
     is(file_n_different_lines($out), $expected, ($name ? "$name: " : "").
        "$cert '$exts' output should contain $expected different lines");
     # not unlinking $out
+}
+
+# extracts string value of certificate field from a -text formatted-output
+sub get_field {
+    my ($f, $field) = @_;
+    my $string = "";
+    open my $fh, $f or die;
+    while (my $line = <$fh>) {
+        if ($line =~ /$field:\s+(.*)/) {
+            $string = $1;
+        }
+    }
+    close $fh;
+    return $string;
+}
+
+sub get_issuer {
+    return get_field(@_, "Issuer");
+}
+
+sub get_not_before {
+    return get_field(@_, "Not Before");
+}
+
+# Date as yyyy-mm-dd
+sub get_not_before_date {
+    return Time::Piece->strptime(
+        get_not_before(@_),
+        "%b %d %T %Y %Z")->date;
+}
+
+sub get_not_after {
+    return get_field(@_, "Not After ");
+}
+
+# Date as yyyy-mm-dd
+sub get_not_after_date {
+    return Time::Piece->strptime(
+        get_not_after(@_),
+        "%b %d %T %Y %Z")->date;
 }
 
 1;

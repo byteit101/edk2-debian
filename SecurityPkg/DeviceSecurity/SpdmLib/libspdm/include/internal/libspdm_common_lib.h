@@ -18,6 +18,7 @@
 #include "hal/library/responder/asymsignlib.h"
 #include "hal/library/responder/csrlib.h"
 #include "hal/library/responder/measlib.h"
+#include "hal/library/responder/key_pair_info.h"
 #include "hal/library/responder/psklib.h"
 #include "hal/library/responder/setcertlib.h"
 #include "hal/library/eventlib.h"
@@ -89,6 +90,7 @@ typedef struct {
     const void *local_cert_chain_provision[SPDM_MAX_SLOT_COUNT];
     size_t local_cert_chain_provision_size[SPDM_MAX_SLOT_COUNT];
     uint8_t local_supported_slot_mask;
+    uint8_t cert_slot_reset_mask;
     spdm_key_pair_id_t local_key_pair_id[SPDM_MAX_SLOT_COUNT];
     spdm_certificate_info_t local_cert_info[SPDM_MAX_SLOT_COUNT];
     spdm_key_usage_bit_mask_t local_key_usage_bit_mask[SPDM_MAX_SLOT_COUNT];
@@ -113,6 +115,8 @@ typedef struct {
 
     /*The device role*/
     bool is_requester;
+
+    uint8_t total_key_pairs;
 } libspdm_local_context_t;
 
 typedef struct {
@@ -303,12 +307,6 @@ typedef struct {
 
 #endif /* LIBSPDM_RECORD_TRANSCRIPT_DATA_SUPPORT */
 
-typedef struct {
-    size_t max_buffer_size;
-    size_t buffer_size;
-    uint8_t buffer[LIBSPDM_MAX_CERT_CHAIN_SIZE];
-} libspdm_cert_chain_managed_buffer_t;
-
 /* signature = Sign(SK, hash(M1))
  * Verify(PK, hash(M2), signature)*/
 
@@ -431,7 +429,7 @@ typedef struct {
 
 #define LIBSPDM_MAX_ENCAP_REQUEST_OP_CODE_SEQUENCE_COUNT 3
 typedef struct {
-    /* Valid OpCode: GET_DIEGST/GET_CERTIFICATE/CHALLENGE/KEY_UPDATE
+    /* Valid OpCode: GET_DIGEST/GET_CERTIFICATE/CHALLENGE/KEY_UPDATE
      * The last one is 0x00, as terminator.*/
     uint8_t request_op_code_sequence[LIBSPDM_MAX_ENCAP_REQUEST_OP_CODE_SEQUENCE_COUNT + 1];
     uint8_t request_op_code_count;
@@ -513,17 +511,15 @@ typedef struct {
 
     /* Cached plain text command
      * If the command is cipher text, decrypt then cache it. */
-    uint8_t *last_spdm_request;
+    void *last_spdm_request;
     size_t last_spdm_request_size;
 
-    /* scratch buffer */
-    uint8_t *scratch_buffer;
+    /* Buffers used for data processing and transport. */
+    void *scratch_buffer;
     size_t scratch_buffer_size;
-    /* sender buffer */
-    uint8_t *sender_buffer;
+    void *sender_buffer;
     size_t sender_buffer_size;
-    /* receiver buffer */
-    uint8_t *receiver_buffer;
+    void *receiver_buffer;
     size_t receiver_buffer_size;
 
     /* Cache session_id in this spdm_message, only valid for secured message. */
@@ -574,7 +570,7 @@ typedef struct {
     /* Cached data for SPDM_ERROR_CODE_RESPONSE_NOT_READY/SPDM_RESPOND_IF_READY */
     spdm_error_data_response_not_ready_t error_data;
 #if LIBSPDM_RESPOND_IF_READY_SUPPORT
-    uint8_t *cache_spdm_request;
+    void *cache_spdm_request;
     size_t cache_spdm_request_size;
 #endif
     uint8_t current_token;
@@ -766,7 +762,7 @@ libspdm_return_t libspdm_append_managed_buffer(void *managed_buffer,
  * The max_buffer_size is unchanged.
  * The buffer is not freed.
  *
- * @param  managed_buffer                The managed buffer to be shrinked.
+ * @param  managed_buffer                The managed buffer.
  **/
 void libspdm_reset_managed_buffer(void *managed_buffer);
 
@@ -816,16 +812,18 @@ void libspdm_session_info_init(libspdm_context_t *spdm_context,
                                libspdm_session_info_t *session_info,
                                uint32_t session_id, bool use_psk);
 
+#if LIBSPDM_ENABLE_CAPABILITY_PSK_CAP
 /**
  * Set the psk_hint to a session info.
  *
- * @param  session_info                  A pointer to a session info.
- * @param  psk_hint                      Indicate the PSK hint.
- * @param  psk_hint_size                  The size in bytes of the PSK hint.
+ * @param  session_info   A pointer to a session info.
+ * @param  psk_hint       Indicate the PSK hint.
+ * @param  psk_hint_size  The size in bytes of the PSK hint.
  */
 void libspdm_session_info_set_psk_hint(libspdm_session_info_t *session_info,
                                        const void *psk_hint,
                                        size_t psk_hint_size);
+#endif /* LIBSPDM_ENABLE_CAPABILITY_PSK_CAP */
 
 /**
  * This function returns if a given version is supported based upon the GET_VERSION/VERSION.
@@ -1047,7 +1045,7 @@ bool libspdm_calculate_l1l2_hash(libspdm_context_t *spdm_context,
  * @param[in]  data_in          A pointer to the multi element opaque data.
  * @param[in]  element_id       Element id.
  * @param[in]  sm_data_id       ID for the Secured Message data type.
- * @param[out] get_element_ptr  Pointer to store finded element.
+ * @param[out] get_element_ptr  Pointer to store found element.
  *
  * @retval true   Get element successfully
  * @retval false  Get element failed
@@ -1716,5 +1714,18 @@ static inline uint64_t libspdm_le_to_be_64(uint64_t value)
             ((value & 0x00ff000000000000) >> 40) |
             ((value & 0xff00000000000000) >> 56));
 }
+
+/**
+ * Return capability flags that are masked by the negotiated SPDM version.
+ *
+ * @param  spdm_context      A pointer to the SPDM context.
+ * @param  is_request_flags  If true then flags are from a request message or Requester.
+ *                           If false then flags are from a response message or Responder.
+ * @param  flags             A bitmask of capability flags.
+ *
+ * @return The masked capability flags.
+ */
+uint32_t libspdm_mask_capability_flags(libspdm_context_t *spdm_context,
+                                       bool is_request_flags, uint32_t flags);
 
 #endif /* SPDM_COMMON_LIB_INTERNAL_H */

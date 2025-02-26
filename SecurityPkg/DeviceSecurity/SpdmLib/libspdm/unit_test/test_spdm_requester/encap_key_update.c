@@ -414,9 +414,9 @@ void test_libspdm_requester_encap_key_update_case4(void **state)
 
     /*no capabilities*/
     spdm_context->connection_info.capability.flags &=
-        !SPDM_GET_CAPABILITIES_RESPONSE_FLAGS_KEY_UPD_CAP;
+        ~SPDM_GET_CAPABILITIES_RESPONSE_FLAGS_KEY_UPD_CAP;
     spdm_context->local_context.capability.flags &=
-        !SPDM_GET_CAPABILITIES_REQUEST_FLAGS_KEY_UPD_CAP;
+        ~SPDM_GET_CAPABILITIES_REQUEST_FLAGS_KEY_UPD_CAP;
 
     session_info = &spdm_context->session_info[0];
     secured_message_context = session_info->secured_message_context;
@@ -1078,13 +1078,6 @@ void test_libspdm_requester_encap_key_update_case14(void **state)
                      0);
 }
 
-
-
-libspdm_test_context_t m_libspdm_requester_encap_key_update_test_context = {
-    LIBSPDM_TEST_CONTEXT_VERSION,
-    false,
-};
-
 int libspdm_requester_encap_key_update_test_main(void)
 {
     const struct CMUnitTest spdm_requester_key_update_tests[] = {
@@ -1118,7 +1111,12 @@ int libspdm_requester_encap_key_update_test_main(void)
         cmocka_unit_test(test_libspdm_requester_encap_key_update_case14),
     };
 
-    libspdm_setup_test_context(&m_libspdm_requester_encap_key_update_test_context);
+    libspdm_test_context_t test_context = {
+        LIBSPDM_TEST_CONTEXT_VERSION,
+        false,
+    };
+
+    libspdm_setup_test_context(&test_context);
 
     return cmocka_run_group_tests(spdm_requester_key_update_tests,
                                   libspdm_unit_test_group_setup,

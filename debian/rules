@@ -316,7 +316,6 @@ override_dh_auto_clean:
 # Only embed code that is actually used; requested by the Ubuntu Security Team
 EMBEDDED_SUBMODULES += CryptoPkg/Library/MbedTlsLib/mbedtls
 EMBEDDED_SUBMODULES += CryptoPkg/Library/OpensslLib/openssl
-EMBEDDED_SUBMODULES += ArmPkg/Library/ArmSoftFloatLib/berkeley-softfloat-3
 EMBEDDED_SUBMODULES += MdeModulePkg/Library/BrotliCustomDecompressLib/brotli
 EMBEDDED_SUBMODULES += MdePkg/Library/BaseFdtLib/libfdt
 EMBEDDED_SUBMODULES += MdePkg/Library/MipiSysTLib/mipisyst

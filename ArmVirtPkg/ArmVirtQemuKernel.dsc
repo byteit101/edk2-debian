@@ -39,6 +39,7 @@
   DEFINE NETWORK_TLS_ENABLE              = FALSE
   DEFINE NETWORK_ALLOW_HTTP_CONNECTIONS  = TRUE
   DEFINE NETWORK_ISCSI_ENABLE            = FALSE
+  DEFINE NETWORK_PXE_BOOT_ENABLE         = TRUE
 
 !if $(NETWORK_SNP_ENABLE) == TRUE
   !error "NETWORK_SNP_ENABLE is IA32/X64/EBC only"
@@ -46,9 +47,10 @@
 
 !include NetworkPkg/NetworkDefines.dsc.inc
 
-!include MdePkg/MdeLibs.dsc.inc
-
+# This comes before MdeLibs to ensure stack cookie configuration is chosen
 !include ArmVirtPkg/ArmVirt.dsc.inc
+
+!include MdePkg/MdeLibs.dsc.inc
 
 [LibraryClasses.common]
   ArmLib|ArmPkg/Library/ArmLib/ArmBaseLib.inf
@@ -82,7 +84,7 @@
   TpmMeasurementLib|MdeModulePkg/Library/TpmMeasurementLibNull/TpmMeasurementLibNull.inf
   TpmPlatformHierarchyLib|SecurityPkg/Library/PeiDxeTpmPlatformHierarchyLibNull/PeiDxeTpmPlatformHierarchyLib.inf
 
-  ArmMonitorLib|ArmVirtPkg/Library/ArmVirtQemuMonitorLib/ArmVirtQemuMonitorLib.inf
+  ArmMonitorLib|ArmVirtPkg/Library/ArmVirtMonitorLib/ArmVirtMonitorLib.inf
 
 [LibraryClasses.common.DXE_DRIVER]
   AcpiPlatformLib|OvmfPkg/Library/AcpiPlatformLib/DxeAcpiPlatformLib.inf
@@ -337,7 +339,10 @@
 
   MdeModulePkg/Universal/HiiDatabaseDxe/HiiDatabaseDxe.inf
 
-  ArmPkg/Drivers/ArmGic/ArmGicDxe.inf
+  ArmPkg/Drivers/ArmGicDxe/ArmGicDxe.inf {
+    <LibraryClasses>
+      NULL|ArmVirtPkg/Library/ArmVirtGicArchLib/ArmVirtGicArchLib.inf
+  }
   ArmPkg/Drivers/TimerDxe/TimerDxe.inf {
     <LibraryClasses>
       NULL|ArmVirtPkg/Library/ArmVirtTimerFdtClientLib/ArmVirtTimerFdtClientLib.inf
@@ -406,16 +411,20 @@
   #
 !include NetworkPkg/NetworkComponents.dsc.inc
 
+!if $(NETWORK_ENABLE) == TRUE
+!if $(NETWORK_PXE_BOOT_ENABLE) == TRUE
   NetworkPkg/UefiPxeBcDxe/UefiPxeBcDxe.inf {
     <LibraryClasses>
       NULL|OvmfPkg/Library/PxeBcPcdProducerLib/PxeBcPcdProducerLib.inf
   }
+!endif
 
 !if $(NETWORK_TLS_ENABLE) == TRUE
   NetworkPkg/TlsAuthConfigDxe/TlsAuthConfigDxe.inf {
     <LibraryClasses>
       NULL|OvmfPkg/Library/TlsAuthConfigLib/TlsAuthConfigLib.inf
   }
+!endif
 !endif
 
   #

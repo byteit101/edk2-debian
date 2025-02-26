@@ -228,6 +228,7 @@ static libspdm_return_t libspdm_try_send_receive_psk_exchange(
     spdm_request_size = message_size - transport_header_size -
                         spdm_context->local_context.capability.transport_tail_size;
 
+    LIBSPDM_ASSERT(spdm_request_size >= sizeof(spdm_psk_exchange_request_t) + psk_hint_size);
     spdm_request->header.spdm_version = libspdm_get_connection_version (spdm_context);
     spdm_request->header.request_response_code = SPDM_PSK_EXCHANGE;
     spdm_request->header.param1 = measurement_hash_type;
@@ -252,6 +253,9 @@ static libspdm_return_t libspdm_try_send_receive_psk_exchange(
         opaque_psk_exchange_req_size =
             libspdm_get_opaque_data_supported_version_data_size(spdm_context);
     }
+
+    LIBSPDM_ASSERT(spdm_request_size >= sizeof(spdm_psk_exchange_request_t) + psk_hint_size +
+                   spdm_request->context_length + opaque_psk_exchange_req_size);
     spdm_request->opaque_length = (uint16_t)opaque_psk_exchange_req_size;
 
     spdm_request->req_session_id = req_session_id;
@@ -318,7 +322,6 @@ static libspdm_return_t libspdm_try_send_receive_psk_exchange(
     spdm_response = (void *)(message);
     spdm_response_size = message_size;
 
-    libspdm_zero_mem(spdm_response, spdm_response_size);
     status = libspdm_receive_spdm_response(
         spdm_context, NULL, &spdm_response_size, (void **)&spdm_response);
     if (LIBSPDM_STATUS_IS_ERROR(status)) {
@@ -587,7 +590,7 @@ libspdm_return_t libspdm_send_receive_psk_exchange(libspdm_context_t *spdm_conte
             measurement_hash_type, session_policy, session_id,
             heartbeat_period, measurement_hash,
             NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL);
-        if ((status != LIBSPDM_STATUS_BUSY_PEER) || (retry == 0)) {
+        if (status != LIBSPDM_STATUS_BUSY_PEER) {
             return status;
         }
 
@@ -633,7 +636,7 @@ libspdm_return_t libspdm_send_receive_psk_exchange_ex(libspdm_context_t *spdm_co
             responder_context, responder_context_size,
             requester_opaque_data, requester_opaque_data_size,
             responder_opaque_data, responder_opaque_data_size);
-        if ((status != LIBSPDM_STATUS_BUSY_PEER) || (retry == 0)) {
+        if (status != LIBSPDM_STATUS_BUSY_PEER) {
             return status;
         }
 

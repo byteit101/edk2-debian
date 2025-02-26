@@ -192,6 +192,7 @@ typedef struct {
     uint8_t verify_data[LIBSPDM_MAX_HASH_SIZE];
 } libspdm_finish_request_mine_t;
 
+#if LIBSPDM_ENABLE_CAPABILITY_PSK_CAP
 typedef struct {
     spdm_message_header_t header;
     uint16_t req_session_id;
@@ -207,6 +208,7 @@ typedef struct {
     spdm_message_header_t header;
     uint8_t verify_data[LIBSPDM_MAX_HASH_SIZE];
 } libspdm_psk_finish_request_mine_t;
+#endif /* LIBSPDM_ENABLE_CAPABILITY_PSK_CAP */
 
 #pragma pack()
 
@@ -230,6 +232,7 @@ libspdm_finish_request_mine_t m_libspdm_finish_request = {
 };
 size_t m_libspdm_finish_request_size = sizeof(m_libspdm_finish_request);
 
+#if LIBSPDM_ENABLE_CAPABILITY_PSK_CAP
 libspdm_psk_exchange_request_mine_t m_libspdm_psk_exchange_request = {
     {
         SPDM_MESSAGE_VERSION_11,
@@ -249,6 +252,7 @@ libspdm_psk_finish_request_mine_t m_libspdm_psk_finish_request = {
     },
 };
 size_t m_libspdm_psk_finish_request_size = sizeof(m_libspdm_psk_finish_request);
+#endif /* LIBSPDM_ENABLE_CAPABILITY_PSK_CAP */
 
 spdm_end_session_request_t m_libspdm_end_session_request = {
     {
@@ -596,10 +600,10 @@ void libspdm_test_responder_respond_if_ready_case5(void **state) {
 
     /*state for the the original request (KEY_EXCHANGE)*/
     spdm_context->connection_info.connection_state = LIBSPDM_CONNECTION_STATE_AUTHENTICATED;
-    spdm_context->local_context.capability.flags = 0;
     spdm_context->connection_info.capability.flags |=
         SPDM_GET_CAPABILITIES_REQUEST_FLAGS_KEY_EX_CAP;
-    spdm_context->local_context.capability.flags |= SPDM_GET_CAPABILITIES_RESPONSE_FLAGS_KEY_EX_CAP;
+    spdm_context->local_context.capability.flags = SPDM_GET_CAPABILITIES_RESPONSE_FLAGS_KEY_EX_CAP |
+                                                   SPDM_GET_CAPABILITIES_RESPONSE_FLAGS_CERT_CAP;
     spdm_context->connection_info.algorithm.base_hash_algo = m_libspdm_use_hash_algo;
     spdm_context->connection_info.algorithm.base_asym_algo = m_libspdm_use_asym_algo;
     spdm_context->connection_info.algorithm.measurement_spec = m_libspdm_use_measurement_spec;
@@ -1355,11 +1359,6 @@ void libspdm_test_responder_respond_if_ready_case14(void **state) {
 }
 #endif /* LIBSPDM_ENABLE_CAPABILITY_CERT_CAP*/
 
-libspdm_test_context_t m_libspdm_responder_respond_if_ready_test_context = {
-    LIBSPDM_TEST_CONTEXT_VERSION,
-    false,
-};
-
 int libspdm_responder_respond_if_ready_test_main(void) {
     const struct CMUnitTest spdm_responder_respond_if_ready_tests[] = {
         /* Success Case*/
@@ -1397,7 +1396,12 @@ int libspdm_responder_respond_if_ready_test_main(void) {
 
     };
 
-    libspdm_setup_test_context (&m_libspdm_responder_respond_if_ready_test_context);
+    libspdm_test_context_t test_context = {
+        LIBSPDM_TEST_CONTEXT_VERSION,
+        false,
+    };
+
+    libspdm_setup_test_context (&test_context);
 
     return cmocka_run_group_tests(spdm_responder_respond_if_ready_tests,
                                   libspdm_unit_test_group_setup,

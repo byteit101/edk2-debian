@@ -168,6 +168,12 @@ test_spdm_responder_supported_event_types
 test_spdm_requester_get_event_types
 test_spdm_requester_vendor_cmds
 test_spdm_responder_vendor_cmds
+test_spdm_responder_measurement_extension_log
+test_spdm_requester_get_measurement_extension_log
+test_spdm_requester_get_key_pair_info
+test_spdm_responder_key_pair_info
+test_spdm_requester_set_key_pair_info
+test_spdm_responder_set_key_pair_info_ack
 )
 
 export FUZZ_START_TIME=`date +%Y-%m-%d_%H:%M:%S`

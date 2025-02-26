@@ -6,7 +6,7 @@ Description: pass -fno-stack-protector to all GCC toolchains
 Last-Updated: 2023-07-21
 --- a/BaseTools/Conf/tools_def.template
 +++ b/BaseTools/Conf/tools_def.template
-@@ -936,7 +936,7 @@
+@@ -959,7 +959,7 @@
  # GCC Build Flag for included header file list generation
  DEFINE GCC_DEPS_FLAGS              = -MMD -MF $@.deps
  

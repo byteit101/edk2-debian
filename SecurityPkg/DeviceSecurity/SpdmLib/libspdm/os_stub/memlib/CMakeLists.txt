@@ -1,13 +1,17 @@
-cmake_minimum_required(VERSION 2.8.12)
+cmake_minimum_required(VERSION 3.5)
 
-INCLUDE_DIRECTORIES(${LIBSPDM_DIR}/include
-                    ${LIBSPDM_DIR}/include/hal)
+add_library(memlib STATIC "")
 
-SET(src_memlib
-    compare_mem.c
-    copy_mem.c
-    set_mem.c
-    zero_mem.c
+target_include_directories(memlib
+    PRIVATE
+        ${LIBSPDM_DIR}/include
+        ${LIBSPDM_DIR}/include/hal
 )
 
-ADD_LIBRARY(memlib STATIC ${src_memlib})
+target_sources(memlib
+    PRIVATE
+        compare_mem.c
+        copy_mem.c
+        set_mem.c
+        zero_mem.c
+)

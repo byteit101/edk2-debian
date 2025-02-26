@@ -33,7 +33,7 @@ typedef struct {
 static size_t m_libspdm_local_buffer_size;
 static uint8_t m_libspdm_local_buffer[LIBSPDM_MAX_MESSAGE_VCA_BUFFER_SIZE];
 
-libspdm_return_t libspdm_vendor_get_id_func_err_test(
+static libspdm_return_t libspdm_vendor_get_id_func_err_test(
     void *spdm_context,
     uint16_t *resp_standard_id,
     uint8_t *resp_vendor_id_len,
@@ -47,7 +47,7 @@ libspdm_return_t libspdm_vendor_get_id_func_err_test(
     return LIBSPDM_STATUS_SUCCESS;
 }
 
-libspdm_return_t libspdm_vendor_response_func_err_test(
+static libspdm_return_t libspdm_vendor_response_func_err_test(
     void *spdm_context,
     uint16_t req_standard_id,
     uint8_t req_vendor_id_len,
@@ -116,7 +116,7 @@ static libspdm_return_t libspdm_requester_vendor_cmds_err_test_receive_message(
         libspdm_vendor_response_test *spdm_response;
         libspdm_vendor_request_test* spdm_request = NULL;
         status = libspdm_transport_test_decode_message(
-            spdm_test_context, &session_id, &is_app_message, true,
+            spdm_context, &session_id, &is_app_message, true,
             m_libspdm_local_buffer_size, m_libspdm_local_buffer,
             &transport_message_size, (void **)(&spdm_request));
         assert_int_equal(status, LIBSPDM_STATUS_SUCCESS);
@@ -216,25 +216,24 @@ static void libspdm_test_requester_vendor_cmds_err_case1(void **state)
     printf("case 1 %d\n", response.data[0]);
 }
 
-libspdm_test_context_t m_libspdm_requester_vendor_cmds_err_test_context = {
-    LIBSPDM_TEST_CONTEXT_VERSION,
-    true,
-    libspdm_requester_vendor_cmds_err_test_send_message,
-    libspdm_requester_vendor_cmds_err_test_receive_message,
-};
-
 int libspdm_requester_vendor_cmds_error_test_main(void)
 {
     const struct CMUnitTest spdm_requester_vendor_cmds_tests[] = {
         cmocka_unit_test(libspdm_test_requester_vendor_cmds_err_case1),
     };
 
-    libspdm_setup_test_context(&m_libspdm_requester_vendor_cmds_err_test_context);
+    libspdm_test_context_t test_context = {
+        LIBSPDM_TEST_CONTEXT_VERSION,
+        true,
+        libspdm_requester_vendor_cmds_err_test_send_message,
+        libspdm_requester_vendor_cmds_err_test_receive_message,
+    };
+
+    libspdm_setup_test_context(&test_context);
 
     return cmocka_run_group_tests(spdm_requester_vendor_cmds_tests,
                                   libspdm_unit_test_group_setup,
                                   libspdm_unit_test_group_teardown);
 }
-
 
 #endif /* LIBSPDM_ENABLE_VENDOR_DEFINED_MESSAGES */
