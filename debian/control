@@ -2,7 +2,7 @@ Source: edk2
 Section: misc
 Priority: optional
 Maintainer: Debian QEMU Team <pkg-qemu-devel@lists.alioth.debian.org>
-Uploaders: Steve Langasek <vorlon@debian.org>, Serge Hallyn <serge.hallyn@ubuntu.com>, dann frazier <dannf@debian.org>
+Uploaders: dann frazier <dannf@debian.org>
 Build-Depends: bc,
  debhelper-compat (= 12),
  dh-exec,

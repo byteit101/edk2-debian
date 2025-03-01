@@ -17,6 +17,9 @@ edk2 (2025.02-1) UNRELEASED; urgency=medium
     Debian, which again provides a signed shim for arm64.
   * d/tests: Use foreign test dependencies to allow running secure_boot
     tests for amd64 and arm64 on all host architectures.
+  * d/control: Update Uploaders. Thank you for everything Steve. I
+    still use your notes each time I prepare a new upstream release.
+    Budeš mi chybět.
 
  -- dann frazier <dannf@debian.org>  Wed, 26 Feb 2025 14:09:54 -0700
 
