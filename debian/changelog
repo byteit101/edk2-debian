@@ -15,6 +15,8 @@ edk2 (2025.02-1) UNRELEASED; urgency=medium
   * d/tests/shell.py: Align aarch64 snakeoil tests w/ x64.
   * d/tests/shell.py: Enable test_aavmf_ms_secure_boot_signed case on
     Debian, which again provides a signed shim for arm64.
+  * d/tests: Use foreign test dependencies to allow running secure_boot
+    tests for amd64 and arm64 on all host architectures.
 
  -- dann frazier <dannf@debian.org>  Wed, 26 Feb 2025 14:09:54 -0700
 
