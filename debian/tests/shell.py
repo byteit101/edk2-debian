@@ -169,12 +169,40 @@ class BootToShellTest(unittest.TestCase):
         q.add_disk(iso.path)
         self.run_cmd_check_secure_boot(q.command, 'aa64', False)
 
-    def test_aavmf_snakeoil(self):
+    @unittest.skipUnless(DPKG_ARCH == 'arm64', "arm64-only")
+    def test_aavmf_snakeoil_secure_boot_signed(self):
         q = Qemu.QemuCommand(
             QemuEfiMachine.AAVMF,
             variant=QemuEfiVariant.SNAKEOIL,
         )
-        self.run_cmd_check_shell(q.command)
+        shim = SignedBinary(
+            get_local_shim_path('AA64', signed=False),
+            "/usr/share/qemu-efi-aarch64/PkKek-1-snakeoil.key",
+            "/usr/share/qemu-efi-aarch64/PkKek-1-snakeoil.pem",
+            "snakeoil",
+        )
+        grub = SignedBinary(
+            get_local_grub_path('AA64', signed=False),
+            "/usr/share/qemu-efi-aarch64/PkKek-1-snakeoil.key",
+            "/usr/share/qemu-efi-aarch64/PkKek-1-snakeoil.pem",
+            "snakeoil",
+        )
+        iso = GrubShellBootableIsoImage('AA64', shim.path, grub.path)
+        q.add_disk(iso.path)
+        self.run_cmd_check_secure_boot(q.command, 'aa64', True)
+
+    @unittest.skipUnless(DPKG_ARCH == 'arm64', "arm64-only")
+    def test_aavmf_snakeoil_secure_boot_unsigned(self):
+        q = Qemu.QemuCommand(
+            QemuEfiMachine.AAVMF,
+            variant=QemuEfiVariant.SNAKEOIL,
+            flash_size=QemuEfiFlashSize.DEFAULT,
+        )
+        grub = get_local_grub_path('AA64', signed=False)
+        shim = get_local_shim_path('AA64', signed=False)
+        iso = GrubShellBootableIsoImage('AA64', shim, grub)
+        q.add_disk(iso.path)
+        self.run_cmd_check_secure_boot(q.command, 'aa64', False)
 
     def test_aavmf32(self):
         q = Qemu.QemuCommand(QemuEfiMachine.AAVMF32)
