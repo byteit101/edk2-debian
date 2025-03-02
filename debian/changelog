@@ -1,4 +1,4 @@
-edk2 (2025.02-1) UNRELEASED; urgency=medium
+edk2 (2025.02-1) unstable; urgency=medium
 
   * New upstream release, based on edk2-stable202502 tag:
     - Drop patches merged upstream:
@@ -21,7 +21,7 @@ edk2 (2025.02-1) UNRELEASED; urgency=medium
     still use your notes each time I prepare a new upstream release.
     Budeš mi chybět.
 
- -- dann frazier <dannf@debian.org>  Wed, 26 Feb 2025 14:09:54 -0700
+ -- dann frazier <dannf@debian.org>  Sun, 02 Mar 2025 13:45:53 -0700
 
 edk2 (2024.11-5) unstable; urgency=medium
 
