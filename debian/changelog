@@ -13,6 +13,8 @@ edk2 (2025.02-1) UNRELEASED; urgency=medium
       + Revert-ArmVirtPkg-make-EFI_LOADER_DATA-non-executabl.patch
       + ArmVirtPkg-disable-the-EFI_MEMORY_ATTRIBUTE-protocol.patch
   * d/tests/shell.py: Align aarch64 snakeoil tests w/ x64.
+  * d/tests/shell.py: Enable test_aavmf_ms_secure_boot_signed case on
+    Debian, which again provides a signed shim for arm64.
 
  -- dann frazier <dannf@debian.org>  Wed, 26 Feb 2025 14:09:54 -0700
 

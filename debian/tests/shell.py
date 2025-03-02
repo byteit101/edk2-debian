@@ -140,12 +140,6 @@ class BootToShellTest(unittest.TestCase):
         self.run_cmd_check_shell(q.command)
 
     @unittest.skipUnless(DPKG_ARCH == 'arm64', "Requires grub-efi-arm64")
-    @unittest.skipUnless(
-        subprocess.run(
-            ['dpkg-vendor', '--derives-from', 'Ubuntu']
-        ).returncode == 0,
-        "Debian does not provide a signed shim for arm64, see #992073"
-    )
     def test_aavmf_ms_secure_boot_signed(self):
         q = Qemu.QemuCommand(
             QemuEfiMachine.AAVMF,
