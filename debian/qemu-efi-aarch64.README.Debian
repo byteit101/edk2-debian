@@ -3,14 +3,31 @@ intended to be read-only. The AAVMF_VARS*.fd files provide UEFI variable
 template images which are intended to be read-write, and therefore each
 guest should be given its own copy. Here's an overview of each of them:
 
+AAVMF_CODE.no-secboot.fd
+  Use this for booting guests in non-Secure Boot mode. This image contains
+  a built-in UEFI shell which makes it insecure for use in Secureoot mode.
+  Use the AAVMF_VARS.fd template with this.
+
 AAVMF_CODE.fd
-  Use this for booting guests in non-Secure Boot mode. Use the
-  AAVMF_VARS.fd template with this.
+  This is a compatibility symlink to facilitate smooth upgrades from before
+  the secboot/no-secboot split. Users should migrate away from this and
+  expect it to be removed in a future release.
 
 AAVMF_CODE.ms.fd
-  This is a symlink to AAVMF_CODE.fd. It is useful in the context of libvirt
-  because the included JSON firmware descriptors will tell libvirt to pair
-  AAVMF_VARS.ms.fd with it, which has Secure Boot pre-enabled.
+  This is a symlink to AAVMF_CODE.secboot.fd. It is useful in the context of
+  libvirt because the included JSON firmware descriptors will tell libvirt
+  to pair AAVMF_VARS.ms.fd with it, which has Secure Boot pre-enabled.
+
+AAVMF_CODE.secboot.fd
+  This image is recommended for guests in Secure Boot mode. It does not
+  contain a built-in UEFI shell because it could be used to bypass Secure
+  Boot. Be aware that the included JSON firmware descriptors associate
+  this with OVMF_CODE_4M.fd. Which means, if you specify this image in
+  libvirt, you'll get a guest that is Secure Boot-*capable*, but has
+  Secure Boot disabled. To enable it, you'll need to manually import
+  PK/KEK/DB keys and activate Secure Boot from the UEFI setup menu. If
+  you want Secure Boot active from the start, consider using
+  OVMF_CODE.ms.fd instead.
 
 AAVMF_VARS.fd
   This is an empty variable store template, which means it has no
@@ -38,4 +55,4 @@ PkKek-1-snakeoil.pem
   AAVMF_VARS.snakeoil.fd template. The password for the key is
   'snakeoil'.
 
- -- dann frazier <dannf@debian.org>, Sun,  9 Mar 2025 13:52:11 -0600
+ -- dann frazier <dannf@debian.org>, Sun,  9 Mar 2025 14:05:51 -0600

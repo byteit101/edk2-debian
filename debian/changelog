@@ -6,6 +6,9 @@ edk2 (2025.02-4) UNRELEASED; urgency=medium
     reference OVMF images.
   * ovmf: README.Debian: Explain why some images contain a built-in
     shell and others do not.
+  * qemu-efi-aarch64: README.Debian: Update to describe the no-secboot
+    and secboot images. Warn users that the AAVMF_CODE.fd path is a
+    compat symlink that will be removed in the future.
 
  -- dann frazier <dannf@debian.org>  Sun, 09 Mar 2025 13:45:13 -0600
 
