@@ -1,3 +1,11 @@
+edk2 (2025.02-2) UNRELEASED; urgency=medium
+
+  * ovmf, qemu-efi-aarch64: Add NEWS to tell users that network boot
+    now requires the availability of a random number generator.
+    LP: #2069439.
+
+ -- dann frazier <dannf@debian.org>  Sun, 09 Mar 2025 13:45:13 -0600
+
 edk2 (2025.02-1) unstable; urgency=medium
 
   * New upstream release, based on edk2-stable202502 tag:
