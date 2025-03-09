@@ -78,32 +78,36 @@ class BootToShellTest(unittest.TestCase):
         t = time.time() - self.startTime
         sys.stdout.write("%s runtime: %.3fs\n" % (self.id(), t))
 
-    def run_cmd_check_shell(self, cmd):
+    def run_cmd_check_shell(self, cmd, should_start=True):
         child = pexpect.spawn(' '.join(cmd), encoding='UTF-8')
+        shell_started = None
 
         if self.debug:
             child.logfile = sys.stdout
         try:
-            while True:
-                i = child.expect(
-                    [
-                        'Press .* or any other key to continue',
-                        'Shell> '
-                    ],
+            i = child.expect(
+                [
+                    'Press .* or any other key to continue',
+                    'BdsDxe: No bootable option or device was found.'
+                ],
                     timeout=TEST_TIMEOUT,
-                )
-                if i == 0:
-                    child.sendline('\x1b')
-                    continue
-                if i == 1:
-                    child.sendline('reset -s\r')
-                    continue
+            )
+            if i == 0:
+                child.sendline('\x1b')
+                i = child.expect(['Shell> '], timeout=TEST_TIMEOUT)
+                self.assertEqual(i, 0)
+                shell_started = True
+                child.sendline('reset -s\r')
+            elif i == 1:
+                shell_started = False
+                child.close()
         except pexpect.EOF:
             child.close()
             if child.exitstatus != 0:
                 self.fail("ERROR: exit code %d\n" % (child.exitstatus))
         except pexpect.TIMEOUT as err:
             self.fail("%s\n" % (err))
+        self.assertEqual(should_start, shell_started)
 
     def run_cmd_check_secure_boot(self, cmd, efiarch, should_verify):
         child = pexpect.spawn(' '.join(cmd), encoding='UTF-8')
@@ -150,6 +154,14 @@ class BootToShellTest(unittest.TestCase):
         iso = GrubShellBootableIsoImage('AA64', shim, grub)
         q.add_disk(iso.path)
         self.run_cmd_check_secure_boot(q.command, 'aa64', True)
+
+    @unittest.skipUnless(DPKG_ARCH == 'arm64', "Requires grub-efi-arm64")
+    def test_aavmf_ms_secure_boot_no_shell(self):
+        q = Qemu.QemuCommand(
+            QemuEfiMachine.AAVMF,
+            variant=QemuEfiVariant.MS,
+        )
+        self.run_cmd_check_shell(q.command, should_start=False)
 
     @unittest.skipUnless(DPKG_ARCH == 'arm64', "Requires grub-efi-arm64")
     def test_aavmf_ms_secure_boot_unsigned(self):
@@ -221,6 +233,15 @@ class BootToShellTest(unittest.TestCase):
         self.run_cmd_check_shell(q.command)
 
     @unittest.skipUnless(DPKG_ARCH == 'amd64', "amd64-only")
+    def test_ovmf_4m_ms_secure_boot_no_shell(self):
+        q = Qemu.QemuCommand(
+            QemuEfiMachine.OVMF_Q35,
+            variant=QemuEfiVariant.MS,
+            flash_size=QemuEfiFlashSize.SIZE_4MB,
+        )
+        self.run_cmd_check_shell(q.command, should_start=False)
+
+    @unittest.skipUnless(DPKG_ARCH == 'amd64', "amd64-only")
     def test_ovmf_4m_ms_secure_boot_signed(self):
         q = Qemu.QemuCommand(
             QemuEfiMachine.OVMF_Q35,
@@ -245,6 +266,14 @@ class BootToShellTest(unittest.TestCase):
         iso = GrubShellBootableIsoImage('X64', shim, grub)
         q.add_disk(iso.path)
         self.run_cmd_check_secure_boot(q.command, 'x64', False)
+
+    @unittest.skipUnless(DPKG_ARCH == 'amd64', "amd64-only")
+    def test_ovmf_snakeoil_secure_boot_no_shell(self):
+        q = Qemu.QemuCommand(
+            QemuEfiMachine.OVMF_Q35,
+            variant=QemuEfiVariant.SNAKEOIL,
+        )
+        self.run_cmd_check_shell(q.command, should_start=False)
 
     @unittest.skipUnless(DPKG_ARCH == 'amd64', "amd64-only")
     def test_ovmf_snakeoil_secure_boot_signed(self):

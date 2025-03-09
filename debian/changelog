@@ -1,3 +1,10 @@
+edk2 (2025.02-4) UNRELEASED; urgency=medium
+
+  * d/tests/shell.py: Add tests to confirm that the built-in shell
+    is not available in secboot variants.
+
+ -- dann frazier <dannf@debian.org>  Sun, 09 Mar 2025 13:45:13 -0600
+
 edk2 (2025.02-3) unstable; urgency=medium
 
   * Return to running Secure Boot tests only for the native architecture
