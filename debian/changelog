@@ -4,6 +4,8 @@ edk2 (2025.02-4) UNRELEASED; urgency=medium
     is not available in secboot variants.
   * qemu-efi-aarch64: README.Debian: Correct cut & paste errors that
     reference OVMF images.
+  * ovmf: README.Debian: Explain why some images contain a built-in
+    shell and others do not.
 
  -- dann frazier <dannf@debian.org>  Sun, 09 Mar 2025 13:45:13 -0600
 
