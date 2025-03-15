@@ -3,3 +3,4 @@ brotlicompress-disable.diff
 x64-baseline-abi.patch
 Revert-ArmVirtPkg-make-EFI_LOADER_DATA-non-executabl.patch
 ArmVirtPkg-disable-the-EFI_MEMORY_ATTRIBUTE-protocol.patch
+0001-OvmfPkg-Use-user-specified-opt-ovmf-X-PciMmio64Mb-va.patch
