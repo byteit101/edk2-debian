@@ -74,6 +74,30 @@ class BootToShellTest(unittest.TestCase):
     def setUp(self):
         self.startTime = time.time()
 
+        if os.getuid() != 0:
+            sys.stderr.write(
+                "WARNING: Not running as root. "
+                "Will not be able to install required dependencies"
+            )
+            return
+
+        # autopkgtests doesn't seem to support foreign-arch deps in
+        # d/tests/control for native testing, so we manually apt install
+        # them here.
+        deps = []
+        for arch in ['amd64', 'arm64']:
+            deps.append(f'grub-efi-{arch}-signed:{arch}')
+            deps.append(f'shim-signed:{arch}')
+            if DPKG_ARCH != arch:
+                subprocess.run(['dpkg', '--add-architecture', arch])
+        subprocess.check_call(['apt', 'update'])
+        env = os.environ.copy()
+        env['DEBIAN_FRONTEND'] = 'noninteractive'
+        subprocess.check_call(
+            ['apt', 'install', '-q', '-y',] + deps,
+            env=env,
+        )
+
     def tearDown(self):
         t = time.time() - self.startTime
         sys.stdout.write("%s runtime: %.3fs\n" % (self.id(), t))

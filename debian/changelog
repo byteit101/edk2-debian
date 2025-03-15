@@ -11,6 +11,9 @@ edk2 (2025.02-2) UNRELEASED; urgency=medium
     opt/ovmf/X-PciMmio64Mb value unconditionally". LP: #2101903.
      - d/p/0001-OvmfPkg-Use-user-specified-opt-ovmf-X-PciMmio64Mb-va.patch
     Thanks to Mitchell Augustin.
+  * d/tests: autopkgtest doesn't seem to support foreign arch deps in
+    d/tests/control when doing native testing. Manually install signed
+    grub and shim packages for amd64 and arm64 for Secure Boot tests.
 
  -- dann frazier <dannf@debian.org>  Sun, 09 Mar 2025 13:45:13 -0600
 
