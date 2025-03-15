@@ -231,7 +231,6 @@ $(AAVMF_BINARIES) $(AAVMF_IMAGES): debian/setup-build-stamp BaseTools/Bin/GccLto
 			$(AAVMF_SECBOOT_FLAGS) -b $(BUILD_TYPE)
 	cp $(AAVMF_BUILD_DIR)/AARCH64/EnrollDefaultKeys.efi \
 		$(AAVMF_INSTALL_DIR)/
-	cp $(AAVMF_BUILD_DIR)/FV/QEMU_EFI.fd $(AAVMF_INSTALL_DIR)
 	cp $(AAVMF_BUILD_DIR)/FV/QEMU_EFI.fd \
 		$(AAVMF_INSTALL_DIR)/AAVMF_CODE.secboot.fd
 	cp $(AAVMF_BUILD_DIR)/FV/QEMU_VARS.fd \
@@ -244,6 +243,7 @@ $(AAVMF_BINARIES) $(AAVMF_IMAGES): debian/setup-build-stamp BaseTools/Bin/GccLto
 			$(AAVMF_COMMON_FLAGS) -b $(BUILD_TYPE)
 	cp $(AAVMF_BUILD_DIR)/AARCH64/Shell.efi \
 		$(AAVMF_INSTALL_DIR)/
+	cp $(AAVMF_BUILD_DIR)/FV/QEMU_EFI.fd $(AAVMF_INSTALL_DIR)
 	cp $(AAVMF_BUILD_DIR)/FV/QEMU_EFI.fd \
 		$(AAVMF_INSTALL_DIR)/AAVMF_CODE.no-secboot.fd
 	# QEMU expects 64MiB CODE and VARS files on ARM/AARCH64 architectures

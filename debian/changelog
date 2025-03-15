@@ -3,6 +3,10 @@ edk2 (2025.02-2) UNRELEASED; urgency=medium
   * ovmf, qemu-efi-aarch64: Add NEWS to tell users that network boot
     now requires the availability of a random number generator.
     LP: #2069439.
+  * qemu-efi-aarch64: Restore the shell in QEMU_EFI.fd. (Closes: #1099424)
+    Note: this image is deprecated and will be removed in a future update.
+    Please switch to the AAVMF_CODE.* images instead. See README.Debian
+    for an overview of these images.
 
  -- dann frazier <dannf@debian.org>  Sun, 09 Mar 2025 13:45:13 -0600
 
