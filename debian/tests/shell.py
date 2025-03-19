@@ -74,30 +74,6 @@ class BootToShellTest(unittest.TestCase):
     def setUp(self):
         self.startTime = time.time()
 
-        if os.getuid() != 0:
-            sys.stderr.write(
-                "WARNING: Not running as root. "
-                "Will not be able to install required dependencies"
-            )
-            return
-
-        # autopkgtests doesn't seem to support foreign-arch deps in
-        # d/tests/control for native testing, so we manually apt install
-        # them here.
-        deps = []
-        for arch in ['amd64', 'arm64']:
-            deps.append(f'grub-efi-{arch}-signed:{arch}')
-            deps.append(f'shim-signed:{arch}')
-            if DPKG_ARCH != arch:
-                subprocess.run(['dpkg', '--add-architecture', arch])
-        subprocess.check_call(['apt', 'update'])
-        env = os.environ.copy()
-        env['DEBIAN_FRONTEND'] = 'noninteractive'
-        subprocess.check_call(
-            ['apt', 'install', '-q', '-y',] + deps,
-            env=env,
-        )
-
     def tearDown(self):
         t = time.time() - self.startTime
         sys.stdout.write("%s runtime: %.3fs\n" % (self.id(), t))
@@ -163,6 +139,7 @@ class BootToShellTest(unittest.TestCase):
         q = Qemu.QemuCommand(QemuEfiMachine.AAVMF)
         self.run_cmd_check_shell(q.command)
 
+    @unittest.skipUnless(DPKG_ARCH == 'arm64', "Requires grub-efi-arm64")
     def test_aavmf_ms_secure_boot_signed(self):
         q = Qemu.QemuCommand(
             QemuEfiMachine.AAVMF,
@@ -174,6 +151,7 @@ class BootToShellTest(unittest.TestCase):
         q.add_disk(iso.path)
         self.run_cmd_check_secure_boot(q.command, 'aa64', True)
 
+    @unittest.skipUnless(DPKG_ARCH == 'arm64', "Requires grub-efi-arm64")
     def test_aavmf_ms_secure_boot_unsigned(self):
         q = Qemu.QemuCommand(
             QemuEfiMachine.AAVMF,
@@ -185,6 +163,7 @@ class BootToShellTest(unittest.TestCase):
         q.add_disk(iso.path)
         self.run_cmd_check_secure_boot(q.command, 'aa64', False)
 
+    @unittest.skipUnless(DPKG_ARCH == 'arm64', "arm64-only")
     def test_aavmf_snakeoil_secure_boot_signed(self):
         q = Qemu.QemuCommand(
             QemuEfiMachine.AAVMF,
@@ -206,6 +185,7 @@ class BootToShellTest(unittest.TestCase):
         q.add_disk(iso.path)
         self.run_cmd_check_secure_boot(q.command, 'aa64', True)
 
+    @unittest.skipUnless(DPKG_ARCH == 'arm64', "arm64-only")
     def test_aavmf_snakeoil_secure_boot_unsigned(self):
         q = Qemu.QemuCommand(
             QemuEfiMachine.AAVMF,
@@ -240,6 +220,7 @@ class BootToShellTest(unittest.TestCase):
         )
         self.run_cmd_check_shell(q.command)
 
+    @unittest.skipUnless(DPKG_ARCH == 'amd64', "amd64-only")
     def test_ovmf_4m_ms_secure_boot_signed(self):
         q = Qemu.QemuCommand(
             QemuEfiMachine.OVMF_Q35,
@@ -252,6 +233,7 @@ class BootToShellTest(unittest.TestCase):
         q.add_disk(iso.path)
         self.run_cmd_check_secure_boot(q.command, 'x64', True)
 
+    @unittest.skipUnless(DPKG_ARCH == 'amd64', "amd64-only")
     def test_ovmf_4m_ms_secure_boot_unsigned(self):
         q = Qemu.QemuCommand(
             QemuEfiMachine.OVMF_Q35,
@@ -264,6 +246,7 @@ class BootToShellTest(unittest.TestCase):
         q.add_disk(iso.path)
         self.run_cmd_check_secure_boot(q.command, 'x64', False)
 
+    @unittest.skipUnless(DPKG_ARCH == 'amd64', "amd64-only")
     def test_ovmf_snakeoil_secure_boot_signed(self):
         q = Qemu.QemuCommand(
             QemuEfiMachine.OVMF_Q35,
@@ -285,6 +268,7 @@ class BootToShellTest(unittest.TestCase):
         q.add_disk(iso.path)
         self.run_cmd_check_secure_boot(q.command, 'x64', True)
 
+    @unittest.skipUnless(DPKG_ARCH == 'amd64', "amd64-only")
     def test_ovmf_snakeoil_secure_boot_unsigned(self):
         q = Qemu.QemuCommand(
             QemuEfiMachine.OVMF_Q35,

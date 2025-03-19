@@ -1,3 +1,10 @@
+edk2 (2025.02-3) UNRELEASED; urgency=medium
+
+  * Return to running Secure Boot tests only for the native architecture
+    until #1100819 is fixed.
+
+ -- dann frazier <dannf@debian.org>  Tue, 18 Mar 2025 22:15:44 -0700
+
 edk2 (2025.02-2) unstable; urgency=medium
 
   * ovmf, qemu-efi-aarch64: Add NEWS to tell users that network boot
