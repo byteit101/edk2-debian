@@ -1,4 +1,4 @@
-edk2 (2025.02-4) UNRELEASED; urgency=medium
+edk2 (2025.02-4) unstable; urgency=medium
 
   * d/tests/shell.py: Add tests to confirm that the built-in shell
     is not available in secboot variants.
@@ -13,7 +13,7 @@ edk2 (2025.02-4) UNRELEASED; urgency=medium
     - d/p/0001-NetworkPkg-IScsiDxe-Fix-for-Remote-Memory-Exposure-i.patch
   * ovmf, qemu-efi-aarch64: Correct typo in NEWS entry.
 
- -- dann frazier <dannf@debian.org>  Sun, 09 Mar 2025 13:45:13 -0600
+ -- dann frazier <dannf@debian.org>  Sun, 23 Mar 2025 12:05:21 -0600
 
 edk2 (2025.02-3) unstable; urgency=medium
 
