@@ -11,6 +11,7 @@ edk2 (2025.02-4) UNRELEASED; urgency=medium
     compat symlink that will be removed in the future.
   * Fix remote memory exposure in iSCSI DXE. CVE-2025-2295. (Closes: #1100594)
     - d/p/0001-NetworkPkg-IScsiDxe-Fix-for-Remote-Memory-Exposure-i.patch
+  * ovmf, qemu-efi-aarch64: Correct typo in NEWS entry.
 
  -- dann frazier <dannf@debian.org>  Sun, 09 Mar 2025 13:45:13 -0600
 

@@ -1,9 +1,9 @@
 edk2 (2025.02-1) unstable; urgency=medium
 
-  For security reasons, network boot options will are no longer usable in
-  guests that lack a random number generator. You can add a random number
-  generator to QEMU guests with `-device virtio-rng-pci`, or by using the
-  equivalent libvirt configuration:
+  For security reasons, network boot options are no longer usable in
+  guests that lack a random number generator. You can add a random
+  number generator to QEMU guests with `-device virtio-rng-pci`, or by
+  using the equivalent libvirt configuration:
     https://libvirt.org/formatdomain.html#random-number-generator-device
 
  -- dann frazier <dannf@debian.org>  Sun, 09 Mar 2025 15:12:43 -0600
