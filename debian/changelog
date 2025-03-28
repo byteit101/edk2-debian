@@ -7,6 +7,10 @@ edk2 (2025.02-5) UNRELEASED; urgency=medium
   * qemu-efi-aarch64: Only uninstall MemAttrProtocol support in the
     no-secboot image. Users can override this with the QEMU flag:
     -fw_cfg name=opt/org.tianocore/UninstallMemAttrProtocol,string=y
+  * ovmf, ovmf32: Add non-upstream patch to add support for
+    PcdUninstallMemAttrProtocol and use it to disable the protocol
+    on the non-secboot images by default. (Closes: #1099500). Also likely
+    addresses LP: #2104316.
 
  -- dann frazier <dannf@debian.org>  Fri, 28 Mar 2025 08:08:34 -0600
 

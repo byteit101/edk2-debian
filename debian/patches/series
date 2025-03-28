@@ -3,3 +3,4 @@ brotlicompress-disable.diff
 x64-baseline-abi.patch
 0001-OvmfPkg-Use-user-specified-opt-ovmf-X-PciMmio64Mb-va.patch
 0001-NetworkPkg-IScsiDxe-Fix-for-Remote-Memory-Exposure-i.patch
+OvmfPkg-X64-add-opt-org.tianocore-UninstallMemAttrPr.patch
