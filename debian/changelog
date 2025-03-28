@@ -1,4 +1,4 @@
-edk2 (2025.02-5) UNRELEASED; urgency=medium
+edk2 (2025.02-5) unstable; urgency=medium
 
   * qemu-efi-aarch64: Use PcdUninstallMemAttrProtocol=TRUE instead of
     reverting EFI_MEMORY_ATTRIBUTE protocol support. Drops:
@@ -16,7 +16,7 @@ edk2 (2025.02-5) UNRELEASED; urgency=medium
   * d/tests: Only run tests for 64-bit architectures on 64-bit hosts,
     as QEMU 10 has dropped support for 64-bit architectures on 32-bit hosts.
 
- -- dann frazier <dannf@debian.org>  Fri, 28 Mar 2025 08:08:34 -0600
+ -- dann frazier <dannf@debian.org>  Fri, 28 Mar 2025 17:32:23 -0600
 
 edk2 (2025.02-4) unstable; urgency=medium
 
