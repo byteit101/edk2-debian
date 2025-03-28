@@ -4,6 +4,9 @@ edk2 (2025.02-5) UNRELEASED; urgency=medium
     reverting EFI_MEMORY_ATTRIBUTE protocol support. Drops:
     - d/p/Revert-ArmVirtPkg-make-EFI_LOADER_DATA-non-executabl.patch
     - d/p/ArmVirtPkg-disable-the-EFI_MEMORY_ATTRIBUTE-protocol.patch
+  * qemu-efi-aarch64: Only uninstall MemAttrProtocol support in the
+    no-secboot image. Users can override this with the QEMU flag:
+    -fw_cfg name=opt/org.tianocore/UninstallMemAttrProtocol,string=y
 
  -- dann frazier <dannf@debian.org>  Fri, 28 Mar 2025 08:08:34 -0600
 
