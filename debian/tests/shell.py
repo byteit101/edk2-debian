@@ -147,10 +147,16 @@ class BootToShellTest(unittest.TestCase):
             self.fail("%s\n" % (err))
         self.assertEqual(should_verify, verified)
 
+    @unittest.skipUnless(
+        DpkgArch['DEB_BUILD_ARCH_BITS'] == '64', "Requires 64-bit QEMU",
+    )
     def test_aavmf(self):
         q = Qemu.QemuCommand(QemuEfiMachine.AAVMF)
         self.run_cmd_check_shell(q.command)
 
+    @unittest.skipUnless(
+        DpkgArch['DEB_BUILD_ARCH_BITS'] == '64', "Requires 64-bit QEMU",
+    )
     @unittest.skipUnless(
         DpkgArch['DEB_BUILD_ARCH'] == 'arm64', "Requires grub-efi-arm64",
     )
@@ -166,6 +172,9 @@ class BootToShellTest(unittest.TestCase):
         self.run_cmd_check_secure_boot(q.command, 'aa64', True)
 
     @unittest.skipUnless(
+        DpkgArch['DEB_BUILD_ARCH_BITS'] == '64', "Requires 64-bit QEMU",
+    )
+    @unittest.skipUnless(
         DpkgArch['DEB_BUILD_ARCH'] == 'arm64', "Requires grub-efi-arm64",
     )
     def test_aavmf_ms_secure_boot_no_shell(self):
@@ -175,6 +184,9 @@ class BootToShellTest(unittest.TestCase):
         )
         self.run_cmd_check_shell(q.command, should_start=False)
 
+    @unittest.skipUnless(
+        DpkgArch['DEB_BUILD_ARCH_BITS'] == '64', "Requires 64-bit QEMU",
+    )
     @unittest.skipUnless(
         DpkgArch['DEB_BUILD_ARCH'] == 'arm64', "Requires grub-efi-arm64",
     )
@@ -189,6 +201,9 @@ class BootToShellTest(unittest.TestCase):
         q.add_disk(iso.path)
         self.run_cmd_check_secure_boot(q.command, 'aa64', False)
 
+    @unittest.skipUnless(
+        DpkgArch['DEB_BUILD_ARCH_BITS'] == '64', "Requires 64-bit QEMU",
+    )
     @unittest.skipUnless(DpkgArch['DEB_BUILD_ARCH'] == 'arm64', "arm64-only")
     def test_aavmf_snakeoil_secure_boot_signed(self):
         q = Qemu.QemuCommand(
@@ -211,6 +226,9 @@ class BootToShellTest(unittest.TestCase):
         q.add_disk(iso.path)
         self.run_cmd_check_secure_boot(q.command, 'aa64', True)
 
+    @unittest.skipUnless(
+        DpkgArch['DEB_BUILD_ARCH_BITS'] == '64', "Requires 64-bit QEMU",
+    )
     @unittest.skipUnless(DpkgArch['DEB_BUILD_ARCH'] == 'arm64', "arm64-only")
     def test_aavmf_snakeoil_secure_boot_unsigned(self):
         q = Qemu.QemuCommand(
@@ -228,10 +246,16 @@ class BootToShellTest(unittest.TestCase):
         q = Qemu.QemuCommand(QemuEfiMachine.AAVMF32)
         self.run_cmd_check_shell(q.command)
 
+    @unittest.skipUnless(
+        DpkgArch['DEB_BUILD_ARCH_BITS'] == '64', "Requires 64-bit QEMU",
+    )
     def test_loongarch64(self):
         q = Qemu.QemuCommand(QemuEfiMachine.LOONGARCH64)
         self.run_cmd_check_shell(q.command)
 
+    @unittest.skipUnless(
+        DpkgArch['DEB_BUILD_ARCH_BITS'] == '64', "Requires 64-bit QEMU",
+    )
     def test_ovmf_4m_pc(self):
         q = Qemu.QemuCommand(
             QemuEfiMachine.OVMF_PC,
@@ -239,6 +263,9 @@ class BootToShellTest(unittest.TestCase):
         )
         self.run_cmd_check_shell(q.command)
 
+    @unittest.skipUnless(
+        DpkgArch['DEB_BUILD_ARCH_BITS'] == '64', "Requires 64-bit QEMU",
+    )
     def test_ovmf_4m_q35(self):
         q = Qemu.QemuCommand(
             QemuEfiMachine.OVMF_Q35,
@@ -246,6 +273,9 @@ class BootToShellTest(unittest.TestCase):
         )
         self.run_cmd_check_shell(q.command)
 
+    @unittest.skipUnless(
+        DpkgArch['DEB_BUILD_ARCH_BITS'] == '64', "Requires 64-bit QEMU",
+    )
     @unittest.skipUnless(DpkgArch['DEB_BUILD_ARCH'] == 'amd64', "amd64-only")
     def test_ovmf_4m_ms_secure_boot_no_shell(self):
         q = Qemu.QemuCommand(
@@ -255,6 +285,9 @@ class BootToShellTest(unittest.TestCase):
         )
         self.run_cmd_check_shell(q.command, should_start=False)
 
+    @unittest.skipUnless(
+        DpkgArch['DEB_BUILD_ARCH_BITS'] == '64', "Requires 64-bit QEMU",
+    )
     @unittest.skipUnless(DpkgArch['DEB_BUILD_ARCH'] == 'amd64', "amd64-only")
     def test_ovmf_4m_ms_secure_boot_signed(self):
         q = Qemu.QemuCommand(
@@ -268,6 +301,9 @@ class BootToShellTest(unittest.TestCase):
         q.add_disk(iso.path)
         self.run_cmd_check_secure_boot(q.command, 'x64', True)
 
+    @unittest.skipUnless(
+        DpkgArch['DEB_BUILD_ARCH_BITS'] == '64', "Requires 64-bit QEMU",
+    )
     @unittest.skipUnless(DpkgArch['DEB_BUILD_ARCH'] == 'amd64', "amd64-only")
     def test_ovmf_4m_ms_secure_boot_unsigned(self):
         q = Qemu.QemuCommand(
@@ -281,6 +317,9 @@ class BootToShellTest(unittest.TestCase):
         q.add_disk(iso.path)
         self.run_cmd_check_secure_boot(q.command, 'x64', False)
 
+    @unittest.skipUnless(
+        DpkgArch['DEB_BUILD_ARCH_BITS'] == '64', "Requires 64-bit QEMU",
+    )
     @unittest.skipUnless(DpkgArch['DEB_BUILD_ARCH'] == 'amd64', "amd64-only")
     def test_ovmf_snakeoil_secure_boot_no_shell(self):
         q = Qemu.QemuCommand(
@@ -289,6 +328,9 @@ class BootToShellTest(unittest.TestCase):
         )
         self.run_cmd_check_shell(q.command, should_start=False)
 
+    @unittest.skipUnless(
+        DpkgArch['DEB_BUILD_ARCH_BITS'] == '64', "Requires 64-bit QEMU",
+    )
     @unittest.skipUnless(DpkgArch['DEB_BUILD_ARCH'] == 'amd64', "amd64-only")
     def test_ovmf_snakeoil_secure_boot_signed(self):
         q = Qemu.QemuCommand(
@@ -311,6 +353,9 @@ class BootToShellTest(unittest.TestCase):
         q.add_disk(iso.path)
         self.run_cmd_check_secure_boot(q.command, 'x64', True)
 
+    @unittest.skipUnless(
+        DpkgArch['DEB_BUILD_ARCH_BITS'] == '64', "Requires 64-bit QEMU",
+    )
     @unittest.skipUnless(DpkgArch['DEB_BUILD_ARCH'] == 'amd64', "amd64-only")
     def test_ovmf_snakeoil_secure_boot_unsigned(self):
         q = Qemu.QemuCommand(
@@ -338,6 +383,9 @@ class BootToShellTest(unittest.TestCase):
         )
         self.run_cmd_check_shell(q.command)
 
+    @unittest.skipUnless(
+        DpkgArch['DEB_BUILD_ARCH_BITS'] == '64', "Requires 64-bit QEMU",
+    )
     def test_riscv64(self):
         q = Qemu.QemuCommand(QemuEfiMachine.RISCV64)
         self.run_cmd_check_shell(q.command)
