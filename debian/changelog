@@ -1,3 +1,12 @@
+edk2 (2025.02-5) UNRELEASED; urgency=medium
+
+  * qemu-efi-aarch64: Use PcdUninstallMemAttrProtocol=TRUE instead of
+    reverting EFI_MEMORY_ATTRIBUTE protocol support. Drops:
+    - d/p/Revert-ArmVirtPkg-make-EFI_LOADER_DATA-non-executabl.patch
+    - d/p/ArmVirtPkg-disable-the-EFI_MEMORY_ATTRIBUTE-protocol.patch
+
+ -- dann frazier <dannf@debian.org>  Fri, 28 Mar 2025 08:08:34 -0600
+
 edk2 (2025.02-4) unstable; urgency=medium
 
   * d/tests/shell.py: Add tests to confirm that the built-in shell
