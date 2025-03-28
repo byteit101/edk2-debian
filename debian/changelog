@@ -11,6 +11,8 @@ edk2 (2025.02-5) UNRELEASED; urgency=medium
     PcdUninstallMemAttrProtocol and use it to disable the protocol
     on the non-secboot images by default. (Closes: #1099500). Also likely
     addresses LP: #2104316.
+  * d/tests/shell.py: Create and use a DpkgArch class to load all of the
+    `dpkg-architecture` variables instead of just the host arch.
 
  -- dann frazier <dannf@debian.org>  Fri, 28 Mar 2025 08:08:34 -0600
 
