@@ -70,7 +70,7 @@ class QemuCommand:
             'qemu-system-aarch64', '-cpu', 'cortex-a57',
         ] + Aavmf_Common_Params,
         QemuEfiMachine.AAVMF32: [
-            'qemu-system-aarch64', '-cpu', 'cortex-a15',
+            'qemu-system-arm', '-cpu', 'cortex-a15',
         ] + Aavmf_Common_Params,
         QemuEfiMachine.LOONGARCH64: [
             'qemu-system-loongarch64',
