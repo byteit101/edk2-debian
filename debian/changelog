@@ -4,6 +4,7 @@ edk2 (2025.02-6) UNRELEASED; urgency=medium
     qemu-system-aarch64 for testing AAVMF32. I'm not sure why we weren't
     doing this before, but it is required now that QEMU is removing
     64-on-32 support.
+  * d/tests/shell.py: Fix DpkgArch initialization.
 
  -- dann frazier <dannf@debian.org>  Sun, 06 Apr 2025 13:17:05 -0600
 

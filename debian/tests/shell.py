@@ -65,7 +65,7 @@ def get_local_shim_path(efi_arch, signed=False):
     return shim_path
 
 
-class DpkgArch(UserDict):
+class DpkgArchDict(UserDict):
     data = {}
     dpkg_arch_out = subprocess.check_output(
         ['dpkg-architecture'],
@@ -75,9 +75,13 @@ class DpkgArch(UserDict):
         key, val = var.split('=')
         data[key] = val
 
+    def __init__(self):
+        pass
+
 
 class BootToShellTest(unittest.TestCase):
     debug = True
+    DpkgArch = DpkgArchDict()
 
     def setUp(self):
         self.startTime = time.time()
