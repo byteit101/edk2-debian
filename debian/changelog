@@ -1,4 +1,4 @@
-edk2 (2025.02-6) UNRELEASED; urgency=medium
+edk2 (2025.02-6) unstable; urgency=medium
 
   * d/python/UEFI/Qemu.py: Use qemu-system-arm instead of
     qemu-system-aarch64 for testing AAVMF32. I'm not sure why we weren't
@@ -6,7 +6,7 @@ edk2 (2025.02-6) UNRELEASED; urgency=medium
     64-on-32 support.
   * d/tests/shell.py: Fix DpkgArch initialization.
 
- -- dann frazier <dannf@debian.org>  Sun, 06 Apr 2025 13:17:05 -0600
+ -- dann frazier <dannf@debian.org>  Mon, 07 Apr 2025 20:01:37 -0600
 
 edk2 (2025.02-5) unstable; urgency=medium
 
