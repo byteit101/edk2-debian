@@ -1,3 +1,10 @@
+edk2 (2025.02-7) UNRELEASED; urgency=medium
+
+  * qemu-efi-aarch64: Fix regression with QEMU -kernel (Closes: #1101152):
+    - d/p/0001-OvmfPkg-QemuKernelLoaderFsDxe-fix-allocation-failure.patch
+
+ -- dann frazier <dannf@debian.org>  Wed, 16 Apr 2025 08:20:13 -0600
+
 edk2 (2025.02-6) unstable; urgency=medium
 
   * d/python/UEFI/Qemu.py: Use qemu-system-arm instead of
