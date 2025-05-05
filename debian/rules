@@ -40,6 +40,10 @@ OVMF_4M_FLAGS = $(OVMF_COMMON_FLAGS) -DFD_SIZE_4MB
 OVMF_4M_SECBOOT_FLAGS = $(OVMF_4M_FLAGS) -DBUILD_SHELL=FALSE -DSECURE_BOOT_ENABLE=TRUE -DSMM_REQUIRE=TRUE
 OVMF32_4M_FLAGS = $(OVMF_COMMON_FLAGS) -DFD_SIZE_4MB
 OVMF32_4M_SECBOOT_FLAGS =  $(OVMF32_4M_FLAGS) -DBUILD_SHELL=FALSE -DSECURE_BOOT_ENABLE=TRUE -DSMM_REQUIRE=TRUE
+# No shell for Xen, as it can use the normal architectural shell
+OVMFXEN_4M_COMMON_FLAGS = $(OVMF_COMMON_FLAGS) -DFD_SIZE_4MB -DBUILD_SHELL=FALSE
+OVMFXEN_4M_NO_SECBOOT_FLAGS = $(OVMFXEN_4M_COMMON_FLAGS) $(NO_SECBOOT_COMMON_FLAGS)
+OVMFXEN_4M_SECBOOT_FLAGS =  $(OVMFXEN_4M_COMMON_FLAGS) -DBUILD_SHELL=FALSE -DSECURE_BOOT_ENABLE=TRUE -DSMM_REQUIRE=TRUE
 
 AAVMF_COMMON_FLAGS  = $(COMMON_FLAGS)
 AAVMF_COMMON_FLAGS += -DTPM2_ENABLE=TRUE
@@ -60,7 +64,7 @@ undefine CONF_PATH
 %:
 	dh $@
 
-override_dh_auto_build: build-qemu-efi-aarch64 build-qemu-efi-arm build-ovmf build-ovmf32 build-qemu-efi-riscv64
+override_dh_auto_build: build-ovmfxen build-qemu-efi-aarch64 build-qemu-efi-arm build-ovmf build-ovmf32 build-qemu-efi-riscv64
 
 debian/setup-build-stamp:
 	set -e; . ./edksetup.sh; \
@@ -75,6 +79,12 @@ OVMF_SHELL =  $(OVMF_INSTALL_DIR)/Shell.efi
 OVMF_BINARIES = $(OVMF_ENROLL) $(OVMF_SHELL)
 OVMF_IMAGES := $(addprefix $(OVMF_INSTALL_DIR)/,OVMF_CODE_4M.fd OVMF_CODE_4M.secboot.fd OVMF_VARS_4M.fd)
 OVMF_PREENROLLED_VARS := $(addprefix $(OVMF_INSTALL_DIR)/,OVMF_VARS_4M.ms.fd OVMF_VARS_4M.snakeoil.fd)
+
+OVMFXEN_INSTALL_DIR = debian/xen-install
+OVMFXEN_BUILD_ROOT = Build/OvmfXen
+OVMFXEN_BUILD_DIR = $(OVMFXEN_BUILD_ROOT)/$(BUILD_TYPE)_$(EDK2_TOOLCHAIN)
+OVMFXEN_IMAGES := $(addprefix $(OVMFXEN_INSTALL_DIR)/,OVMFXEN_CODE_4M.fd OVMFXEN_CODE_4M.secboot.fd OVMFXEN_VARS_4M.fd)
+OVMFXEN_PREENROLLED_VARS := $(addprefix $(OVMFXEN_INSTALL_DIR)/,OVMFXEN_VARS_4M.ms.fd OVMFXEN_VARS_4M.snakeoil.fd)
 
 OVMF32_INSTALL_DIR = debian/ovmf32-install
 OVMF32_BUILD_ROOT = Build/OvmfIa32
@@ -125,6 +135,29 @@ $(OVMF32_BINARIES) $(OVMF32_IMAGES): debian/setup-build-stamp
 		$(OVMF32_4M_SECBOOT_FLAGS) -b $(BUILD_TYPE)
 	cp $(OVMF32_BUILD_DIR)/FV/OVMF_CODE.fd \
 		$(OVMF32_INSTALL_DIR)/OVMF32_CODE_4M.secboot.fd
+
+build-ovmfxen: $(OVMFXEN_IMAGES)
+$(OVMFXEN_IMAGES): debian/setup-build-stamp
+	rm -rf $(OVMFXEN_INSTALL_DIR)
+	mkdir $(OVMFXEN_INSTALL_DIR)
+	set -e; . ./edksetup.sh; \
+		build -a X64 \
+			-t $(EDK2_TOOLCHAIN) \
+			-p OvmfPkg/OvmfXen.dsc \
+			$(OVMFXEN_4M_NO_SECBOOT_FLAGS) -b $(BUILD_TYPE)
+	cp $(OVMFXEN_BUILD_DIR)/FV/OVMF.fd $(OVMFXEN_INSTALL_DIR)/XEN_OVMF.fd
+	cp $(OVMFXEN_BUILD_DIR)/FV/OVMF_CODE.fd \
+		$(OVMFXEN_INSTALL_DIR)/XEN_OVMF_CODE_4M.fd
+	cp $(OVMFXEN_BUILD_DIR)/FV/OVMF_VARS.fd \
+		$(OVMFXEN_INSTALL_DIR)/XEN_OVMF_VARS_4M.fd
+	rm -rf $(OVMFXEN_BUILD_ROOT)
+	set -e; . ./edksetup.sh; \
+	build -a X64 \
+		-t $(EDK2_TOOLCHAIN) \
+		-p OvmfPkg/OvmfXen.dsc \
+		$(OVMFXEN_4M_SECBOOT_FLAGS) -b $(BUILD_TYPE)
+	cp $(OVMFXEN_BUILD_DIR)/FV/OVMF_CODE.fd \
+		$(OVMFXEN_INSTALL_DIR)/XEN_OVMF_CODE_4M.secboot.fd
 
 build-ovmf: $(OVMF_BINARIES) $(OVMF_IMAGES) $(OVMF_PREENROLLED_VARS)
 $(OVMF_BINARIES) $(OVMF_IMAGES): debian/setup-build-stamp
@@ -321,4 +354,4 @@ get-orig-source:
 		edk2-$(DEB_VERSION_UPSTREAM)
 	rm -rf edk2.tmp edk2-$(DEB_VERSION_UPSTREAM)
 
-.PHONY: build-ovmf build-ovmf32 build-qemu-efi build-qemu-efi-aarch64 build-qemu-efi-arm build-qemu-efi-riscv64
+.PHONY: build-ovmf build-ovmf32 build-qemu-efi build-qemu-efi-aarch64 build-qemu-efi-arm build-qemu-efi-riscv64 build-ovmfxen

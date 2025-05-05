@@ -1,0 +1,2 @@
+usr/share/OVMF/XEN_OVMF_CODE_4M.secboot.fd usr/share/OVMF/XEN_OVMF_CODE_4M.ms.fd
+usr/share/OVMF/XEN_OVMF_CODE_4M.secboot.fd usr/share/OVMF/XEN_OVMF_CODE_4M.snakeoil.fd

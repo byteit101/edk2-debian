@@ -50,6 +50,17 @@ Description: UEFI firmware for 32-bit x86 virtual machines
  machines. It includes full support for UEFI, including Secure Boot, allowing
  use of UEFI in place of a traditional BIOS in your VM.
 
+Package: ovmf-xen
+Architecture: all
+Depends: ${misc:Depends}
+Suggests: xen-system
+Recommends: efi-shell-x64
+Multi-Arch: foreign
+Description: UEFI firmware for 64-bit x86 Xen HVM virtual machines
+ Open Virtual Machine Firmware is a build of EDK II for 64-bit x86 Xen virtual
+ machines. It includes full support for UEFI, including Secure Boot, allowing
+ use of UEFI in place of a traditional BIOS in your VM.
+
 Package: qemu-efi-arm
 Architecture: all
 Depends: ${misc:Depends}

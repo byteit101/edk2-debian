@@ -15,6 +15,7 @@ debian/PkKek-1-vendor.pem
 debian/oem-string-snakeoil
 debian/oem-string-vendor
 debian/ovmf-install/
+debian/xen-install/
 debian/ovmf32-install/
 debian/python/UEFI/__pycache__/
 debian/setup-build-stamp

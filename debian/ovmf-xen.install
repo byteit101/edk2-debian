@@ -1,0 +1,3 @@
+debian/xen-install/XEN_OVMF.fd		/usr/share/ovmf
+debian/xen-install/XEN_OVMF_CODE*.fd	/usr/share/OVMF
+debian/xen-install/XEN_OVMF_VARS*.fd	/usr/share/OVMF
