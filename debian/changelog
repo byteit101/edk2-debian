@@ -1,3 +1,10 @@
+edk2 (2025.02-9.1+xen1) unstable; urgency=medium
+
+  * Added OVMF builds for Xen. On this old version due to
+    https://github.com/tianocore/edk2/issues/11046
+
+ -- Patrick Plenefisch <simonpatp@gmail.com>  Fri, 06 Jun 2025 20:48:25 -0400
+
 edk2 (2025.02-9) UNRELEASED; urgency=medium
 
   * Cherry-pick openssl fix for timing side-channel in ECDSA signature
@@ -1323,7 +1330,7 @@ edk2 (0~20150106.5c2d456b-1) unstable; urgency=medium
   * Refactor debian/rules to support cross-building.
   * debian/patches/no-stack-protector-all-archs.diff: pass
     -fno-stack-protector to all ARM GCC toolchains.
-  * Add XS-Build-Indep-Architecture to debian/control, as a temporary 
+  * Add XS-Build-Indep-Architecture to debian/control, as a temporary
     measure pending standardization, to work around Launchpad builder
     behavior which would try to build our arch: all package on an arm64
     builder instead of an x86 one.

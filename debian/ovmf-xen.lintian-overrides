@@ -1,0 +1,5 @@
+
+# Firmware for OVMF isn't really arch-dependent
+ovmf-xen binary: arch-dependent-file-in-usr-share [usr/share/ovmf/XEN_OVMF.fd]
+ovmf-xen binary: arch-independent-package-contains-binary-or-object [usr/share/ovmf/XEN_OVMF.fd]
+ovmf-xen binary: statically-linked-binary [usr/share/ovmf/XEN_OVMF.fd]
