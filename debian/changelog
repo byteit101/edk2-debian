@@ -1,3 +1,14 @@
+edk2 (2025.02-8) UNRELEASED; urgency=medium
+
+  * Fix out-of-bounds read in HashPeImageByType(), CVE-2024-38797.
+    (Closes: #1102519):
+    - d/p/0001-SecurityPkg-Out-of-bound-read-in-HashPeImageByType.patch
+    - d/p/0002-SecurityPkg-Improving-HashPeImageByType-logic.patch
+    - d/p/0003-SecurityPkg-Improving-SecureBootConfigImpl-HashPeIma.patch
+    - d/p/0004-SecurityPkg-Update-SecurityFixes.yaml-for-CVE-2024-3.patch
+
+ -- dann frazier <dannf@debian.org>  Sun, 11 May 2025 21:04:55 -0600
+
 edk2 (2025.02-7) unstable; urgency=medium
 
   * qemu-efi-aarch64: Fix regression with QEMU -kernel (Closes: #1101152):

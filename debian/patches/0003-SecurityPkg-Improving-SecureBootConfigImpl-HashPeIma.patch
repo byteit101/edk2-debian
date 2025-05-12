@@ -1,0 +1,95 @@
+From 025ab811fb2afac6b4036b0fc2fa46d0b04d1c80 Mon Sep 17 00:00:00 2001
+From: Doug Flick <dougflick@microsoft.com>
+Date: Fri, 17 Jan 2025 11:30:17 -0800
+Subject: [PATCH 3/4] SecurityPkg: Improving
+ SecureBootConfigImpl:HashPeImageByType () logic
+
+Namely:
+
+(1) The TWO_BYTE_ENCODE check is independent of Index. If it evalutes
+    to TRUE for Index==0, then it will evaluate to TRUE for all other
+    Index values as well. As a result, the (Index == HASHALG_MAX)
+    condition will fire after the loop, and we'll return
+    EFI_UNSUPPORTED.
+
+    While this is correct, functionally speaking, it is wasteful to
+    keep re-checking TWO_BYTE_ENCODE in the loop body. The check
+    should be made at the top of the function, and EFI_UNSUPPORTED
+    should be returned at once, if appropriate.
+
+(2) If the hash algorithm selected by Index has such a large OID that
+    the OID comparison cannot even be performed (because AuthDataSize
+    is not large enough for containing the OID in question, starting
+    at offset 32), then the function returns EFI_UNSUPPORTED at once.
+
+    This is bogus; this case should simply be treated as an OID
+    mismatch, and the loop should advance to the next Index value /
+    hash algorithm candidate. A remaining hash algo may have a shorter
+    OID and yield an OID match.
+
+Signed-off-by: Doug Flick <DougFlick@microsoft.com>
+
+Origin: https://github.com/tianocore/edk2/commit/025ab811fb2afac6b4036b0fc2fa46d0b04d1c80
+Bug: https://github.com/tianocore/edk2/security/advisories/GHSA-4wjw-6xmf-44xf
+Bug-Debian: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1102519
+Last-Updated: 2025-05-11
+
+diff --git a/SecurityPkg/VariableAuthenticated/SecureBootConfigDxe/SecureBootConfigImpl.c b/SecurityPkg/VariableAuthenticated/SecureBootConfigDxe/SecureBootConfigImpl.c
+index d4dc4e1402..d262904c31 100644
+--- a/SecurityPkg/VariableAuthenticated/SecureBootConfigDxe/SecureBootConfigImpl.c
++++ b/SecurityPkg/VariableAuthenticated/SecureBootConfigDxe/SecureBootConfigImpl.c
+@@ -2105,30 +2105,35 @@ HashPeImageByType (
+ {
+   UINT8                     Index;
+   WIN_CERTIFICATE_EFI_PKCS  *PkcsCertData;
++  UINT32                    PkcsCertSize;
+ 
+   PkcsCertData = (WIN_CERTIFICATE_EFI_PKCS *)(mImageBase + mSecDataDir->Offset);
++  PkcsCertSize = mSecDataDir->SizeOfCert;
+ 
+-  for (Index = 0; Index < HASHALG_MAX; Index++) {
++  //
++  // Check the Hash algorithm in PE/COFF Authenticode.
++  //    According to PKCS#7 Definition:
++  //        SignedData ::= SEQUENCE {
++  //            version Version,
++  //            digestAlgorithms DigestAlgorithmIdentifiers,
++  //            contentInfo ContentInfo,
++  //            .... }
++  //    The DigestAlgorithmIdentifiers can be used to determine the hash algorithm in PE/COFF hashing
++  //    This field has the fixed offset (+32) in final Authenticode ASN.1 data.
++  //    Fixed offset (+32) is calculated based on two bytes of length encoding.
++  //
++  if ((PkcsCertSize > 1) && ((*(PkcsCertData->CertData + 1) & TWO_BYTE_ENCODE) != TWO_BYTE_ENCODE)) {
+     //
+-    // Check the Hash algorithm in PE/COFF Authenticode.
+-    //    According to PKCS#7 Definition:
+-    //        SignedData ::= SEQUENCE {
+-    //            version Version,
+-    //            digestAlgorithms DigestAlgorithmIdentifiers,
+-    //            contentInfo ContentInfo,
+-    //            .... }
+-    //    The DigestAlgorithmIdentifiers can be used to determine the hash algorithm in PE/COFF hashing
+-    //    This field has the fixed offset (+32) in final Authenticode ASN.1 data.
+-    //    Fixed offset (+32) is calculated based on two bytes of length encoding.
++    // Only support two bytes of Long Form of Length Encoding.
+     //
+-    if ((*(PkcsCertData->CertData + 1) & TWO_BYTE_ENCODE) != TWO_BYTE_ENCODE) {
+-      //
+-      // Only support two bytes of Long Form of Length Encoding.
+-      //
++    return EFI_BAD_BUFFER_SIZE;
++  }
++
++  for (Index = 0; Index < HASHALG_MAX; Index++) {
++    if (PkcsCertSize < 32 + mHash[Index].OidLength) {
+       continue;
+     }
+ 
+-    //
+     if (CompareMem (PkcsCertData->CertData + 32, mHash[Index].OidValue, mHash[Index].OidLength) == 0) {
+       break;
+     }
+-- 
+2.49.0
+

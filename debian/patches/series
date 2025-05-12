@@ -5,3 +5,7 @@ x64-baseline-abi.patch
 0001-NetworkPkg-IScsiDxe-Fix-for-Remote-Memory-Exposure-i.patch
 OvmfPkg-X64-add-opt-org.tianocore-UninstallMemAttrPr.patch
 0001-OvmfPkg-QemuKernelLoaderFsDxe-fix-allocation-failure.patch
+0001-SecurityPkg-Out-of-bound-read-in-HashPeImageByType.patch
+0002-SecurityPkg-Improving-HashPeImageByType-logic.patch
+0003-SecurityPkg-Improving-SecureBootConfigImpl-HashPeIma.patch
+0004-SecurityPkg-Update-SecurityFixes.yaml-for-CVE-2024-3.patch

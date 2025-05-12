@@ -1,0 +1,61 @@
+From 5f08635ee7c176f78f788aa6528b43f18536a80b Mon Sep 17 00:00:00 2001
+From: Doug Flick <dougflick@microsoft.com>
+Date: Thu, 3 Oct 2024 09:37:18 -0700
+Subject: [PATCH 1/4] SecurityPkg: Out of bound read in HashPeImageByType()
+
+In HashPeImageByType(), the hash of PE/COFF image is calculated.
+This function may get untrusted input.
+
+Inside this function, the following code verifies the loaded image has
+the correct format, by reading the second byte of the buffer.
+
+```c
+  if ((*(AuthData + 1) & TWO_BYTE_ENCODE) != TWO_BYTE_ENCODE) {
+  	...
+  }
+```
+
+The input image is not trusted and that may not have the second byte to
+read. So this poses an out of bound read error.
+
+With below fix we are assuring that we don't do out of bound read. i.e,
+we make sure that AuthDataSize is greater than 1.
+
+```c
+  if (AuthDataSize > 1
+      && (*(AuthData + 1) & TWO_BYTE_ENCODE) != TWO_BYTE_ENCODE){
+    ...
+  }
+```
+
+AuthDataSize size is verified before reading the second byte.
+So if AuthDataSize is less than 2, the second byte will not be read, and
+the out of bound read situation won't occur.
+
+Tested the patch on real platform with and without TPM connected and
+verified image is booting fine.
+
+Authored-by: Raj AlwinX Selvaraj <Alw...@intel.com>
+Signed-off-by: Doug Flick <DougFlick@microsoft.com>
+
+Origin: https://github.com/tianocore/edk2/commit/5f08635ee7c176f78f788aa6528b43f18536a80b
+Bug: https://github.com/tianocore/edk2/security/advisories/GHSA-4wjw-6xmf-44xf
+Bug-Debian: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1102519
+Last-Updated: 2025-05-11
+
+diff --git a/SecurityPkg/Library/DxeImageVerificationLib/DxeImageVerificationLib.c b/SecurityPkg/Library/DxeImageVerificationLib/DxeImageVerificationLib.c
+index b05da19c2b..2afa2c93d9 100644
+--- a/SecurityPkg/Library/DxeImageVerificationLib/DxeImageVerificationLib.c
++++ b/SecurityPkg/Library/DxeImageVerificationLib/DxeImageVerificationLib.c
+@@ -642,7 +642,7 @@ HashPeImageByType (
+     //    This field has the fixed offset (+32) in final Authenticode ASN.1 data.
+     //    Fixed offset (+32) is calculated based on two bytes of length encoding.
+     //
+-    if ((*(AuthData + 1) & TWO_BYTE_ENCODE) != TWO_BYTE_ENCODE) {
++    if ((AuthDataSize > 1) && ((*(AuthData + 1) & TWO_BYTE_ENCODE) != TWO_BYTE_ENCODE)) {
+       //
+       // Only support two bytes of Long Form of Length Encoding.
+       //
+-- 
+2.49.0
+
