@@ -1,13 +1,11 @@
 edk2 (2025.02-5) unstable; urgency=medium
 
-  The EFI_MEMORY_ATTRIBUTE_PROTOCOL is now enabled by default in the
-  OVMF32_CODE_4M.secboot.fd image. This is a security feature that will
-  cause crashes for operating systems with bootloaders that do not
-  observe proper memory access semantics. Users that experience issues
-  with such bootloaders have the options to either append the following
-  to the qemu-system-i386 command line:
-    -fw_cfg name=opt/org.tianocore/UninstallMemAttrProtocol,string=y
-  or switch to the OVMF32_CODE_4M.fd (non-secboot) image, which uninstalls
-  this protocol by default.
+  The EFI_MEMORY_ATTRIBUTE_PROTOCOL is disabled by default in the
+  OVMF32_CODE_4M.secboot.fd image. This is to avoid crashes with guest
+  operating system bootloaders that do not observe proper memory access
+  semantics. If your guest operating system supports it, it is recommended
+  that you use the OVMF32_CODE_4M.secboot.strictnx.fd image instead to
+  provide additional security protection. This security feature will
+  be enabled by default for all *.secboot.fd images in the next release.
 
  -- dann frazier <dannf@debian.org>  Fri, 28 Mar 2025 08:23:47 -0600

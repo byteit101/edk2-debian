@@ -10,9 +10,17 @@ OVMF32_CODE_4M.secboot.fd
   To enable it, you'll need to manually import PK/KEK/DB keys and activate
   Secure Boot from the UEFI setup menu.
 
+OVMF32_CODE_4M.secboot.strictnx.fd
+  This is the same as the OVMF32_CODE_4M.secboot.fd, except that it has
+  the EFI_MEMORY_ATTRIBUTE_PROTOCOL enabled. This provides additional
+  security, but will result in crashes with many old guest operating
+  system versions that do not observe proper memory access semantics.
+  This security feature will be enabled by default in the
+  OVMF32_CODE_4M.secboot.fd image in a future release.
+
 OVMF32_VARS_4M.fd
   A variable template image that is intended to be read-write, and therefore
   each guest should be given its own copy. This is an empty variable store
   template.
 
- -- dann frazier <dannf@debian.org>, Sun, 11 Feb 2024 08:46:01 -0700
+ -- dann frazier <dannf@debian.org>, Mon, 12 May 2025 18:34:58 -0600

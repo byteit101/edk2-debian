@@ -36,6 +36,7 @@ class QemuEfiMachine(enum.Enum):
 class QemuEfiVariant(enum.Enum):
     MS = enum.auto()
     SECBOOT = enum.auto()
+    MS_STRICTNX = enum.auto()
     SNAKEOIL = enum.auto()
 
 
@@ -103,6 +104,9 @@ class QemuCommand:
             code_ext = vars_ext = '.ms'
         elif variant == QemuEfiVariant.SECBOOT:
             code_ext = '.secboot'
+        elif variant == QemuEfiVariant.MS_STRICTNX:
+            code_ext = '.secboot.strictnx'
+            vars_ext = '.ms'
         elif variant == QemuEfiVariant.SNAKEOIL:
             code_ext = vars_ext = '.snakeoil'
 
@@ -147,7 +151,7 @@ class QemuCommand:
         if machine in [QemuEfiMachine.OVMF_PC, QemuEfiMachine.OVMF32_PC]:
             assert(variant is None)
         if machine == QemuEfiMachine.OVMF32_Q35:
-            assert(variant is None or variant == QemuEfiVariant.SECBOOT)
+            assert(variant is None or variant in [QemuEfiVariant.SECBOOT, QemuEfiVariant.SECBOOT_STRICTNX])
         if machine in [QemuEfiMachine.OVMF32_PC, QemuEfiMachine.OVMF32_Q35]:
             OVMF_ARCH = "OVMF32"
         else:

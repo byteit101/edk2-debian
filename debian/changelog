@@ -1,5 +1,15 @@
 edk2 (2025.02-8) UNRELEASED; urgency=medium
 
+  * ovmf, ovmf-ia32, qemu-efi-aarch64: Uninstall the EFI_MEMORY_ATTRIBUTE
+    protocol by default in the *.secboot.fd variants to avoid boot crashes
+    with incompatible guest operating systems. This is to give virtual
+    machine managers like libvirt and incus a release cycle to determine how
+    to handle these guests. Add new *.secboot.strictnx.fd variants that users
+    can opt-in to to benefit from NX security features. EFI_MEMORY_ATTRIBUTE
+    support will be restored for all *.secboot.fd images at the start of
+    the next devel cycle, at which point *.secboot.strictnx.fd will become
+    symlink aliases. Note this in NEWS.Debian and README.Debian files.
+    (Closes: #1103906).
   * Fix out-of-bounds read in HashPeImageByType(), CVE-2024-38797.
     (Closes: #1102519):
     - d/p/0001-SecurityPkg-Out-of-bound-read-in-HashPeImageByType.patch

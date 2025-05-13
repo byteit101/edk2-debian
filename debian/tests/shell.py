@@ -181,6 +181,23 @@ class BootToShellTest(unittest.TestCase):
     @unittest.skipUnless(
         DpkgArch['DEB_BUILD_ARCH'] == 'arm64', "Requires grub-efi-arm64",
     )
+    def test_aavmf_ms_secure_boot_strictnx_signed(self):
+        q = Qemu.QemuCommand(
+            QemuEfiMachine.AAVMF,
+            variant=QemuEfiVariant.MS_STRICTNX,
+        )
+        grub = get_local_grub_path('AA64', signed=True)
+        shim = get_local_shim_path('AA64', signed=True)
+        iso = GrubShellBootableIsoImage('AA64', shim, grub)
+        q.add_disk(iso.path)
+        self.run_cmd_check_secure_boot(q.command, 'aa64', True)
+
+    @unittest.skipUnless(
+        DpkgArch['DEB_BUILD_ARCH_BITS'] == '64', "Requires 64-bit QEMU",
+    )
+    @unittest.skipUnless(
+        DpkgArch['DEB_BUILD_ARCH'] == 'arm64', "Requires grub-efi-arm64",
+    )
     def test_aavmf_ms_secure_boot_no_shell(self):
         q = Qemu.QemuCommand(
             QemuEfiMachine.AAVMF,
@@ -194,10 +211,40 @@ class BootToShellTest(unittest.TestCase):
     @unittest.skipUnless(
         DpkgArch['DEB_BUILD_ARCH'] == 'arm64', "Requires grub-efi-arm64",
     )
+    def test_aavmf_ms_secure_boot_strictnx_no_shell(self):
+        q = Qemu.QemuCommand(
+            QemuEfiMachine.AAVMF,
+            variant=QemuEfiVariant.MS_STRICTNX,
+        )
+        self.run_cmd_check_shell(q.command, should_start=False)
+
+    @unittest.skipUnless(
+        DpkgArch['DEB_BUILD_ARCH_BITS'] == '64', "Requires 64-bit QEMU",
+    )
+    @unittest.skipUnless(
+        DpkgArch['DEB_BUILD_ARCH'] == 'arm64', "Requires grub-efi-arm64",
+    )
     def test_aavmf_ms_secure_boot_unsigned(self):
         q = Qemu.QemuCommand(
             QemuEfiMachine.AAVMF,
             variant=QemuEfiVariant.MS,
+        )
+        grub = get_local_grub_path('AA64', signed=False)
+        shim = get_local_shim_path('AA64', signed=False)
+        iso = GrubShellBootableIsoImage('AA64', shim, grub)
+        q.add_disk(iso.path)
+        self.run_cmd_check_secure_boot(q.command, 'aa64', False)
+
+    @unittest.skipUnless(
+        DpkgArch['DEB_BUILD_ARCH_BITS'] == '64', "Requires 64-bit QEMU",
+    )
+    @unittest.skipUnless(
+        DpkgArch['DEB_BUILD_ARCH'] == 'arm64', "Requires grub-efi-arm64",
+    )
+    def test_aavmf_ms_secure_boot_strictnx_unsigned(self):
+        q = Qemu.QemuCommand(
+            QemuEfiMachine.AAVMF,
+            variant=QemuEfiVariant.MS_STRICTNX,
         )
         grub = get_local_grub_path('AA64', signed=False)
         shim = get_local_shim_path('AA64', signed=False)
@@ -293,6 +340,18 @@ class BootToShellTest(unittest.TestCase):
         DpkgArch['DEB_BUILD_ARCH_BITS'] == '64', "Requires 64-bit QEMU",
     )
     @unittest.skipUnless(DpkgArch['DEB_BUILD_ARCH'] == 'amd64', "amd64-only")
+    def test_ovmf_4m_ms_secure_boot_strictnx_no_shell(self):
+        q = Qemu.QemuCommand(
+            QemuEfiMachine.OVMF_Q35,
+            variant=QemuEfiVariant.MS_STRICTNX,
+            flash_size=QemuEfiFlashSize.SIZE_4MB,
+        )
+        self.run_cmd_check_shell(q.command, should_start=False)
+
+    @unittest.skipUnless(
+        DpkgArch['DEB_BUILD_ARCH_BITS'] == '64', "Requires 64-bit QEMU",
+    )
+    @unittest.skipUnless(DpkgArch['DEB_BUILD_ARCH'] == 'amd64', "amd64-only")
     def test_ovmf_4m_ms_secure_boot_signed(self):
         q = Qemu.QemuCommand(
             QemuEfiMachine.OVMF_Q35,
@@ -309,10 +368,42 @@ class BootToShellTest(unittest.TestCase):
         DpkgArch['DEB_BUILD_ARCH_BITS'] == '64', "Requires 64-bit QEMU",
     )
     @unittest.skipUnless(DpkgArch['DEB_BUILD_ARCH'] == 'amd64', "amd64-only")
+    def test_ovmf_4m_ms_secure_boot_strictnx_signed(self):
+        q = Qemu.QemuCommand(
+            QemuEfiMachine.OVMF_Q35,
+            variant=QemuEfiVariant.MS_STRICTNX,
+            flash_size=QemuEfiFlashSize.SIZE_4MB,
+        )
+        grub = get_local_grub_path('X64', signed=True)
+        shim = get_local_shim_path('X64', signed=True)
+        iso = GrubShellBootableIsoImage('X64', shim, grub)
+        q.add_disk(iso.path)
+        self.run_cmd_check_secure_boot(q.command, 'x64', True)
+
+    @unittest.skipUnless(
+        DpkgArch['DEB_BUILD_ARCH_BITS'] == '64', "Requires 64-bit QEMU",
+    )
+    @unittest.skipUnless(DpkgArch['DEB_BUILD_ARCH'] == 'amd64', "amd64-only")
     def test_ovmf_4m_ms_secure_boot_unsigned(self):
         q = Qemu.QemuCommand(
             QemuEfiMachine.OVMF_Q35,
             variant=QemuEfiVariant.MS,
+            flash_size=QemuEfiFlashSize.SIZE_4MB,
+        )
+        grub = get_local_grub_path('X64', signed=False)
+        shim = get_local_shim_path('X64', signed=False)
+        iso = GrubShellBootableIsoImage('X64', shim, grub)
+        q.add_disk(iso.path)
+        self.run_cmd_check_secure_boot(q.command, 'x64', False)
+
+    @unittest.skipUnless(
+        DpkgArch['DEB_BUILD_ARCH_BITS'] == '64', "Requires 64-bit QEMU",
+    )
+    @unittest.skipUnless(DpkgArch['DEB_BUILD_ARCH'] == 'amd64', "amd64-only")
+    def test_ovmf_4m_ms_secure_boot_strictnx_unsigned(self):
+        q = Qemu.QemuCommand(
+            QemuEfiMachine.OVMF_Q35,
+            variant=QemuEfiVariant.MS_STRICTNX,
             flash_size=QemuEfiFlashSize.SIZE_4MB,
         )
         grub = get_local_grub_path('X64', signed=False)
