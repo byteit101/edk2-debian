@@ -1,3 +1,11 @@
+edk2 (2025.02-9) UNRELEASED; urgency=medium
+
+  * Cherry-pick openssl fix for timing side-channel in ECDSA signature
+    computation, CVE-2024-13176.
+    - d/p/0001-Fix-timing-side-channel-in-ECDSA-signature-computati.patch
+
+ -- dann frazier <dannf@debian.org>  Thu, 15 May 2025 12:29:07 -0600
+
 edk2 (2025.02-8) unstable; urgency=medium
 
   * ovmf, ovmf-ia32, qemu-efi-aarch64: Uninstall the EFI_MEMORY_ATTRIBUTE
