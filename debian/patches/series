@@ -10,3 +10,4 @@ OvmfPkg-X64-add-opt-org.tianocore-UninstallMemAttrPr.patch
 0003-SecurityPkg-Improving-SecureBootConfigImpl-HashPeIma.patch
 0004-SecurityPkg-Update-SecurityFixes.yaml-for-CVE-2024-3.patch
 0001-Fix-timing-side-channel-in-ECDSA-signature-computati.patch
+0001-NetworkPkg-IScsiDxe-Fix-for-out-of-bound-memory-acce.patch

@@ -3,6 +3,8 @@ edk2 (2025.02-9) UNRELEASED; urgency=medium
   * Cherry-pick openssl fix for timing side-channel in ECDSA signature
     computation, CVE-2024-13176.
     - d/p/0001-Fix-timing-side-channel-in-ECDSA-signature-computati.patch
+  * Fix out-of-bounds memory access in NetworkPkg/IScsiDxe, CVE-2024-38805.
+    - d/p/0001-NetworkPkg-IScsiDxe-Fix-for-out-of-bound-memory-acce.patch
 
  -- dann frazier <dannf@debian.org>  Thu, 15 May 2025 12:29:07 -0600
 
