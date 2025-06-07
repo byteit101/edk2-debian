@@ -79,7 +79,7 @@ undefine CONF_PATH
 %:
 	dh $@
 
-override_dh_auto_build: build-qemu-efi-aarch64 build-qemu-efi-arm build-ovmf build-ovmfxen build-ovmf32 build-qemu-efi-riscv64 build-qemu-efi-loongarch64
+override_dh_auto_build: build-ovmf build-ovmfxen # build-qemu-efi-aarch64 build-qemu-efi-arm  build-ovmf32 build-qemu-efi-riscv64 build-qemu-efi-loongarch64
 
 debian/setup-build-stamp:
 	set -e; . ./edksetup.sh; \

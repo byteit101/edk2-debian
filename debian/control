@@ -41,16 +41,6 @@ Description: UEFI firmware for 64-bit x86 virtual machines
  machines. It includes full support for UEFI, including Secure Boot, allowing
  use of UEFI in place of a traditional BIOS in your VM.
 
-Package: ovmf-ia32
-Architecture: all
-Depends: ${misc:Depends}
-Suggests: qemu-system-x86
-Multi-Arch: foreign
-Description: UEFI firmware for 32-bit x86 virtual machines
- Open Virtual Machine Firmware is a build of EDK II for 32-bit x86 virtual
- machines. It includes full support for UEFI, including Secure Boot, allowing
- use of UEFI in place of a traditional BIOS in your VM.
-
 Package: ovmf-xen
 Architecture: all
 Depends: ${misc:Depends}
@@ -62,51 +52,6 @@ Description: UEFI firmware for 64-bit x86 Xen HVM virtual machines
  machines. It includes full support for UEFI, including Secure Boot, allowing
  use of UEFI in place of a traditional BIOS in your VM.
 
-Package: qemu-efi-arm
-Architecture: all
-Depends: ${misc:Depends}
-Suggests: qemu-system-arm
-Multi-Arch: foreign
-Description: UEFI firmware for 32-bit ARM virtual machines
- qemu-efi-arm is a build of EDK II for 32-bit ARM virtual machines. It
- includes full support for UEFI, including Secure Boot.
-
-Package: qemu-efi-aarch64
-Architecture: all
-Depends: ${misc:Depends}
-Breaks: qemu-efi (<< 0~20161202.7bbe0b3e-2)
-Suggests: qemu-system-arm
-Multi-Arch: foreign
-Description: UEFI firmware for 64-bit ARM virtual machines
- qemu-efi-aarch64 is a build of EDK II for 64-bit ARM virtual machines. It
- includes full support for UEFI, including Secure Boot.
-
-Package: qemu-efi-riscv64
-Architecture: all
-Depends: ${misc:Depends}
-Suggests: qemu-system-riscv64
-Multi-Arch: foreign
-Description: UEFI firmware for RISCV64 virtual machines
- qemu-efi-riscv64 is a build of EDK II for RISCV64 virtual machines.
-
-Package: qemu-efi-loongarch64
-Architecture: all
-Depends: ${misc:Depends}
-Suggests: qemu-system-misc
-Multi-Arch: foreign
-Description: UEFI firmware for LoongArch64 virtual machines
- qemu-efi-loongarch64 is a build of EDK II for LoongArch64 virtual machines.
-
-Package: efi-shell-ia32
-Architecture: all
-Depends: ${misc:Depends}
-Description: UEFI Shell for 32-bit x86 architecture
- The UEFI Shell provides a command line interface running on top of the EFI API.
- It can be used to execute EFI binaries, to manage EFI variables and boot
- options, or to display details of installed devices, drivers, and protocols.
- This package contains the shellia32.efi binary for the a 32-bit x86
- architecture.
-
 Package: efi-shell-x64
 Architecture: all
 Depends: ${misc:Depends}
@@ -115,44 +60,4 @@ Description: UEFI Shell for 64-bit x86 architecture
  It can be used to execute EFI binaries, to manage EFI variables and boot
  options, or to display details of installed devices, drivers, and protocols.
  This package contains the shellx64.efi binary for the 64-bit x86
- architecture.
-
-Package: efi-shell-arm
-Architecture: all
-Depends: ${misc:Depends}
-Description: UEFI Shell for 32-bit ARM architecture
- The UEFI Shell provides a command line interface running on top of the EFI API.
- It can be used to execute EFI binaries, to manage EFI variables and boot
- options, or to display details of installed devices, drivers, and protocols.
- This package contains the shellarm.efi binary for the 32-bit ARM
- architecture.
-
-Package: efi-shell-aa64
-Architecture: all
-Depends: ${misc:Depends}
-Description: UEFI Shell for 64-bit ARM architecture
- The UEFI Shell provides a command line interface running on top of the EFI API.
- It can be used to execute EFI binaries, to manage EFI variables and boot
- options, or to display details of installed devices, drivers, and protocols.
- This package contains the shellaa64.efi binary for the 64-bit ARM
- architecture.
-
-Package: efi-shell-riscv64
-Architecture: all
-Depends: ${misc:Depends}
-Description: UEFI Shell for 64-bit RISC-V architecture
- The UEFI Shell provides a command line interface running on top of the EFI API.
- It can be used to execute EFI binaries, to manage EFI variables and boot
- options, or to display details of installed devices, drivers, and protocols.
- This package contains the shellriscv64.efi binary for the 64-bit RISC-V
- architecture.
-
-Package: efi-shell-loongarch64
-Architecture: all
-Depends: ${misc:Depends}
-Description: UEFI Shell for 64-bit LoongArch architecture
- The UEFI Shell provides a command line interface running on top of the EFI API.
- It can be used to execute EFI binaries, to manage EFI variables and boot
- options, or to display details of installed devices, drivers, and protocols.
- This package contains the shellloongarch64.efi binary for the 64-bit LoongArch
  architecture.
